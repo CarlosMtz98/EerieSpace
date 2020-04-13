@@ -5,17 +5,15 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
 class PantallaMenu extends Pantalla {
-    private final Launcher launcher;
+    private final GameLauncher gameLauncher;
     private AssetManager manager = new AssetManager();
     private Texture backgroudTexture;
     private Stage menuScene;
@@ -33,8 +31,8 @@ class PantallaMenu extends Pantalla {
     private TextButton.TextButtonStyle textButtonStyle;
     private BitmapFont font;
 
-    public PantallaMenu(Launcher launcher) {
-        this.launcher = launcher;
+    public PantallaMenu(GameLauncher gameLauncher) {
+        this.gameLauncher = gameLauncher;
         loadMenuFiles();
     }
 
