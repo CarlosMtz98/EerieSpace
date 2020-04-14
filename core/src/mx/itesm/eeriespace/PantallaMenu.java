@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Align;
 class PantallaMenu extends Pantalla {
     private final GameLauncher gameLauncher;
     private AssetManager manager = new AssetManager();
-    private Texture backgroudTexture;
+    private Texture backgroundTexture;
     private Stage menuScene;
 
     // Textures file locations
@@ -44,7 +44,7 @@ class PantallaMenu extends Pantalla {
     private void createMenu() {
         menuScene = new Stage(vista);
         font = new BitmapFont();
-        backgroudTexture = manager.get(bgMenuImage, Texture.class);
+        backgroundTexture = manager.get(bgMenuImage, Texture.class);
         menuButtons();
         menuTitle();
         Gdx.input.setInputProcessor(menuScene);
@@ -118,7 +118,7 @@ class PantallaMenu extends Pantalla {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        batch.draw(backgroudTexture, 0,0);
+        batch.draw(backgroundTexture, 0,0);
         batch.end();
         menuScene.draw();
     }
