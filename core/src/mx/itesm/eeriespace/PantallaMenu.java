@@ -16,6 +16,8 @@ class PantallaMenu extends Pantalla {
     private final GameLauncher gameLauncher;
     private AssetManager manager = new AssetManager();
     private Texture backgroundTexture;
+
+    // Menu
     private Stage menuScene;
 
     // Textures file locations
@@ -88,6 +90,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Play Button Pressed");
+                gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
             }
         });
 
