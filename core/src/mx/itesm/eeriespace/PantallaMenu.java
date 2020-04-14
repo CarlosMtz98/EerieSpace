@@ -107,10 +107,10 @@ class PantallaMenu extends Pantalla {
     }
 
     private void loadMenuFiles() {
-        Gdx.app.log("Loding menu files", "Start loading files for menu Scene");
+        Gdx.app.log("Loading menu files", "Start loading files for menu Scene");
         manager.load(bgMenuImage, Texture.class);
         manager.finishLoading();
-        Gdx.app.log("Loding menu files", "Finish loading files for menu Scene");
+        Gdx.app.log("Loading menu files", "Finish loading files for menu Scene");
     }
 
     @Override
