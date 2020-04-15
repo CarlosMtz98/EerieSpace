@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 // Donde se desarrolla el juego. Es el equivalente e PantallaSpaceInvaders
 class PantallaEerieSpace extends Pantalla {
-    private final GameLauncher gameLauncher;
 
+    private final GameLauncher gameLauncher;
 
     // Balas
     private ArrayList<Bala> balas;
@@ -19,6 +19,7 @@ class PantallaEerieSpace extends Pantalla {
 
     // Nave
     private Texture texturaNave;
+    private Nave nave;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -28,6 +29,13 @@ class PantallaEerieSpace extends Pantalla {
     public void show() {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         cargarTexturas();
+        crearNave();
+    }
+
+    private void crearNave() {
+        float x = ANCHO/2 - texturaNave.getWidth()/2;
+        float y = 0;
+        nave = new Nave(texturaNave, x, y);
     }
 
     private void cargarTexturas() {
@@ -39,6 +47,9 @@ class PantallaEerieSpace extends Pantalla {
     public void render(float delta) {
         borrarPantalla(0, 0, 0);
         batch.setProjectionMatrix(camara.combined);
+        batch.begin();
+        nave.draw(batch);
+        batch.end();
     }
 
     @Override

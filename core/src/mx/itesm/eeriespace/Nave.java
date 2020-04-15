@@ -1,6 +1,7 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 public class Nave extends Objeto {
@@ -12,8 +13,14 @@ public class Nave extends Objeto {
     }
 
     public void mover(Touchpad pad){
-        sprite.setX(sprite.getX() + velocidad*pad.getKnobPercentX());
-        sprite.setY(sprite.getY() + velocidad*pad.getKnobPercentX());
+        float dx = velocidad*pad.getKnobPercentX();
+        float dy = velocidad*pad.getKnobPercentY();
+        sprite.setX(sprite.getX() + dx);
+        sprite.setY(sprite.getY() + dy);
+    }
+
+    public void draw(SpriteBatch batch){
+        sprite.draw(batch);
     }
 
 
