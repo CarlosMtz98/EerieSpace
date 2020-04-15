@@ -1,6 +1,7 @@
 package mx.itesm.eeriespace;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 // Donde se desarrolla el juego. Es el equivalente e PantallaSpaceInvaders
@@ -13,12 +14,13 @@ class PantallaEerieSpace extends Pantalla {
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
 
     @Override
     public void render(float delta) {
-
+        borrarPantalla(0, 0, 0);
+        batch.setProjectionMatrix(camara.combined);
     }
 
     @Override
