@@ -1,6 +1,12 @@
 package mx.itesm.eeriespace;
 
 public class PantallaConfiguracion extends Pantalla {
+    private final GameLauncher gameLauncher;
+
+    public PantallaConfiguracion(GameLauncher gameLauncher) {
+        this.gameLauncher = gameLauncher;
+    }
+
     @Override
     public void show() {
 

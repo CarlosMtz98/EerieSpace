@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 class PantallaMenu extends Pantalla {
@@ -86,25 +88,30 @@ class PantallaMenu extends Pantalla {
         menuScene.addActor(helpButton);
         menuScene.addActor(settingsButton);
 
-        playButton.addListener(new ChangeListener() {
+        playButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 System.out.println("Play Button Pressed");
                 gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
             }
         });
 
-        helpButton.addListener(new ChangeListener() {
+        helpButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 System.out.println("Help Button Pressed");
+                gameLauncher.setScreen(new PantallaInstrucciones(gameLauncher));
             }
         });
 
-        settingsButton.addListener(new ChangeListener() {
+        settingsButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y ) {
+                super.clicked(event, x, y);
                 System.out.println("Settings Button Pressed");
+                gameLauncher.setScreen(new PantallaConfiguracion(gameLauncher));
             }
         });
     }
