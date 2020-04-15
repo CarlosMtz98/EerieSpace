@@ -51,9 +51,9 @@ class PantallaMenu extends Pantalla {
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
 
-        playButton = new TextButton("PLAY", textButtonStyle);
-        helpButton = new TextButton("HELP", textButtonStyle);
-        settingsButton = new TextButton("SETTINGS", textButtonStyle);
+        playButton = new TextButton("Play", textButtonStyle);
+        helpButton = new TextButton("Help", textButtonStyle);
+        settingsButton = new TextButton("Settings", textButtonStyle);
 
         playButton.getLabel().setFontScale(2);
         helpButton.getLabel().setFontScale(2);
