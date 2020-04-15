@@ -40,7 +40,8 @@ class PantallaMenu extends Pantalla {
 
     private void createMenu() {
         menuScene = new Stage(vista);
-        font = new BitmapFont();
+        //font = new Text("BasierSquare.fnt");
+        font = new BitmapFont(Gdx.files.internal("BasierSquare.fnt"));
         backgroundTexture = manager.get(bgMenuImage, Texture.class);
         menuButtons();
         Gdx.input.setInputProcessor(menuScene);
@@ -58,9 +59,9 @@ class PantallaMenu extends Pantalla {
         helpButton.getLabel().setFontScale(2);
         settingsButton.getLabel().setFontScale(2);
 
-        playButton.setPosition(ANCHO / 2 - playButton.getWidth() / 2, ALTO / 3);
-        helpButton.setPosition(ANCHO / 2 - playButton.getWidth() * 5.5f, ALTO / 3);
-        settingsButton.setPosition(ANCHO / 2 + playButton.getWidth() * 5, ALTO / 3);
+        helpButton.setPosition(ANCHO * .2f - helpButton.getWidth() / 2, ALTO / 4);
+        settingsButton.setPosition(ANCHO * .5f - settingsButton.getWidth() / 2, ALTO / 4);
+        playButton.setPosition(ANCHO * .79f - playButton.getWidth() / 2, ALTO / 4);
 
         menuScene.addActor(playButton);
         menuScene.addActor(helpButton);

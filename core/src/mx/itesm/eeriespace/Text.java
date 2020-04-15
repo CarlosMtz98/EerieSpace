@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Text {
     private BitmapFont font;
     public Text(String file){
-        font = new BitmapFont(Gdx.files.internal(file)); // Archivo .fnt
+        this.font = new BitmapFont(Gdx.files.internal(file)); // Archivo .fnt
     }
 
     public void render(SpriteBatch batch, String label, float x, float y)
