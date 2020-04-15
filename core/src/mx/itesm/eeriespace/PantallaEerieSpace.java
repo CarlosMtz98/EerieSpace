@@ -4,9 +4,21 @@ package mx.itesm.eeriespace;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
+import com.badlogic.gdx.graphics.Texture;
+
+import java.util.ArrayList;
+
 // Donde se desarrolla el juego. Es el equivalente e PantallaSpaceInvaders
 class PantallaEerieSpace extends Pantalla {
     private final GameLauncher gameLauncher;
+
+
+    // Balas
+    private ArrayList<Bala> balas;
+    private Texture texturaBala;
+
+    // Nave
+    private Texture texturaNave;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -15,6 +27,12 @@ class PantallaEerieSpace extends Pantalla {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        cargarTexturas();
+    }
+
+    private void cargarTexturas() {
+        texturaBala = new Texture("Bullet.png");
+        texturaNave = new Texture("Player.png");
     }
 
     @Override
