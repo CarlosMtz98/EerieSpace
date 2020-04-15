@@ -117,16 +117,17 @@ class PantallaMenu extends Pantalla {
     }
 
     private void loadMenuFiles() {
-        Gdx.app.log("Loading menu files", "Start loading files for menu Scene");
+        Gdx.app.log("Loading menu files", "Started loading files for Menu Scene");
         manager.load(bgMenuImage, Texture.class);
         manager.finishLoading();
-        Gdx.app.log("Loading menu files", "Finish loading files for menu Scene");
+        Gdx.app.log("Loading menu files", "Finished loading files for Menu Scene");
     }
 
     @Override
     public void render(float delta) {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
+
         batch.begin();
         batch.draw(backgroundTexture, 0,0);
         batch.end();
