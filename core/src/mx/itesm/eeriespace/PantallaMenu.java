@@ -15,7 +15,9 @@ import com.badlogic.gdx.utils.Align;
 class PantallaMenu extends Pantalla {
     private final GameLauncher gameLauncher;
     private AssetManager manager = new AssetManager();
-    private Texture backgroudTexture;
+    private Texture backgroundTexture;
+
+    // Menu
     private Stage menuScene;
 
     // Textures file locations
@@ -44,7 +46,7 @@ class PantallaMenu extends Pantalla {
     private void createMenu() {
         menuScene = new Stage(vista);
         font = new BitmapFont();
-        backgroudTexture = manager.get(bgMenuImage, Texture.class);
+        backgroundTexture = manager.get(bgMenuImage, Texture.class);
         menuButtons();
         menuTitle();
         Gdx.input.setInputProcessor(menuScene);
@@ -88,6 +90,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Play Button Pressed");
+                gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
             }
         });
 
@@ -107,10 +110,10 @@ class PantallaMenu extends Pantalla {
     }
 
     private void loadMenuFiles() {
-        Gdx.app.log("Loding menu files", "Start loading files for menu Scene");
+        Gdx.app.log("Loading menu files", "Start loading files for menu Scene");
         manager.load(bgMenuImage, Texture.class);
         manager.finishLoading();
-        Gdx.app.log("Loding menu files", "Finish loading files for menu Scene");
+        Gdx.app.log("Loading menu files", "Finish loading files for menu Scene");
     }
 
     @Override
@@ -118,7 +121,7 @@ class PantallaMenu extends Pantalla {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        batch.draw(backgroudTexture, 0,0);
+        batch.draw(backgroundTexture, 0,0);
         batch.end();
         menuScene.draw();
     }
