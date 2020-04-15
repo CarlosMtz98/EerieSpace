@@ -33,4 +33,5 @@ public abstract class Meteoro extends Objeto {
     public void mover(float delta) {
         sprite.setPosition(sprite.getX() + angulo * delta * velocidad, velocidad * delta);
     }
+
 }
