@@ -31,12 +31,11 @@ public class PantallaConfiguracion extends Pantalla {
 
     public PantallaConfiguracion(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
-        loadSettingsFiles();
     }
 
     @Override
     public void show() {
-        //texturaFondo = new Texture("fondo.jpg");
+        backgroundTexture = new Texture("fondo.png");
         createOptions();
     }
 
@@ -85,21 +84,14 @@ public class PantallaConfiguracion extends Pantalla {
         });
     }
 
-    private void loadSettingsFiles() {
-        Gdx.app.log("Loading settings files", "Started loading files for Settings Scene");
-        // todo manager.load(bgMenuImage, Texture.class);
-        manager.finishLoading();
-        Gdx.app.log("Loading settings files", "Finished loading files for Settings Scene");
-    }
-
     @Override
     public void render(float delta) {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
 
-        //batch.begin();
-        // todo batch.draw(backgroundTexture,0,0);
-        //batch.end();
+        batch.begin();
+        batch.draw(backgroundTexture, 0, 0);
+        batch.end();
 
         settingsScene.draw();
     }
