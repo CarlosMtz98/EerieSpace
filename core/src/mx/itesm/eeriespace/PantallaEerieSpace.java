@@ -4,8 +4,16 @@ package mx.itesm.eeriespace;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
@@ -22,14 +30,56 @@ class PantallaEerieSpace extends Pantalla {
     private Texture texturaNave;
     private Nave nave;
 
+    // HUD joystick virtual
+    private Stage escenaHUD;
+    private OrthographicCamera camaraHUD;
+    private Viewport vistaHUD;
+
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
+    }
+
+    private void crearHUD() {
+        camaraHUD = new OrthographicCamera(ANCHO, ALTO);
+        camaraHUD.position.set(ANCHO/2, ALTO/2, 0);
+        camaraHUD.update();
+        vistaHUD = new StretchViewport(ANCHO, ALTO, camaraHUD);
+
+        Skin skin = new Skin();
+        skin.add("fondo", new Texture("JoystickBackground.png"));
+        skin.add("boton", new Texture("JoystickFront.png"));
+        Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
+        estilo.background = skin.getDrawable("fondo");
+        estilo.knob = skin.getDrawable("boton");
+
+        //Crear pad joystick
+        Touchpad pad = new Touchpad(64, estilo);
+        pad.setBounds(16,16,256,250);
+        pad.setColor(1,1,1,0.7f);
+        escenaHUD = new Stage(vistaHUD);
+        escenaHUD.addActor(pad);
+
+        pad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            Touchpad pad = (Touchpad)actor;
+            if (pad.getKnobPercentX() != 0)
+            {
+                nave.setEstado(EstadoMovimiento.MOVIMIENTO);
+            }
+            else
+            {
+                nave.setEstado(EstadoMovimiento.QUIETO);
+            }
+            }
+        });
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         cargarTexturas();
+        crearHUD();
         crearNave();
     }
 
@@ -53,7 +103,11 @@ class PantallaEerieSpace extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         dibujarSprites();
+
         batch.end();
+
+        batch.setProjectionMatrix(camaraHUD.combined);
+        escenaHUD.draw();
     }
 
     private void actualizar() {
