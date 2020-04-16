@@ -13,7 +13,7 @@ public class Marcador {
         this.x = x;
         this.y = y;
         puntos = 0;
-
+      
         text = new Text();
     }
 
