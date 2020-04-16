@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,22 +28,20 @@ public class PantallaConfiguracion extends Pantalla {
     // Buttons
     private TextButton returnButton;
     private TextButton.TextButtonStyle textButtonStyle;
-    private BitmapFont font;
 
     public PantallaConfiguracion(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
-        loadSettingsFiles();
     }
 
     @Override
     public void show() {
-        //texturaFondo = new Texture("fondo.jpg");
+        backgroundTexture = new Texture("fondo.png");
         createOptions();
     }
 
     private void createOptions() {
         settingsScene = new Stage(vista);
-        font = new BitmapFont();
+        // backgroundTexture = manager.get(bgMenuImage, Texture.class);
         // todo backgroundTexture = manager.get(bgMenuImage, Texture.class);
         settingsButtons();
         settingsTitle();
@@ -87,21 +84,14 @@ public class PantallaConfiguracion extends Pantalla {
         });
     }
 
-    private void loadSettingsFiles() {
-        Gdx.app.log("Loading settings files", "Started loading files for Settings Scene");
-        // todo manager.load(bgMenuImage, Texture.class);
-        manager.finishLoading();
-        Gdx.app.log("Loading settings files", "Finished loading files for Settings Scene");
-    }
-
     @Override
     public void render(float delta) {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
 
-        //batch.begin();
-        // todo batch.draw(backgroundTexture,0,0);
-        //batch.end();
+        batch.begin();
+        batch.draw(backgroundTexture, 0, 0);
+        batch.end();
 
         settingsScene.draw();
     }
