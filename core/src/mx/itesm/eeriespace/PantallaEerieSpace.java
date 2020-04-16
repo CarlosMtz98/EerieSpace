@@ -109,15 +109,12 @@ class PantallaEerieSpace extends Pantalla {
         if (probabilidad < .7) {
             meteoros.add(new Meteoro(meteoroC.get((int) Math.floor(Math.random() * meteoroC.size())),
                     (float) (Math.random() * ANCHO), 15));
-            System.out.println("Creado pequeño");
         } else if (probabilidad < .9) {
             meteoros.add(new Meteoro(meteoroM.get((int) Math.floor(Math.random() * meteoroM.size())),
                     (float) (Math.random() * ANCHO), 30));
-            System.out.println("Creado mediano");
         } else {
             meteoros.add(new Meteoro(meteoroG.get((int) Math.floor(Math.random() * meteoroG.size())),
                     (float) (Math.random() * ANCHO), 45));
-            System.out.println("Creado grande");
         }
     }
 
@@ -153,7 +150,7 @@ class PantallaEerieSpace extends Pantalla {
         actualizar(delta);
 
         gameTime += delta;
-        if (gameTime > 3f) {
+        if (gameTime > 1f) {
             crearMeteoro();
             gameTime = 0;
         }
@@ -170,23 +167,27 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
-        nave.mover(pad);
+        nave.mover(pad, delta);
         for (Bala bala : balas) bala.mover(delta);
         for (int i = meteoros.size() - 1; i > -1; i--) {
             Meteoro meteoro = meteoros.get(i);
             meteoro.mover(delta);
             if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
                     meteoro.sprite.getX() > Pantalla.ANCHO ||
-                    meteoro.sprite.getY() > Pantalla.ALTO) {
+                    meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
                 meteoros.remove(meteoro);
             }
-            for (Bala bala : balas) {
+            for (int n = balas.size() - 1; n > -1; n--) {
+                Bala bala = balas.get(n);
                 if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
                     meteoros.remove(meteoro);
+                    balas.remove(bala);
+                    marcador.incrementarPuntos(meteoro.getDaño());
                 }
             }
             if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
                 terminarJuego();
+                break;
             }
         }
     }
@@ -194,7 +195,7 @@ class PantallaEerieSpace extends Pantalla {
     private void terminarJuego() {
         meteoros.clear();
         balas.clear();
-
+        gameLauncher.setScreen(new PantallaPerdiste(gameLauncher));
     }
 
     private void dibujarSprites() {
@@ -268,8 +269,18 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void disparar(){
-        float x = nave.sprite.getX() + texturaNave.getWidth()/2 - texturaBala.getWidth()/2;
-        float y = nave.sprite.getY() + texturaNave.getHeight();
+        float degrees = nave.sprite.getRotation();
+        float originX = nave.sprite.getX() + nave.sprite.getWidth()/2;
+        float originY = nave.sprite.getY() + nave.sprite.getHeight()/2;
+        float direction = degrees < 0? -1: 1;
+        degrees += 90;
+
+        float dx = (float)Math.cos(Math.toRadians(degrees))*nave.sprite.getWidth()/2;
+        float dy = (float)Math.sin(Math.toRadians(degrees))*nave.sprite.getHeight()/2 +
+                direction*((float)Math.cos(Math.toRadians(degrees))*texturaBala.getHeight()/2);
+
+        float x = originX + dx;
+        float y = originY + dy;
         Bala bala = new Bala(texturaBala, x, y);
         bala.setDireccion(nave);
         balas.add(bala);
