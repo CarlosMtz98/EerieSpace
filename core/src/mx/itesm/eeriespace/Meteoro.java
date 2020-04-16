@@ -8,8 +8,8 @@ public class Meteoro extends Objeto {
     public int velocidad = 15;
 
     //Creación aleatoria de meteoros
-    public Meteoro(Texture textura, float x, float y, int daño) {
-        super(textura, x, y);
+    public Meteoro(Texture textura, float x, int daño) {
+        super(textura, x, -150);
         this.daño = daño;
         //Un problema con esta estrategia es que si se crea en una esquina y la dirección del
         //meteoro lo lleva a salirse de la pantalla, nunca lo va a poder destruir el jugador y se

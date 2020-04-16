@@ -24,6 +24,7 @@ class PantallaEerieSpace extends Pantalla {
 
     // Balas
     private ArrayList<Bala> balas = new ArrayList<>();
+    private ArrayList<Bala> meteoros = new ArrayList<>();
     private Texture texturaBala;
 
     // Nave
@@ -131,11 +132,11 @@ class PantallaEerieSpace extends Pantalla {
             if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
                     meteoro.sprite.getX() > Pantalla.ANCHO ||
                     meteoro.sprite.getY() > Pantalla.ALTO) {
-                meteoros[i] = null;
+                meteoros.remove(meteoro);
             }
             for (Bala bala : balas) {
                 if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
-                    meteoros[i] = null;
+                    meteoros.remove(meteoro);
                 }
             }
         }
