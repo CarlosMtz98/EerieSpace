@@ -6,15 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 public class Nave extends Objeto {
 
-    private float velocidad;
-    private boolean puedeDisparar;
     private EstadoMovimiento estadoMovimiento;
 
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
         estadoMovimiento = EstadoMovimiento.QUIETO;
-        velocidad = 150;
-        puedeDisparar = true;
     }
 
     public void mover(Touchpad pad, float delta){
@@ -23,6 +19,7 @@ public class Nave extends Objeto {
             float padX = pad.getKnobPercentX();
             float padY = pad.getKnobPercentY();
 
+            float velocidad = 300;
             float dx = velocidad * padX * delta;
             float dy = velocidad * padY * delta;
 
