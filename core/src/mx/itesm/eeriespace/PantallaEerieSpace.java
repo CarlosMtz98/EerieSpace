@@ -24,7 +24,15 @@ class PantallaEerieSpace extends Pantalla {
 
     // Balas
     private ArrayList<Bala> balas = new ArrayList<>();
+    private ArrayList<Meteoro> meteoros = new ArrayList<Meteoro>();
     private Texture texturaBala;
+
+    // Meteoros
+
+    //Arreglos Texturas meteoros
+    private ArrayList<Texture> meteoroC = new ArrayList<>();
+    private ArrayList<Texture> meteoroM = new ArrayList<>();
+    private ArrayList<Texture> meteoroG = new ArrayList<>();
 
     // Nave
     private Texture texturaNave;
@@ -38,6 +46,7 @@ class PantallaEerieSpace extends Pantalla {
     private OrthographicCamera camaraHUD;
     private Viewport vistaHUD;
     protected Touchpad pad;
+    float gameTime = 0f;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -86,12 +95,27 @@ class PantallaEerieSpace extends Pantalla {
         crearMarcador();
         crearHUD();
         crearNave();
+        crearMeteoro();
         InputProcessor inputProcessorOne = escenaHUD;
         InputProcessor inputProcessorTwo = new ProcesadorEntrada();
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(inputProcessorOne);
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
+    }
+
+    private void crearMeteoro() {
+        float probabilidad = (float) Math.random();
+        if (probabilidad < .7) {
+            meteoros.add(new Meteoro(meteoroC.get((int) Math.floor(Math.random() * meteoroC.size())),
+                    (float) (Math.random() * ANCHO), 15));
+        } else if (probabilidad < .9) {
+            meteoros.add(new Meteoro(meteoroM.get((int) Math.floor(Math.random() * meteoroM.size())),
+                    (float) (Math.random() * ANCHO), 30));
+        } else {
+            meteoros.add(new Meteoro(meteoroG.get((int) Math.floor(Math.random() * meteoroG.size())),
+                    (float) (Math.random() * ANCHO), 45));
+        }
     }
 
     private void crearMarcador() {
@@ -111,8 +135,13 @@ class PantallaEerieSpace extends Pantalla {
 
     @Override
     public void render(float delta) {
-
         actualizar();
+
+        gameTime += delta;
+        if (gameTime > 3f) {
+            crearMeteoro();
+            gameTime = 0;
+        }
 
         borrarPantalla(0, 0, 0);
         batch.setProjectionMatrix(camara.combined);
@@ -128,6 +157,18 @@ class PantallaEerieSpace extends Pantalla {
     private void actualizar() {
         nave.mover(pad);
         for(Bala bala: balas)bala.mover();
+        for (Meteoro meteoro : meteoros) {
+            if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
+                    meteoro.sprite.getX() > Pantalla.ANCHO ||
+                    meteoro.sprite.getY() > Pantalla.ALTO) {
+                meteoros.remove(meteoro);
+            }
+            for (Bala bala : balas) {
+                if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+                    meteoros.remove(meteoro);
+                }
+            }
+        }
     }
 
     private void dibujarSprites() {
