@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 public class Nave extends Objeto {
 
     private float velocidad;
+    private boolean puedeDisparar;
 
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
@@ -17,6 +18,8 @@ public class Nave extends Objeto {
         float dy = velocidad*pad.getKnobPercentY();
         sprite.setX(sprite.getX() + dx);
         sprite.setY(sprite.getY() + dy);
+        velocidad = 1;
+        puedeDisparar = true;
     }
 
     public void draw(SpriteBatch batch){
