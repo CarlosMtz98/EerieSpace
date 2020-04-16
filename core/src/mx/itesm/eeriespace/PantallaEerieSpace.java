@@ -27,6 +27,14 @@ class PantallaEerieSpace extends Pantalla {
     private ArrayList<Bala> meteoros = new ArrayList<>();
     private Texture texturaBala;
 
+    // Meteoros
+    private ArrayList<Meteoro> meteoros = new ArrayList<>();
+
+    //Arreglos Texturas meteoros
+    private ArrayList<Texture> meteoroC = new ArrayList<>();
+    private ArrayList<Texture> meteoroM = new ArrayList<>();
+    private ArrayList<Texture> meteoroG = new ArrayList<>();
+
     // Nave
     private Texture texturaNave;
     private Nave nave;
@@ -87,12 +95,29 @@ class PantallaEerieSpace extends Pantalla {
         crearMarcador();
         crearHUD();
         crearNave();
+        crearMeteoros();
         InputProcessor inputProcessorOne = escenaHUD;
         InputProcessor inputProcessorTwo = new ProcesadorEntrada();
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(inputProcessorOne);
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
+    }
+
+    private void crearMeteoros() {
+        float probabilidad = (float) Math.random();
+        if (probabilidad < .7) {
+            Meteoro meteoro = new Meteoro(meteoroC.get((int) (Math.random() * meteoroC.size())),
+                    (float) (Math.random() * ANCHO), -200, 15);
+        } else if (probabilidad < .9) {
+            Meteoro meteoro = new Meteoro(meteoroC.get((int) (Math.random() * meteoroC.size())),
+                    (float) (Math.random() * ANCHO), -200, 15);
+        } else {
+            //grande
+        }
+
+
+        Meteoro meteoro = new Meteoro(meteoroC[(int) (Math.random() * meteoroC.size())]);
     }
 
     private void crearMarcador() {
