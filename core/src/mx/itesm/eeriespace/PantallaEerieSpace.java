@@ -16,8 +16,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 // Donde se desarrolla el juego. Es el equivalente e PantallaSpaceInvaders
 class PantallaEerieSpace extends Pantalla {
@@ -26,20 +24,12 @@ class PantallaEerieSpace extends Pantalla {
 
     // Balas
     private ArrayList<Bala> balas = new ArrayList<>();
+    private ArrayList<Meteoro> meteoros = new ArrayList<Meteoro>();
     private Texture texturaBala;
 
     // Meteoros
-    private ArrayList<Meteoro> meteoros = new ArrayList<>();
-    //tmch = textura meteoro chico; m = mediano; g = grande
-    private Texture tmch0, tmch1, tmch2, tmch3;
-    private Texture tmm0, tmm1, tmm2, tmm3;
-    private Texture tmg0, tmg1, tmg2, tmg3;
 
     //Arreglos Texturas meteoros
-    //private ArrayList<Texture> meteoroC = new ArrayList<>(Arrays.asList(tmch0, tmch1, tmch2, tmch3));
-    //private ArrayList<Texture> meteoroM = new ArrayList<>(Arrays.asList(tmm0, tmm1, tmm2, tmm3));
-    //private ArrayList<Texture> meteoroG = new ArrayList<>(Arrays.asList(tmg0, tmg1, tmg2, tmg3));
-
     private ArrayList<Texture> meteoroC = new ArrayList<>();
     private ArrayList<Texture> meteoroM = new ArrayList<>();
     private ArrayList<Texture> meteoroG = new ArrayList<>();
@@ -117,13 +107,13 @@ class PantallaEerieSpace extends Pantalla {
     private void crearMeteoro() {
         float probabilidad = (float) Math.random();
         if (probabilidad < .7) {
-            meteoros.add(new Meteoro(meteoroC.get(new Random().nextInt(meteoroC.size())),
+            meteoros.add(new Meteoro(meteoroC.get((int) Math.floor(Math.random() * meteoroC.size())),
                     (float) (Math.random() * ANCHO), 15));
         } else if (probabilidad < .9) {
-            meteoros.add(new Meteoro(meteoroM.get(new Random().nextInt(meteoroM.size())),
+            meteoros.add(new Meteoro(meteoroM.get((int) Math.floor(Math.random() * meteoroM.size())),
                     (float) (Math.random() * ANCHO), 30));
         } else {
-            meteoros.add(new Meteoro(meteoroG.get(new Random().nextInt(meteoroG.size())),
+            meteoros.add(new Meteoro(meteoroG.get((int) Math.floor(Math.random() * meteoroG.size())),
                     (float) (Math.random() * ANCHO), 45));
         }
     }
@@ -141,44 +131,6 @@ class PantallaEerieSpace extends Pantalla {
     private void cargarTexturas() {
         texturaBala = new Texture("Bullet.png");
         texturaNave = new Texture("Player.png");
-
-        // Meteoros chicos
-        tmch0 = new Texture("asteroides/pequeño-0.png");
-        tmch1 = new Texture("asteroides/pequeño-1.png");
-        tmch2 = new Texture("asteroides/pequeño-2.png");
-        tmch3 = new Texture("asteroides/pequeño-3.png");
-
-        // Meteoros medianos
-        tmm0 = new Texture("asteroides/medio-0.png");
-        tmm1 = new Texture("asteroides/medio-1.png");
-        tmm2 = new Texture("asteroides/medio-2.png");
-        tmm3 = new Texture("asteroides/medio-3.png");
-
-        // Meteoros Grandes
-        tmg0 = new Texture("asteroides/Grande-0.png");
-        tmg1 = new Texture("asteroides/Grande-1.png");
-        tmg2 = new Texture("asteroides/Grande-2.png");
-        tmg3 = new Texture("asteroides/Grande-3.png");
-
-        inicializarArreglosMeteoros();
-    }
-
-    private void inicializarArreglosMeteoros() {
-        meteoroC.add(tmch0);
-        meteoroC.add(tmch1);
-        meteoroC.add(tmch2);
-        meteoroC.add(tmch3);
-
-        meteoroM.add(tmm0);
-        meteoroM.add(tmm1);
-        meteoroM.add(tmm2);
-        meteoroM.add(tmm3);
-
-        meteoroG.add(tmg0);
-        meteoroG.add(tmg1);
-        meteoroG.add(tmg2);
-        meteoroG.add(tmg3);
-
     }
 
     @Override
@@ -206,10 +158,9 @@ class PantallaEerieSpace extends Pantalla {
         nave.mover(pad);
         for(Bala bala: balas)bala.mover();
         for (Meteoro meteoro : meteoros) {
-            if (meteoro.sprite.getX() + meteoro.sprite.getWidth() < 0 ||
+            if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
                     meteoro.sprite.getX() > Pantalla.ANCHO ||
-                    meteoro.sprite.getY() > Pantalla.ALTO ||
-                    meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
+                    meteoro.sprite.getY() > Pantalla.ALTO) {
                 meteoros.remove(meteoro);
             }
             for (Bala bala : balas) {
