@@ -177,7 +177,7 @@ class PantallaEerieSpace extends Pantalla {
             meteoro.mover(delta);
             if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
                     meteoro.sprite.getX() > Pantalla.ANCHO ||
-                    meteoro.sprite.getY() > Pantalla.ALTO) {
+                    meteoro.sprite.getY() < 0) {
                 meteoros.remove(meteoro);
             }
             for (Bala bala : balas) {
@@ -194,7 +194,7 @@ class PantallaEerieSpace extends Pantalla {
     private void terminarJuego() {
         meteoros.clear();
         balas.clear();
-
+        gameLauncher.setScreen(new PantallaMenu(gameLauncher));
     }
 
     private void dibujarSprites() {
@@ -268,8 +268,10 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void disparar(){
-        float x = nave.sprite.getX() + texturaNave.getWidth()/2 - texturaBala.getWidth()/2;
-        float y = nave.sprite.getY() + texturaNave.getHeight();
+        float x = (float) (nave.sprite.getX() + texturaNave.getWidth() / 2 - texturaBala.getWidth() / 2 -
+                nave.sprite.getHeight() * Math.sin(nave.sprite.getRotation()));
+        float y = (float) (nave.sprite.getY() + texturaNave.getHeight() -
+                nave.sprite.getWidth() * Math.cos(nave.sprite.getRotation()));
         Bala bala = new Bala(texturaBala, x, y);
         bala.setDireccion(nave);
         balas.add(bala);
