@@ -37,6 +37,7 @@ class PantallaEerieSpace extends Pantalla {
     private Stage escenaHUD;
     private OrthographicCamera camaraHUD;
     private Viewport vistaHUD;
+    private Touchpad pad;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -56,7 +57,7 @@ class PantallaEerieSpace extends Pantalla {
         estilo.knob = skin.getDrawable("boton");
 
         //Crear pad joystick
-        Touchpad pad = new Touchpad(64, estilo);
+        pad = new Touchpad(64, estilo);
         pad.setBounds(16,16,256,250);
         pad.setColor(1,1,1,0.7f);
         escenaHUD = new Stage(vistaHUD);
@@ -119,7 +120,7 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar() {
-        //nave.mover(pad);
+        nave.mover(pad);
         for(Bala bala: balas)bala.mover();
     }
 
@@ -194,6 +195,7 @@ class PantallaEerieSpace extends Pantalla {
         float x = nave.sprite.getX() + texturaNave.getWidth()/2 - texturaBala.getWidth()/2;
         float y = nave.sprite.getY() + texturaNave.getHeight();
         Bala bala = new Bala(texturaBala, x, y);
+        bala.setDireccion(nave);
         balas.add(bala);
     }
 }
