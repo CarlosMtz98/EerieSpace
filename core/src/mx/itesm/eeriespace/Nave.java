@@ -13,19 +13,24 @@ public class Nave extends Objeto {
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
         estadoMovimiento = EstadoMovimiento.QUIETO;
-        velocidad = 1;
+        velocidad = 5;
         puedeDisparar = true;
     }
 
     public void mover(Touchpad pad){
         if(estadoMovimiento == EstadoMovimiento.MOVIMIENTO) {
+
             float padX = pad.getKnobPercentX();
             float padY = pad.getKnobPercentY();
+
             float dx = velocidad * padX;
             float dy = velocidad * padY;
 
-            double angle = Math.atan((double) padY / (double) padX);
-            sprite.rotate((float) angle);
+            double angulo = Math.toDegrees(Math.atan((double) padY / (double) padX));
+            angulo += (padX > 0)? -90: 90;
+
+            sprite.setRotation((float)angulo);
+
             sprite.setX(sprite.getX() + dx);
             sprite.setY(sprite.getY() + dy);
         }
