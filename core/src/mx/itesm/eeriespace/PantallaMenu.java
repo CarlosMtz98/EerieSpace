@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 class PantallaMenu extends Pantalla {
     private final GameLauncher gameLauncher;
-    private Texture backgroundTexture;
 
     // Menu
     private Stage menuScene;

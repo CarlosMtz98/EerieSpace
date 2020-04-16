@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -23,6 +24,7 @@ public abstract class Pantalla implements Screen
     BitmapFont font;
     AssetManager manager = new AssetManager();
     TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+    Label.LabelStyle label1Style = new Label.LabelStyle();
 
     // Textures file locations
     Texture backgroundTexture = new Texture("fondo.png");
@@ -37,6 +39,7 @@ public abstract class Pantalla implements Screen
         font = new BitmapFont(Gdx.files.internal("BasierSquare.fnt"),
                 Gdx.files.internal("BasierSquare.png"), false);
         textButtonStyle.font = font;
+        label1Style.font = font;
     }
 
     // Borra la pantalla con fondo negro

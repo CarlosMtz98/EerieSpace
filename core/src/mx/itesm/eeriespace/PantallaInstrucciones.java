@@ -3,7 +3,6 @@ package mx.itesm.eeriespace;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.utils.Align;
 public class PantallaInstrucciones extends Pantalla {
     private final GameLauncher gameLauncher;
     private AssetManager manager = new AssetManager();
-    private Texture backgroundTexture;
 
     // Opciones de configuración
     private Stage helpScene;
@@ -32,7 +30,6 @@ public class PantallaInstrucciones extends Pantalla {
 
     @Override
     public void show() {
-        //texturaFondo = new Texture("fondo.jpg");
         createHelp();
     }
 
@@ -44,8 +41,6 @@ public class PantallaInstrucciones extends Pantalla {
     }
 
     private void helpTitle() {
-        Label.LabelStyle label1Style = new Label.LabelStyle();
-        label1Style.font = font;
         label1Style.fontColor = Color.WHITE;
 
         helpTitleLabel = new Label("Help",label1Style);
@@ -59,11 +54,8 @@ public class PantallaInstrucciones extends Pantalla {
 
     private void helpButtons() {
         okButton = new TextButton("OK", textButtonStyle);
-
         okButton.getLabel().setFontScale(2);
-
         okButton.setPosition(ANCHO/2 - okButton.getWidth()/2, ALTO*0.1f);
-
         helpScene.addActor(okButton);
 
         okButton.addListener(new ClickListener() {
@@ -78,7 +70,6 @@ public class PantallaInstrucciones extends Pantalla {
 
     private void loadSettingsFiles() {
         Gdx.app.log("Loading help files", "Started loading files for Help Scene");
-        // todo manager.load(bgMenuImage, Texture.class);
         manager.finishLoading();
         Gdx.app.log("Loading help files", "Finished loading files for Help Scene");
     }
