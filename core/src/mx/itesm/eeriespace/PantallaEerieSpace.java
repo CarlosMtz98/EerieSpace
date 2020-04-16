@@ -170,7 +170,7 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
-        nave.mover(pad);
+        nave.mover(pad, delta);
         for (Bala bala : balas) bala.mover(delta);
         for (int i = meteoros.size() - 1; i > -1; i--) {
             Meteoro meteoro = meteoros.get(i);
