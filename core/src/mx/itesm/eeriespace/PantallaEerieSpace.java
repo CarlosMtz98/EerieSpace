@@ -105,16 +105,19 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void crearMeteoro() {
-        float probabilidad = (float) Math.random();
+        double probabilidad = Math.random();
         if (probabilidad < .7) {
             meteoros.add(new Meteoro(meteoroC.get((int) Math.floor(Math.random() * meteoroC.size())),
                     (float) (Math.random() * ANCHO), 15));
+            System.out.println("Creado pequeño");
         } else if (probabilidad < .9) {
             meteoros.add(new Meteoro(meteoroM.get((int) Math.floor(Math.random() * meteoroM.size())),
                     (float) (Math.random() * ANCHO), 30));
+            System.out.println("Creado mediano");
         } else {
             meteoros.add(new Meteoro(meteoroG.get((int) Math.floor(Math.random() * meteoroG.size())),
                     (float) (Math.random() * ANCHO), 45));
+            System.out.println("Creado grande");
         }
     }
 
@@ -131,11 +134,23 @@ class PantallaEerieSpace extends Pantalla {
     private void cargarTexturas() {
         texturaBala = new Texture("Bullet.png");
         texturaNave = new Texture("Player.png");
+        meteoroC.add(new Texture("asteroides/pequeno-0.png"));
+        meteoroC.add(new Texture("asteroides/pequeno-1.png"));
+        meteoroC.add(new Texture("asteroides/pequeno-2.png"));
+        meteoroC.add(new Texture("asteroides/pequeno-3.png"));
+        meteoroM.add(new Texture("asteroides/medio-0.png"));
+        meteoroM.add(new Texture("asteroides/medio-1.png"));
+        meteoroM.add(new Texture("asteroides/medio-2.png"));
+        meteoroM.add(new Texture("asteroides/medio-3.png"));
+        meteoroG.add(new Texture("asteroides/Grande-0.png"));
+        meteoroG.add(new Texture("asteroides/Grande-1.png"));
+        meteoroG.add(new Texture("asteroides/Grande-2.png"));
+        meteoroG.add(new Texture("asteroides/Grande-3.png"));
     }
 
     @Override
     public void render(float delta) {
-        actualizar();
+        actualizar(delta);
 
         gameTime += delta;
         if (gameTime > 3f) {
@@ -154,10 +169,12 @@ class PantallaEerieSpace extends Pantalla {
         escenaHUD.draw();
     }
 
-    private void actualizar() {
+    private void actualizar(float delta) {
         nave.mover(pad);
-        for(Bala bala: balas)bala.mover();
-        for (Meteoro meteoro : meteoros) {
+        for (Bala bala : balas) bala.mover(delta);
+        for (int i = meteoros.size() - 1; i > -1; i--) {
+            Meteoro meteoro = meteoros.get(i);
+            meteoro.mover(delta);
             if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
                     meteoro.sprite.getX() > Pantalla.ANCHO ||
                     meteoro.sprite.getY() > Pantalla.ALTO) {
@@ -168,13 +185,25 @@ class PantallaEerieSpace extends Pantalla {
                     meteoros.remove(meteoro);
                 }
             }
+            if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+                terminarJuego();
+            }
         }
+    }
+
+    private void terminarJuego() {
+        meteoros.clear();
+        balas.clear();
+
     }
 
     private void dibujarSprites() {
         nave.draw(batch);
         for (Bala bala: balas){
             bala.draw(batch);
+        }
+        for (Meteoro meteoro : meteoros) {
+            meteoro.render(batch);
         }
     }
 
