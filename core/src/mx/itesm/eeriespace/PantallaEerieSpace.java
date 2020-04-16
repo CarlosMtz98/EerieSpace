@@ -2,6 +2,7 @@ package mx.itesm.eeriespace;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -57,7 +58,7 @@ class PantallaEerieSpace extends Pantalla {
 
         //Crear pad joystick
         Touchpad pad = new Touchpad(64, estilo);
-        pad.setBounds(16,16,256,250);
+        pad.setBounds(16,16,128,128);
         pad.setColor(1,1,1,0.7f);
         escenaHUD = new Stage(vistaHUD);
         escenaHUD.addActor(pad);
@@ -84,7 +85,10 @@ class PantallaEerieSpace extends Pantalla {
         crearMarcador();
         crearHUD();
         crearNave();
-        Gdx.input.setInputProcessor(escenaHUD);
+
+        InputMultiplexer inputMultiplexer = (InputMultiplexer)Gdx.input.getInputProcessor();
+        inputMultiplexer.addProcessor(escenaHUD);
+        inputMultiplexer.addProcessor(new ProcesadorEntrada());
     }
 
     private void crearMarcador() {
