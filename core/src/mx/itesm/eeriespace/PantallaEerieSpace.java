@@ -180,9 +180,12 @@ class PantallaEerieSpace extends Pantalla {
                     meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
                 meteoros.remove(meteoro);
             }
-            for (Bala bala : balas) {
+            for (int n = balas.size() - 1; n > -1; n--) {
+                Bala bala = balas.get(n);
                 if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
                     meteoros.remove(meteoro);
+                    balas.remove(bala);
+                    marcador.incrementarPuntos(meteoro.getDaño());
                 }
             }
             if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
