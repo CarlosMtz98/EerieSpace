@@ -37,7 +37,7 @@ class PantallaEerieSpace extends Pantalla {
     private Stage escenaHUD;
     private OrthographicCamera camaraHUD;
     private Viewport vistaHUD;
-    private Touchpad pad;
+    protected Touchpad pad;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
