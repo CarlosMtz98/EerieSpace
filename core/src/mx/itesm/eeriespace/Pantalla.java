@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -24,6 +25,7 @@ public abstract class Pantalla implements Screen
     protected Viewport vista;
     // Todas las pantallas dibujan algo :)
     protected SpriteBatch batch;
+    protected BitmapFont font;
 
     // Constructor, inicializa los objetos camara, vista, batch
     public Pantalla() {
@@ -36,6 +38,7 @@ public abstract class Pantalla implements Screen
         vista = new StretchViewport(ANCHO, ALTO, camara);
         // El objeto que administra los trazos gráficos
         batch = new SpriteBatch();
+        font = new BitmapFont(Gdx.files.internal("BasierSquare.fnt"), Gdx.files.internal("BasierSquare.png"), false);
     }
 
     // Borra la pantalla con fondo negro

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,7 +28,6 @@ public class PantallaConfiguracion extends Pantalla {
     // Buttons
     private TextButton returnButton;
     private TextButton.TextButtonStyle textButtonStyle;
-    private BitmapFont font;
 
     public PantallaConfiguracion(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -44,7 +42,7 @@ public class PantallaConfiguracion extends Pantalla {
 
     private void createOptions() {
         settingsScene = new Stage(vista);
-        font = new BitmapFont();
+        // backgroundTexture = manager.get(bgMenuImage, Texture.class);
         // todo backgroundTexture = manager.get(bgMenuImage, Texture.class);
         settingsButtons();
         settingsTitle();
