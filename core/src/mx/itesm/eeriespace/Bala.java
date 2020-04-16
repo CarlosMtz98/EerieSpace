@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Bala extends Objeto {
-    private float velocidadX = 10;
-    private float velocidadY = 10;
+    private float velocidadX = 150;
+    private float velocidadY = 150;
 
     public Bala(Texture textura, float x, float y) {
         super(textura, x, y);
     }
 
-    public void mover() {
-        sprite.setPosition(sprite.getX() + velocidadX, sprite.getY() + velocidadY);
+    public void mover(float delta) {
+        sprite.setPosition(sprite.getX() + delta * velocidadX, sprite.getY() + delta * velocidadY);
     }
 
     public void setDireccion(Nave nave){
