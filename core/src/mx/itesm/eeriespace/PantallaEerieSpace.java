@@ -2,6 +2,7 @@ package mx.itesm.eeriespace;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -85,7 +86,12 @@ class PantallaEerieSpace extends Pantalla {
         crearMarcador();
         crearHUD();
         crearNave();
-        Gdx.input.setInputProcessor(escenaHUD);
+        InputProcessor inputProcessorOne = escenaHUD;
+        InputProcessor inputProcessorTwo = new ProcesadorEntrada();
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(inputProcessorOne);
+        inputMultiplexer.addProcessor(inputProcessorTwo);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     private void crearMarcador() {
