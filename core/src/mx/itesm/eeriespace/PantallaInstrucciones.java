@@ -19,15 +19,11 @@ public class PantallaInstrucciones extends Pantalla {
     // Opciones de configuración
     private Stage helpScene;
 
-    // Textures file locations
-    // todo private final String bgMenuImage = "nombreImagen.png";
-
     //Title
     private Label helpTitleLabel;
 
     // Buttons
     private TextButton okButton;
-    private TextButton.TextButtonStyle textButtonStyle;
 
     public PantallaInstrucciones(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -42,7 +38,6 @@ public class PantallaInstrucciones extends Pantalla {
 
     private void createHelp() {
         helpScene = new Stage(vista);
-        // todo backgroundTexture = manager.get(bgMenuImage, Texture.class);
         helpButtons();
         helpTitle();
         Gdx.input.setInputProcessor(helpScene);
@@ -63,9 +58,6 @@ public class PantallaInstrucciones extends Pantalla {
     }
 
     private void helpButtons() {
-        textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = font;
-
         okButton = new TextButton("OK", textButtonStyle);
 
         okButton.getLabel().setFontScale(2);
@@ -96,9 +88,9 @@ public class PantallaInstrucciones extends Pantalla {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
 
-        //batch.begin();
-        // todo batch.draw(backgroundTexture,0,0);
-        //batch.end();
+        batch.begin();
+        batch.draw(backgroundTexture, 0, 0);
+        batch.end();
 
         helpScene.draw();
     }

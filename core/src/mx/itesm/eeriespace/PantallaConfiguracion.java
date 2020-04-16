@@ -1,9 +1,7 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -13,21 +11,15 @@ import com.badlogic.gdx.utils.Align;
 
 public class PantallaConfiguracion extends Pantalla {
     private final GameLauncher gameLauncher;
-    private AssetManager manager = new AssetManager();
-    private Texture backgroundTexture;
 
     // Opciones de configuración
     private Stage settingsScene;
-
-    // Textures file locations
-    // todo private final String bgMenuImage = "nombreImagen.png";
 
     //Title
     private Label settingsTitleLabel;
 
     // Buttons
     private TextButton returnButton;
-    private TextButton.TextButtonStyle textButtonStyle;
 
     public PantallaConfiguracion(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -35,14 +27,11 @@ public class PantallaConfiguracion extends Pantalla {
 
     @Override
     public void show() {
-        backgroundTexture = new Texture("fondo.png");
         createOptions();
     }
 
     private void createOptions() {
         settingsScene = new Stage(vista);
-        // backgroundTexture = manager.get(bgMenuImage, Texture.class);
-        // todo backgroundTexture = manager.get(bgMenuImage, Texture.class);
         settingsButtons();
         settingsTitle();
         Gdx.input.setInputProcessor(settingsScene);
@@ -63,15 +52,9 @@ public class PantallaConfiguracion extends Pantalla {
     }
 
     private void settingsButtons() {
-        textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = font;
-
         returnButton = new TextButton("RETURN", textButtonStyle);
-
         returnButton.getLabel().setFontScale(2);
-
         returnButton.setPosition(ANCHO/2 - returnButton.getWidth()/2, ALTO*0.1f);
-
         settingsScene.addActor(returnButton);
 
         returnButton.addListener(new ClickListener() {

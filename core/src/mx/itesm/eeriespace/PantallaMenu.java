@@ -1,7 +1,6 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 class PantallaMenu extends Pantalla {
     private final GameLauncher gameLauncher;
-    private AssetManager manager = new AssetManager();
     private Texture backgroundTexture;
 
     // Menu
@@ -24,7 +22,6 @@ class PantallaMenu extends Pantalla {
     private TextButton playButton;
     private TextButton helpButton;
     private TextButton settingsButton;
-    private TextButton.TextButtonStyle textButtonStyle;
 
     public PantallaMenu(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -38,16 +35,12 @@ class PantallaMenu extends Pantalla {
 
     private void createMenu() {
         menuScene = new Stage(vista);
-        //font = new Text("BasierSquare.fnt");
         backgroundTexture = manager.get(bgMenuImage, Texture.class);
         menuButtons();
         Gdx.input.setInputProcessor(menuScene);
     }
 
     private void menuButtons() {
-        textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = font;
-
         playButton = new TextButton("Play", textButtonStyle);
         helpButton = new TextButton("Help", textButtonStyle);
         settingsButton = new TextButton("Settings", textButtonStyle);

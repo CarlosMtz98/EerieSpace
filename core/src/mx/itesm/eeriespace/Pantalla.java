@@ -2,10 +2,13 @@ package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -14,10 +17,15 @@ public abstract class Pantalla implements Screen
     // Atributos disponibles en todas las clases del proyecto
     public static final float ANCHO = 1280;
     public static final float ALTO = 720;
-    protected OrthographicCamera camara;
-    protected Viewport vista;
-    protected SpriteBatch batch;
-    protected BitmapFont font;
+    OrthographicCamera camara;
+    Viewport vista;
+    SpriteBatch batch;
+    BitmapFont font;
+    AssetManager manager = new AssetManager();
+    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+
+    // Textures file locations
+    Texture backgroundTexture = new Texture("fondo.png");
 
     // Constructor, inicializa los objetos camara, vista, batch y font
     public Pantalla() {
@@ -28,6 +36,7 @@ public abstract class Pantalla implements Screen
         batch = new SpriteBatch();
         font = new BitmapFont(Gdx.files.internal("BasierSquare.fnt"),
                 Gdx.files.internal("BasierSquare.png"), false);
+        textButtonStyle.font = font;
     }
 
     // Borra la pantalla con fondo negro
