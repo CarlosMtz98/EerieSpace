@@ -109,15 +109,12 @@ class PantallaEerieSpace extends Pantalla {
         if (probabilidad < .7) {
             meteoros.add(new Meteoro(meteoroC.get((int) Math.floor(Math.random() * meteoroC.size())),
                     (float) (Math.random() * ANCHO), 15));
-            System.out.println("Creado pequeño");
         } else if (probabilidad < .9) {
             meteoros.add(new Meteoro(meteoroM.get((int) Math.floor(Math.random() * meteoroM.size())),
                     (float) (Math.random() * ANCHO), 30));
-            System.out.println("Creado mediano");
         } else {
             meteoros.add(new Meteoro(meteoroG.get((int) Math.floor(Math.random() * meteoroG.size())),
                     (float) (Math.random() * ANCHO), 45));
-            System.out.println("Creado grande");
         }
     }
 
