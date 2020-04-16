@@ -37,7 +37,7 @@ class PantallaEerieSpace extends Pantalla {
     private Stage escenaHUD;
     private OrthographicCamera camaraHUD;
     private Viewport vistaHUD;
-    private Touchpad pad;
+    protected Touchpad pad;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -57,7 +57,7 @@ class PantallaEerieSpace extends Pantalla {
         estilo.knob = skin.getDrawable("boton");
 
         //Crear pad joystick
-        Touchpad pad = new Touchpad(64, estilo);
+        pad = new Touchpad(64, estilo);
         pad.setBounds(16, 16, 256, 256);
 
         pad.setColor(1,1,1,0.7f);
