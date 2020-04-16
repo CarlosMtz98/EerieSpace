@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Bala extends Objeto {
-    private float velocidadX = 300;
-    private float velocidadY = 300;
+    private float velocidadX = 400;
+    private float velocidadY = 400;
 
     public Bala(Texture textura, float x, float y) {
         super(textura, x, y);
