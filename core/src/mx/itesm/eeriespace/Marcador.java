@@ -13,8 +13,8 @@ public class Marcador {
         this.x = x;
         this.y = y;
         puntos = 0;
-
-        text = new Text("BasierSquare.fnt");
+      
+        text = new Text();
     }
 
     public void resetearPuntos() {
