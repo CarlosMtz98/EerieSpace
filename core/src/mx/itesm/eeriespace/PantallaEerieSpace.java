@@ -153,7 +153,7 @@ class PantallaEerieSpace extends Pantalla {
         actualizar(delta);
 
         gameTime += delta;
-        if (gameTime > 3f) {
+        if (gameTime > 1f) {
             crearMeteoro();
             gameTime = 0;
         }
@@ -177,7 +177,7 @@ class PantallaEerieSpace extends Pantalla {
             meteoro.mover(delta);
             if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
                     meteoro.sprite.getX() > Pantalla.ANCHO ||
-                    meteoro.sprite.getY() < 0) {
+                    meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
                 meteoros.remove(meteoro);
             }
             for (Bala bala : balas) {
@@ -187,6 +187,7 @@ class PantallaEerieSpace extends Pantalla {
             }
             if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
                 terminarJuego();
+                break;
             }
         }
     }
