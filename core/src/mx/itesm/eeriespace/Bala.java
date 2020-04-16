@@ -12,13 +12,13 @@ public class Bala extends Objeto {
     }
 
     public void mover() {
-        sprite.setPosition(velocidadX, velocidadY);
+        sprite.setPosition(sprite.getX() + velocidadX, sprite.getY() + velocidadY);
     }
 
     public void setDireccion(Nave nave){
         sprite.setRotation(nave.sprite.getRotation());
-        double x = Math.cos(Math.toRadians(sprite.getRotation()));
-        double y = Math.sin(Math.toRadians(sprite.getRotation()));
+        double x = Math.cos(Math.toRadians(sprite.getRotation() + 90));
+        double y = Math.sin(Math.toRadians(sprite.getRotation() + 90));
         velocidadX *= x;
         velocidadY *= y;
     }

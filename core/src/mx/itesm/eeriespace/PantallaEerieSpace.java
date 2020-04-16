@@ -57,7 +57,7 @@ class PantallaEerieSpace extends Pantalla {
         estilo.knob = skin.getDrawable("boton");
 
         //Crear pad joystick
-        Touchpad pad = new Touchpad(64, estilo);
+        pad = new Touchpad(64, estilo);
         pad.setBounds(16, 16, 256, 256);
 
         pad.setColor(1,1,1,0.7f);
