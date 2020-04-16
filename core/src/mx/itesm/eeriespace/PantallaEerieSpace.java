@@ -268,10 +268,25 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void disparar(){
-        float x = (float) (nave.sprite.getX() + texturaNave.getWidth() / 2 - texturaBala.getWidth() / 2 -
-                nave.sprite.getHeight() * Math.sin(nave.sprite.getRotation()));
-        float y = (float) (nave.sprite.getY() + texturaNave.getHeight() -
-                nave.sprite.getWidth() * Math.cos(nave.sprite.getRotation()));
+//        float x = (float) (nave.sprite.getX() + texturaNave.getWidth() / 2 - texturaBala.getWidth() / 2 -
+//                nave.sprite.getHeight() * Math.sin(nave.sprite.getRotation()));
+//        float y = (float) (nave.sprite.getY() + texturaNave.getHeight() -
+//                nave.sprite.getWidth() * Math.cos(nave.sprite.getRotation()));
+//        float degreeCorrection = pad.getX() > 0 ? -90 : 90;
+//        float degrees = nave.sprite.getRotation() + degreeCorrection;
+        float degrees = nave.sprite.getRotation();
+        float originX = nave.sprite.getX() + nave.sprite.getWidth()/2;
+        float originY = nave.sprite.getY() + nave.sprite.getHeight()/2;
+        float direction = degrees < 0? -1: 1;
+        degrees += 90;
+        float dx = (float)Math.cos(Math.toRadians(degrees))*nave.sprite.getWidth()/2;
+        float dy = (float)Math.sin(Math.toRadians(degrees))*nave.sprite.getHeight()/2 +
+                direction*((float)Math.cos(Math.toRadians(degrees))*texturaBala.getHeight()/2);
+        float x = originX +dx;
+        float y = originY + dy;
+
+        System.out.println(x);
+        System.out.println(y);
         Bala bala = new Bala(texturaBala, x, y);
         bala.setDireccion(nave);
         balas.add(bala);
