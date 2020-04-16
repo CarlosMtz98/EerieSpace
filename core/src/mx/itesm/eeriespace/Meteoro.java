@@ -2,7 +2,7 @@ package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public abstract class Meteoro extends Objeto {
+public class Meteoro extends Objeto {
     private int daño;
     //private float angulo;
     public int velocidad = 15;
