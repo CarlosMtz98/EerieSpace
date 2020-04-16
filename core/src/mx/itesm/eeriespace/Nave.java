@@ -12,16 +12,18 @@ public class Nave extends Objeto {
 
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
+        estadoMovimiento = EstadoMovimiento.QUIETO;
     }
 
     public void mover(Touchpad pad){
-        float dx = velocidad*pad.getKnobPercentX();
-        float dy = velocidad*pad.getKnobPercentY();
-        sprite.setX(sprite.getX() + dx);
-        sprite.setY(sprite.getY() + dy);
-        velocidad = 1;
-        puedeDisparar = true;
-        estadoMovimiento = EstadoMovimiento.QUIETO;
+        if (EstadoMovimiento.MOVIMIENTO == estadoMovimiento) {
+            float dx = velocidad * pad.getKnobPercentX();
+            float dy = velocidad * pad.getKnobPercentY();
+            sprite.setX(sprite.getX() + dx);
+            sprite.setY(sprite.getY() + dy);
+            velocidad = 1;
+            puedeDisparar = true;
+        }
     }
 
     public void draw(SpriteBatch batch){

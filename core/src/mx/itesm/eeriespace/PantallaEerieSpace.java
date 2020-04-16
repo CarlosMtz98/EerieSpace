@@ -30,6 +30,9 @@ class PantallaEerieSpace extends Pantalla {
     private Texture texturaNave;
     private Nave nave;
 
+    // Marcador
+    private Marcador marcador;
+
     // HUD joystick virtual
     private Stage escenaHUD;
     private OrthographicCamera camaraHUD;
@@ -77,10 +80,15 @@ class PantallaEerieSpace extends Pantalla {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new ProcesadorEntrada());
         cargarTexturas();
+        crearMarcador();
         crearHUD();
         crearNave();
+        Gdx.input.setInputProcessor(escenaHUD);
+    }
+
+    private void crearMarcador() {
+        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f);
     }
 
     private void crearNave() {
@@ -103,7 +111,7 @@ class PantallaEerieSpace extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         dibujarSprites();
-
+        marcador.render(batch);
         batch.end();
 
         batch.setProjectionMatrix(camaraHUD.combined);
