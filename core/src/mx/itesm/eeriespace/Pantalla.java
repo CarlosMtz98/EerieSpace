@@ -9,36 +9,25 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-/**
- * Representa el comportamiento genérico de cualquier pantalla que forma
- * parte del juego
- */
 public abstract class Pantalla implements Screen
 {
     // Atributos disponibles en todas las clases del proyecto
     public static final float ANCHO = 1280;
     public static final float ALTO = 720;
-
-    // Atributos disponibles solo en las subclases
-    // Todas las pantallas tienen una cámara y una vista
     protected OrthographicCamera camara;
     protected Viewport vista;
-    // Todas las pantallas dibujan algo :)
     protected SpriteBatch batch;
     protected BitmapFont font;
 
-    // Constructor, inicializa los objetos camara, vista, batch
+    // Constructor, inicializa los objetos camara, vista, batch y font
     public Pantalla() {
-        // Crea la cámara con las dimensiones del mundo
         camara = new OrthographicCamera(ANCHO, ALTO);
-        // En el centro de la pantalla. (x,y) de la cámara en el centro geométrico
         camara.position.set(ANCHO / 2, ALTO / 2, 0);
         camara.update();
-        // La vista que escala los elementos gráficos
         vista = new StretchViewport(ANCHO, ALTO, camara);
-        // El objeto que administra los trazos gráficos
         batch = new SpriteBatch();
-        font = new BitmapFont(Gdx.files.internal("BasierSquare.fnt"), Gdx.files.internal("BasierSquare.png"), false);
+        font = new BitmapFont(Gdx.files.internal("BasierSquare.fnt"),
+                Gdx.files.internal("BasierSquare.png"), false);
     }
 
     // Borra la pantalla con fondo negro
