@@ -3,7 +3,6 @@ package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -57,8 +56,9 @@ class PantallaEerieSpace extends Pantalla {
         estilo.knob = skin.getDrawable("boton");
 
         //Crear pad joystick
-        pad = new Touchpad(64, estilo);
-        pad.setBounds(16,16,256,250);
+        Touchpad pad = new Touchpad(64, estilo);
+        pad.setBounds(16, 16, 256, 256);
+
         pad.setColor(1,1,1,0.7f);
         escenaHUD = new Stage(vistaHUD);
         escenaHUD.addActor(pad);
