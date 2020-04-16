@@ -131,6 +131,18 @@ class PantallaEerieSpace extends Pantalla {
     private void cargarTexturas() {
         texturaBala = new Texture("Bullet.png");
         texturaNave = new Texture("Player.png");
+        meteoroC.add(new Texture("asteroides/pequeno-0.png"));
+        meteoroC.add(new Texture("asteroides/pequeno-1.png"));
+        meteoroC.add(new Texture("asteroides/pequeno-2.png"));
+        meteoroC.add(new Texture("asteroides/pequeno-3.png"));
+        meteoroM.add(new Texture("asteroides/medio-0.png"));
+        meteoroM.add(new Texture("asteroides/medio-1.png"));
+        meteoroM.add(new Texture("asteroides/medio-2.png"));
+        meteoroM.add(new Texture("asteroides/medio-3.png"));
+        meteoroG.add(new Texture("asteroides/Grande-0.png"));
+        meteoroG.add(new Texture("asteroides/Grande-1.png"));
+        meteoroG.add(new Texture("asteroides/Grande-2.png"));
+        meteoroG.add(new Texture("asteroides/Grande-3.png"));
     }
 
     @Override
