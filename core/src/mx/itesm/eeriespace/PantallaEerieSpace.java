@@ -111,7 +111,6 @@ class PantallaEerieSpace extends Pantalla {
 
     @Override
     public void render(float delta) {
-
         actualizar();
 
         borrarPantalla(0, 0, 0);
@@ -128,6 +127,18 @@ class PantallaEerieSpace extends Pantalla {
     private void actualizar() {
         nave.mover(pad);
         for(Bala bala: balas)bala.mover();
+        for (Meteoro meteoro : meteoros) {
+            if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
+                    meteoro.sprite.getX() > Pantalla.ANCHO ||
+                    meteoro.sprite.getY() > Pantalla.ALTO) {
+                meteoros[i] = null;
+            }
+            for (Bala bala : balas) {
+                if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+                    meteoros[i] = null;
+                }
+            }
+        }
     }
 
     private void dibujarSprites() {

@@ -23,11 +23,6 @@ public abstract class Meteoro extends Objeto {
 
     public void update(float delta) {
         mover(delta);
-
-        if (sprite.getX() - sprite.getWidth() < 0 || sprite.getX() > Pantalla.ANCHO ||
-                sprite.getY() > Pantalla.ALTO) {
-            //Código para destruirlo
-        }
     }
 
     public void mover(float delta) {
