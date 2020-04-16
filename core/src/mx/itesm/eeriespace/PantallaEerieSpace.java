@@ -132,6 +132,7 @@ class PantallaEerieSpace extends Pantalla {
         float x = nave.sprite.getX() + texturaNave.getWidth()/2 - texturaBala.getWidth()/2;
         float y = nave.sprite.getY() + texturaNave.getHeight();
         Bala bala = new Bala(texturaBala, x, y);
+        bala.setDireccion(nave);
         balas.add(bala);
     }
 }
