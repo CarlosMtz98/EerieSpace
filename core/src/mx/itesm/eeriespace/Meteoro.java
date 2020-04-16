@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public abstract class Meteoro extends Objeto {
     private int daño;
-    private float angulo;
+    //private float angulo;
     public int velocidad = 15;
 
     //Creación aleatoria de meteoros
@@ -14,7 +14,7 @@ public abstract class Meteoro extends Objeto {
         //Un problema con esta estrategia es que si se crea en una esquina y la dirección del
         //meteoro lo lleva a salirse de la pantalla, nunca lo va a poder destruir el jugador y se
         //desperdicia el meteoro
-        this.angulo = (float) Math.random() - .5f;
+        //this.angulo = (float) Math.random() - .5f;
     }
 
     public int getDaño() {
@@ -31,7 +31,7 @@ public abstract class Meteoro extends Objeto {
     }
 
     public void mover(float delta) {
-        sprite.setPosition(sprite.getX() + angulo * delta * velocidad, velocidad * delta);
+        sprite.setPosition(sprite.getX() + delta * velocidad, velocidad * delta);
     }
 
 }
