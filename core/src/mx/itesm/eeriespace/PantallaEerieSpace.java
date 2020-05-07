@@ -76,6 +76,7 @@ class PantallaEerieSpace extends Pantalla {
     //Efectos
     Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
+    Sound efectoItem = Gdx.audio.newSound(Gdx.files.internal("audio/item.wav"));
 
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
@@ -132,8 +133,10 @@ class PantallaEerieSpace extends Pantalla {
                 super.clicked(event, x, y);
                 if (estadoJuego == EstadoJuego.JUGANDO) {
                     estadoJuego = EstadoJuego.PAUSADO;
+                    musicaFondo.pause();
                 } else {
                     estadoJuego = EstadoJuego.JUGANDO;
+                    musicaFondo.play();
                 }
             }
         });
@@ -246,6 +249,9 @@ class PantallaEerieSpace extends Pantalla {
                 Item item = items.get(i);
                 if(nave.sprite.getBoundingRectangle().overlaps(item.sprite.getBoundingRectangle())){
                     item.darBonus(nave);
+                    if (gameLauncher.sfx) {
+                        efectoItem.play(0.1f);
+                    }
                     items.remove(i);
                 }
             }
