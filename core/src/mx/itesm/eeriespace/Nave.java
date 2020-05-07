@@ -166,5 +166,6 @@ public class Nave extends Objeto {
             sprite.setY(sprite.getY() + desplazamientoDash);
         }
         dashRecargado = false;
+        setTiempoDeRecargaDash(0);
     }
 }
