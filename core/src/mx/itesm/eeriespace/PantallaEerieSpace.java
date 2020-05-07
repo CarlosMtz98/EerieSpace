@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 // Donde se desarrolla el juego. Es el equivalente e PantallaSpaceInvaders
 class PantallaEerieSpace extends Pantalla {
-
     private final GameLauncher gameLauncher;
 
     // Balas
