@@ -135,6 +135,10 @@ class PantallaEerieSpace extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
+
                 if (estadoJuego == EstadoJuego.JUGANDO) {
                     estadoJuego = EstadoJuego.PAUSADO;
                     musicaFondo.pause();

@@ -75,28 +75,27 @@ public class PantallaConfiguracion extends Pantalla {
         TextButton.TextButtonStyle textButtonStyleSettings = new TextButton.TextButtonStyle();
         textButtonStyleSettings.font = font;
         textButtonStyleSettings.checkedFontColor = Color.WHITE;
-        textButtonStyleSettings.fontColor = Color.RED;
+        textButtonStyleSettings.checkedOverFontColor = Color.RED;
 
         toggleMusicButton = new TextButton("Toggle Music", textButtonStyleSettings);
         toggleMusicButton.getLabel().setFontScale(1.5f);
         toggleMusicButton.setPosition(ANCHO / 2 - toggleMusicButton.getWidth() / 2, ALTO * 0.5f);
-        if (gameLauncher.music) {
-            toggleMusicButton.setChecked(true);
-        }
+        toggleMusicButton.setChecked(gameLauncher.music);
         settingsScene.addActor(toggleMusicButton);
 
         toggleSoundEffects = new TextButton("Toggle SFX", textButtonStyleSettings);
         toggleSoundEffects.getLabel().setFontScale(1.5f);
         toggleSoundEffects.setPosition(ANCHO / 2 - toggleSoundEffects.getWidth() / 2, ALTO * 0.6f);
-        if (gameLauncher.sfx) {
-            toggleSoundEffects.setChecked(true);
-        }
+        toggleSoundEffects.setChecked(gameLauncher.sfx);
         settingsScene.addActor(toggleSoundEffects);
 
         toggleMusicButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Music Button Pressed");
                 if (gameLauncher.music) {
                     gameLauncher.music = false;
@@ -115,6 +114,9 @@ public class PantallaConfiguracion extends Pantalla {
                     gameLauncher.sfx = false;
                 } else {
                     gameLauncher.sfx = true;
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
                 }
             }
         });
@@ -123,6 +125,9 @@ public class PantallaConfiguracion extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Return Button Pressed");
                 gameLauncher.setScreen(new PantallaMenu(gameLauncher));
             }
@@ -132,6 +137,9 @@ public class PantallaConfiguracion extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Credits Button Pressed");
                 gameLauncher.setScreen(new PantallaCreditos(gameLauncher));
             }
