@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -49,7 +50,10 @@ class PantallaEerieSpace extends Pantalla {
     float gameTime = 0f;
 
     //Musica
-    Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("cancion.mp3"));
+    Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("audio/cancion.mp3"));
+
+    //Efectos
+    Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -259,7 +263,10 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if(v.x > ANCHO/2)disparar();
+            if (v.x > ANCHO / 2) {
+                disparar();
+                efectoLaser.play(0.1f);
+            }
             return true;
         }
 
