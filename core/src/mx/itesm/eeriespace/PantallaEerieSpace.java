@@ -48,6 +48,8 @@ class PantallaEerieSpace extends Pantalla {
     protected Touchpad pad;
     float gameTime = 0f;
 
+    //Musica
+    Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("cancion.mp3"));
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -104,11 +106,11 @@ class PantallaEerieSpace extends Pantalla {
         inputMultiplexer.addProcessor(inputProcessorOne);
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
-
     }
 
     private void cargarMusica() {
-        Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("cancion.mp3"));
+        musicaFondo.setLooping(true);
+        musicaFondo.setVolume(0.5f);
         musicaFondo.play();
     }
 
@@ -203,6 +205,7 @@ class PantallaEerieSpace extends Pantalla {
     private void terminarJuego() {
         meteoros.clear();
         balas.clear();
+        musicaFondo.stop();
         gameLauncher.setScreen(new PantallaPerdiste(gameLauncher));
     }
 
