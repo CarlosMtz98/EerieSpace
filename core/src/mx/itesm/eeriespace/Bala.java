@@ -23,8 +23,4 @@ public class Bala extends Objeto {
         velocidadX *= x;
         velocidadY *= y;
     }
-
-    public void draw(SpriteBatch batch){
-        sprite.draw(batch);
-    }
 }

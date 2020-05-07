@@ -58,10 +58,6 @@ public class Nave extends Objeto {
         }
     }
 
-    public void draw(SpriteBatch batch){
-        sprite.draw(batch);
-    }
-
     public void setEstado(EstadoMovimiento movimiento) {
         this.estadoMovimiento = movimiento;
     }

@@ -39,6 +39,22 @@ class PantallaEerieSpace extends Pantalla {
     private Texture texturaNave;
     private Nave nave;
 
+    // Items
+    private ArrayList<Item> items = new ArrayList<>();
+
+    //Escudo
+    private Texture texturaEscudo;
+    private Escudo escudo;
+
+    //Vida
+    private Texture texturaVida;
+    private Reparacion reparacion;
+
+    //Daño
+    private Texture texturaDaño;
+    private VelocidadDeAtaque velocidadDeAtaque;
+    private PoderDeAtaque poderDeAtaque;
+
     // Marcador
     private Marcador marcador;
 
@@ -158,6 +174,9 @@ class PantallaEerieSpace extends Pantalla {
         meteoroG.add(new Texture("asteroides/Grande-1.png"));
         meteoroG.add(new Texture("asteroides/Grande-2.png"));
         meteoroG.add(new Texture("asteroides/Grande-3.png"));
+        texturaEscudo = new Texture("/items/Shield.png");
+        texturaDaño = new Texture("/items/Damage.png");
+        texturaVida = new Texture("/items/Health.png");
     }
 
     @Override
@@ -225,6 +244,10 @@ class PantallaEerieSpace extends Pantalla {
         }
     }
 
+    private void crearItem(){
+        
+    }
+
     private void terminarJuego() {
         meteoros.clear();
         balas.clear();
@@ -234,12 +257,15 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void dibujarSprites() {
-        nave.draw(batch);
+        nave.render(batch);
         for (Bala bala: balas){
-            bala.draw(batch);
+            bala.render(batch);
         }
         for (Meteoro meteoro : meteoros) {
             meteoro.render(batch);
+        }
+        for(Item item : items){
+            item.render(batch);
         }
     }
 
