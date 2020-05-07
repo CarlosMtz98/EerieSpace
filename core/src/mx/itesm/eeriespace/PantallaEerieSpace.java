@@ -178,28 +178,34 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
-        nave.mover(pad, delta);
-        for (Bala bala : balas) bala.mover(delta);
-        for (int i = meteoros.size() - 1; i > -1; i--) {
-            Meteoro meteoro = meteoros.get(i);
-            meteoro.mover(delta);
-            if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
-                    meteoro.sprite.getX() > Pantalla.ANCHO ||
-                    meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
-                meteoros.remove(meteoro);
-            }
-            for (int n = balas.size() - 1; n > -1; n--) {
-                Bala bala = balas.get(n);
-                if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+        if (nave.getVida() >  0) {
+            nave.mover(pad, delta);
+            for (Bala bala : balas) bala.mover(delta);
+            for (int i = meteoros.size() - 1; i > -1; i--) {
+                Meteoro meteoro = meteoros.get(i);
+                meteoro.mover(delta);
+                if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
+                        meteoro.sprite.getX() > Pantalla.ANCHO ||
+                        meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
                     meteoros.remove(meteoro);
-                    balas.remove(bala);
-                    marcador.incrementarPuntos(meteoro.getDaño());
+                }
+                for (int n = balas.size() - 1; n > -1; n--) {
+                    Bala bala = balas.get(n);
+                    if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+                        meteoros.remove(meteoro);
+                        balas.remove(bala);
+                        marcador.incrementarPuntos(meteoro.getDaño());
+                    }
+                }
+                if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+                    nave.disminuirVida(meteoro.getDaño());
+                    meteoros.remove(meteoro);
+                    Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
                 }
             }
-            if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
-                terminarJuego();
-                break;
-            }
+        }
+        else {
+            terminarJuego();
         }
     }
 

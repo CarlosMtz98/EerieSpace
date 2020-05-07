@@ -7,10 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 public class Nave extends Objeto {
 
     private EstadoMovimiento estadoMovimiento;
+    private int vida;
 
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
         estadoMovimiento = EstadoMovimiento.QUIETO;
+        vida = 100;
     }
 
     public void mover(Touchpad pad, float delta){
@@ -54,5 +56,18 @@ public class Nave extends Objeto {
 
     public void setEstado(EstadoMovimiento movimiento) {
         this.estadoMovimiento = movimiento;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
+    public void disminuirVida(int daño) {
+        vida -= daño;
+        this.sprite.setColor(1f, (float)this.vida / 100, (float)this.vida / 100,1);
     }
 }
