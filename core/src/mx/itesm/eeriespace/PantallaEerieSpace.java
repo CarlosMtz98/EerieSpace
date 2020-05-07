@@ -250,8 +250,9 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
-        // recargar disparo
+        // recargar disparo y dash
         nave.recargarDisparo(delta);
+        nave.recargarDash(delta);
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
@@ -390,13 +391,17 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if (v.x > ANCHO / 2 && nave.puedeDisparar && estadoJuego == EstadoJuego.JUGANDO) {
-                disparar();
-                if (gameLauncher.sfx) {
-                    efectoLaser.play(0.1f);
+            if (v.x > ANCHO / 2 && estadoJuego == EstadoJuego.JUGANDO) {
+                if(v.y < ALTO/2 && nave.puedeDisparar) {
+                    disparar();
+                    if (gameLauncher.sfx) {
+                        efectoLaser.play(0.1f);
+                    }
+                    nave.puedeDisparar = false;
+                    nave.setTiempoDeRecargaDisparo(0);
+                } else if(nave.dashRecargado){
+                    nave.hacerDash();
                 }
-                nave.puedeDisparar = false;
-                nave.setTiempoDeRecargaDisparo(0);
             }
             return true;
         }
