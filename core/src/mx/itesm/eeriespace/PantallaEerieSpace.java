@@ -176,9 +176,9 @@ class PantallaEerieSpace extends Pantalla {
         meteoroG.add(new Texture("asteroides/Grande-1.png"));
         meteoroG.add(new Texture("asteroides/Grande-2.png"));
         meteoroG.add(new Texture("asteroides/Grande-3.png"));
-        texturaEscudo = new Texture("/items/Shield.png");
-        texturaDaño = new Texture("/items/Damage.png");
-        texturaVida = new Texture("/items/Health.png");
+        texturaEscudo = new Texture("items/Shield.png");
+        texturaDaño = new Texture("items/Damage.png");
+        texturaVida = new Texture("items/Health.png");
     }
 
     @Override
@@ -210,7 +210,20 @@ class PantallaEerieSpace extends Pantalla {
         // colisiones y movimiento
         if (nave.getVida() >  0) {
             nave.mover(pad, delta);
+
+            // colisiones items
+            for(int i = items.size()-1 ; i >= 0; i--){
+                Item item = items.get(i);
+                if(nave.sprite.getBoundingRectangle().overlaps(item.sprite.getBoundingRectangle())){
+                    item.darBonus(nave);
+                    items.remove(i);
+                }
+            }
+
+            // mover balas
             for (Bala bala : balas) bala.mover(delta);
+
+            // colisiones meteoros con balas y nave y salir de la pantalla.
             for (int i = meteoros.size() - 1; i > -1; i--) {
                 Meteoro meteoro = meteoros.get(i);
                 meteoro.mover(delta);
@@ -228,6 +241,7 @@ class PantallaEerieSpace extends Pantalla {
                         Gdx.app.log("Vida Meteoro", Integer.toString(meteoro.getVida()));
                         if (meteoro.getVida() <= 0)
                         {
+                            crearItem(meteoro.sprite.getX(), meteoro.sprite.getY());
                             Gdx.app.log("Vida Meteoro", Integer.toString(meteoro.getVida()));
                             meteoros.remove(meteoro);
                         }
@@ -238,12 +252,12 @@ class PantallaEerieSpace extends Pantalla {
                     if(!nave.getEscudo()){
                         nave.disminuirVida(meteoro.getDaño());
                         Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
-                    } else { nave.setEscudo(false);}
+                    } else {
+                        nave.setEscudo(false);
+                    }
                     meteoros.remove(meteoro);
 
                     efectoDaño.play(0.1f);
-
-                    meteoros.remove(meteoro);
 
                 }
             }
@@ -253,8 +267,21 @@ class PantallaEerieSpace extends Pantalla {
         }
     }
 
-    private void crearItem(){
-        
+    private void crearItem(float x, float y){
+        Item item;
+        if (Math.random()<= 1){
+            double r = Math.random();
+            if(r < 0.1){
+                item = new Reparacion(texturaVida, x, y);
+            } else if(r < 0.3){
+                item = new Escudo(texturaEscudo, x, y);
+            } else if(r < 0.65){
+                item = new PoderDeAtaque(texturaDaño, x, y);
+            } else{
+                item = new VelocidadDeAtaque(texturaDaño, x, y);
+            }
+            items.add(item);
+        }
     }
 
     private void terminarJuego() {
