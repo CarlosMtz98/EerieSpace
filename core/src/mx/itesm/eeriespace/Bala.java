@@ -1,7 +1,6 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Bala extends Objeto {
     private float velocidadX = 400;
@@ -22,9 +21,5 @@ public class Bala extends Objeto {
         double y = Math.sin(Math.toRadians(sprite.getRotation() + correccionAngulo));
         velocidadX *= x;
         velocidadY *= y;
-    }
-
-    public void draw(SpriteBatch batch){
-        sprite.draw(batch);
     }
 }

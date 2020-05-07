@@ -44,6 +44,22 @@ class PantallaEerieSpace extends Pantalla {
     private Texture texturaNave;
     private Nave nave;
 
+    // Items
+    private ArrayList<Item> items = new ArrayList<>();
+
+    //Escudo
+    private Texture texturaEscudo;
+    private Escudo escudo;
+
+    //Vida
+    private Texture texturaVida;
+    private Reparacion reparacion;
+
+    //Daño
+    private Texture texturaDaño;
+    private VelocidadDeAtaque velocidadDeAtaque;
+    private PoderDeAtaque poderDeAtaque;
+
     // Marcador
     private Marcador marcador;
 
@@ -196,7 +212,7 @@ class PantallaEerieSpace extends Pantalla {
 
     private void crearNave() {
         float x = ANCHO/2 - texturaNave.getWidth()/2;
-        float y = 0;
+        float y = 360;
         nave = new Nave(texturaNave, x, y);
     }
 
@@ -215,6 +231,9 @@ class PantallaEerieSpace extends Pantalla {
         meteoroG.add(new Texture("asteroides/Grande-1.png"));
         meteoroG.add(new Texture("asteroides/Grande-2.png"));
         meteoroG.add(new Texture("asteroides/Grande-3.png"));
+        texturaEscudo = new Texture("items/Shield.png");
+        texturaDaño = new Texture("items/Damage.png");
+        texturaVida = new Texture("items/Health.png");
     }
 
     @Override
@@ -249,7 +268,20 @@ class PantallaEerieSpace extends Pantalla {
         // colisiones y movimiento
         if (nave.getVida() >  0) {
             nave.mover(pad, delta);
+
+            // colisiones items
+            for(int i = items.size()-1 ; i >= 0; i--){
+                Item item = items.get(i);
+                if(nave.sprite.getBoundingRectangle().overlaps(item.sprite.getBoundingRectangle())){
+                    item.darBonus(nave);
+                    items.remove(i);
+                }
+            }
+
+            // mover balas
             for (Bala bala : balas) bala.mover(delta);
+
+            // colisiones meteoros con balas y nave y salir de la pantalla.
             for (int i = meteoros.size() - 1; i > -1; i--) {
                 Meteoro meteoro = meteoros.get(i);
                 meteoro.mover(delta);
@@ -261,15 +293,23 @@ class PantallaEerieSpace extends Pantalla {
                 for (int n = balas.size() - 1; n > -1; n--) {
                     Bala bala = balas.get(n);
                     if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
-                        meteoros.remove(meteoro);
-                        balas.remove(bala);
+                        meteoro.disminuirVida(nave.getDaño());
                         marcador.incrementarPuntos(meteoro.getDaño());
+                        balas.remove(bala);
+                        Gdx.app.log("Vida Meteoro", Integer.toString(meteoro.getVida()));
+                        if (meteoro.getVida() <= 0)
+                        {
+                            crearItem(meteoro.sprite.getX(), meteoro.sprite.getY());
+                            Gdx.app.log("Vida Meteoro", Integer.toString(meteoro.getVida()));
+                            meteoros.remove(meteoro);
+                        }
+
                     }
                 }
                 if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
                     if (!nave.getEscudo()) {
                         nave.disminuirVida(meteoro.getDaño());
-                        Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float) nave.getVida() / 100)));
+                        Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
                     } else {
                         nave.setEscudo(false);
                     }
@@ -278,11 +318,30 @@ class PantallaEerieSpace extends Pantalla {
                         efectoDaño.play(0.1f);
                     }
                     meteoros.remove(meteoro);
+
+
                 }
             }
         }
         else {
             terminarJuego();
+        }
+    }
+
+    private void crearItem(float x, float y){
+        Item item;
+        if (Math.random()<= 1){
+            double r = Math.random();
+            if(r < 0.1){
+                item = new Reparacion(texturaVida, x, y);
+            } else if(r < 0.3){
+                item = new Escudo(texturaEscudo, x, y);
+            } else if(r < 0.65){
+                item = new PoderDeAtaque(texturaDaño, x, y);
+            } else{
+                item = new VelocidadDeAtaque(texturaDaño, x, y);
+            }
+            items.add(item);
         }
     }
 
@@ -295,12 +354,15 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void dibujarSprites() {
-        nave.draw(batch);
+        nave.render(batch);
         for (Bala bala: balas){
-            bala.draw(batch);
+            bala.render(batch);
         }
         for (Meteoro meteoro : meteoros) {
             meteoro.render(batch);
+        }
+        for(Item item : items){
+            item.render(batch);
         }
     }
 

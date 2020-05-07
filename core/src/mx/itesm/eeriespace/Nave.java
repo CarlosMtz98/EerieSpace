@@ -1,7 +1,6 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 public class Nave extends Objeto {
@@ -72,10 +71,6 @@ public class Nave extends Objeto {
         }
     }
 
-    public void draw(SpriteBatch batch){
-        sprite.draw(batch);
-    }
-
     public void setEstado(EstadoMovimiento movimiento) {
         this.estadoMovimiento = movimiento;
     }
@@ -86,12 +81,12 @@ public class Nave extends Objeto {
 
     public void setVida(int vida) {
         this.vida = vida;
-        if (this.vida > 100) this.vida = 100;
+        if(this.vida > 100) this.vida = 100;
+        this.sprite.setColor(1f, (float)this.vida / 100, (float)this.vida / 100,1);
     }
 
     public void disminuirVida(int daño) {
-        vida -= daño;
-        this.sprite.setColor(1f, (float)this.vida / 100, (float)this.vida / 100,1);
+        setVida(vida-=daño);
     }
 
     public void setEscudo(boolean tieneEscudo){
