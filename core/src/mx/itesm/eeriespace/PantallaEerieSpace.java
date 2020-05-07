@@ -151,7 +151,7 @@ class PantallaEerieSpace extends Pantalla {
 
         gameTime += delta;
         if (gameTime > 1f) {
-            //crearMeteoro();
+            crearMeteoro();
             gameTime = 0;
         }
 
