@@ -14,14 +14,17 @@ public class PantallaPerdiste extends Pantalla {
     private final GameLauncher gameLauncher;
 
     private Stage gameOverScene;
+    private Marcador marcador;
 
     private Label gameOverTitleLabel;
 
     private TextButton returnButton;
     private TextButton playAgainButton;
 
-    public PantallaPerdiste(GameLauncher gameLauncher) {
+    public PantallaPerdiste(GameLauncher gameLauncher, int puntos) {
         this.gameLauncher = gameLauncher;
+        this.marcador = new Marcador(ANCHO / 2, ALTO / 2);
+        this.marcador.incrementarPuntos(puntos);
     }
 
     @Override
@@ -87,6 +90,7 @@ public class PantallaPerdiste extends Pantalla {
 
         batch.begin();
         batch.draw(backgroundTexture, 0, 0);
+        marcador.render(batch);
         batch.end();
 
         gameOverScene.draw();
