@@ -185,6 +185,10 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
+        // recargar disparo
+        nave.recargarDisparo(delta);
+
+        // colisiones y movimiento
         if (nave.getVida() >  0) {
             nave.mover(pad, delta);
             for (Bala bala : balas) bala.mover(delta);
@@ -205,12 +209,16 @@ class PantallaEerieSpace extends Pantalla {
                     }
                 }
                 if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
-                    nave.disminuirVida(meteoro.getDaño());
+                    if(!nave.getEscudo()){
+                        nave.disminuirVida(meteoro.getDaño());
+                        Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
+                    } else { nave.setEscudo(false);}
+                    meteoros.remove(meteoro);
 
                     efectoDaño.play(0.1f);
 
                     meteoros.remove(meteoro);
-                    Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
+
                 }
             }
         }
@@ -272,11 +280,13 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if (v.x > ANCHO / 2) {
+            if (v.x > ANCHO / 2 && nave.puedeDisparar) {
                 disparar();
                 if (gameLauncher.sfx) {
                     efectoLaser.play(0.1f);
                 }
+                nave.puedeDisparar = false;
+                nave.setTiempoDeRecarga(0);
             }
             return true;
         }
