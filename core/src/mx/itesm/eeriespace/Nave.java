@@ -70,8 +70,6 @@ public class Nave extends Objeto {
             sprite.setX(sprite.getX() + dx);
             sprite.setY(sprite.getY() + dy);
 
-            System.out.println(anguloNave);
-
             // Límites de la pantalla
             if(anguloNave < 0 && sprite.getX() + sprite.getWidth()/2 + dx > PantallaEerieSpace.ANCHO ){   // sale por derecha
                 sprite.setX(0);

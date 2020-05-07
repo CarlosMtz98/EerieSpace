@@ -11,5 +11,6 @@ public class Escudo extends Item {
     @Override
     void darBonus(Nave nave) {
         nave.setEscudo(true);
+        nave.sprite.setColor(0, 0.5f, 1, 1);
     }
 }

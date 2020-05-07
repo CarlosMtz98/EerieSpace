@@ -81,6 +81,10 @@ class PantallaEerieSpace extends Pantalla {
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
 
+    //Nivel
+    float dificultad = 0f;
+    float tiempoCambiarNivel = 0f;
+
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
     }
@@ -169,15 +173,18 @@ class PantallaEerieSpace extends Pantalla {
 
     private void crearMeteoro() {
         double probabilidad = Math.random();
-        if (probabilidad < .7) {
+        if (probabilidad < .7 - 0.7*dificultad) {
             meteoros.add(new Meteoro(meteoroC.get((int) Math.floor(Math.random() * meteoroC.size())),
-                    (float) (Math.random() * ANCHO), 15));
-        } else if (probabilidad < .9) {
+                    (float) (Math.random() * ANCHO), 15 + Math.round(45*dificultad),
+                    150 + 150*dificultad));
+        } else if (probabilidad < .9- .9*dificultad) {
             meteoros.add(new Meteoro(meteoroM.get((int) Math.floor(Math.random() * meteoroM.size())),
-                    (float) (Math.random() * ANCHO), 30));
+                    (float) (Math.random() * ANCHO), 30 + Math.round(70*dificultad),
+                    150 + 150*dificultad));
         } else {
             meteoros.add(new Meteoro(meteoroG.get((int) Math.floor(Math.random() * meteoroG.size())),
-                    (float) (Math.random() * ANCHO), 45));
+                    (float) (Math.random() * ANCHO), 45 + Math.round(100*dificultad),
+                    150 + 150*dificultad));
         }
     }
 
@@ -221,6 +228,12 @@ class PantallaEerieSpace extends Pantalla {
         if (gameTime > 1f && estadoJuego == EstadoJuego.JUGANDO) {
             crearMeteoro();
             gameTime = 0;
+        }
+
+        tiempoCambiarNivel += delta;
+        if(tiempoCambiarNivel >= 20f){
+            dificultad += 0.05;
+            tiempoCambiarNivel = 0f;
         }
 
         borrarPantalla(0, 0, 0);
@@ -290,6 +303,7 @@ class PantallaEerieSpace extends Pantalla {
                         Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
                     } else {
                         nave.setEscudo(false);
+                        nave.disminuirVida(0);
                     }
                     meteoros.remove(meteoro);
                     if (gameLauncher.sfx) {
