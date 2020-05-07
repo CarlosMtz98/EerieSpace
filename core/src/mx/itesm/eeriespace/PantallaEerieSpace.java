@@ -320,7 +320,6 @@ class PantallaEerieSpace extends Pantalla {
         balas.clear();
         musicaFondo.stop();
         gameLauncher.setScreen(new PantallaPerdiste(gameLauncher, marcador.getPoints()));
-
     }
 
     private void dibujarSprites() {
@@ -377,7 +376,7 @@ class PantallaEerieSpace extends Pantalla {
                     efectoLaser.play(0.1f);
                 }
                 nave.puedeDisparar = false;
-                nave.setTiempoDeRecarga(0);
+                nave.setTiempoDeRecargaDisparo(0);
             }
             return true;
         }
