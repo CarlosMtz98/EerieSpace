@@ -3,6 +3,7 @@ package mx.itesm.eeriespace;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,6 +29,10 @@ public abstract class Pantalla implements Screen
 
     // Textures file locations
     Texture backgroundTexture = new Texture("fondo.png");
+
+    //Efecto sonido click
+    Sound efectoClick = Gdx.audio.newSound(Gdx.files.internal("audio/click.mp3"));
+
 
     // Constructor, inicializa los objetos camara, vista, batch y font
     public Pantalla() {
