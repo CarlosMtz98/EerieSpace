@@ -1,14 +1,14 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.Preferences;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class AdministradorPuntuacion {
     private ArrayList<Integer> puntuaciones;
-    private FileHandle archivoPuntuaciones = Gdx.files.local("scores.txt");
+    Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
     public AdministradorPuntuacion() {
         this.puntuaciones = new ArrayList<>();
@@ -16,30 +16,22 @@ public class AdministradorPuntuacion {
     }
 
     public void readFile() {
-        String texto = archivoPuntuaciones.readString();
-        String arregloPalabras[] = texto.split("\\r?\\n");
-        for(String palabra : arregloPalabras) {
-            puntuaciones.add(Integer.parseInt(palabra));
-            Gdx.app.log("Score", palabra);
-        }
+        prefs.getInteger("highscore", 0);
     }
 
     public int getPuntuacionAlta() {
-        readFile();
-        if (puntuaciones.size() > 0) {
-            return Collections.max(puntuaciones);
-        }
-        else
-            return -1;
+        return prefs.getInteger("highscore", 0);
     }
 
     public void añadirPuntuacion(int puntuacion)
     {
-        archivoPuntuaciones.writeString("\n"+ Integer.toString(puntuacion), true);
+        if (puntuacion > prefs.getInteger("highscore", 0)) {
+            prefs.putInteger("highscore", puntuacion);
+        }
     }
 
     public void reiniciarPuntuacion()
     {
-        archivoPuntuaciones.writeString("", false);
+        prefs.putInteger("highscore", 0);
     }
 }
