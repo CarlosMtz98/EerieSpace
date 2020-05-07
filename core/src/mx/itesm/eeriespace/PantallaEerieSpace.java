@@ -241,11 +241,10 @@ class PantallaEerieSpace extends Pantalla {
                         nave.setEscudo(false);
                     }
                     meteoros.remove(meteoro);
-
-                    efectoDaño.play(0.1f);
-
+                    if (gameLauncher.sfx) {
+                        efectoDaño.play(0.1f);
+                    }
                     meteoros.remove(meteoro);
-
                 }
             }
         }
