@@ -39,6 +39,7 @@ public abstract class Pantalla implements Screen
         font = new BitmapFont(Gdx.files.internal("BasierSquare.fnt"),
                 Gdx.files.internal("BasierSquare.png"), false);
         textButtonStyle.font = font;
+
         label1Style.font = font;
     }
 
