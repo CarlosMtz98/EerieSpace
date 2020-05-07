@@ -151,7 +151,7 @@ class PantallaEerieSpace extends Pantalla {
 
         gameTime += delta;
         if (gameTime > 1f) {
-            crearMeteoro();
+            //crearMeteoro();
             gameTime = 0;
         }
 
@@ -269,20 +269,34 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void disparar(){
-        float degrees = nave.sprite.getRotation();
-        float originX = nave.sprite.getX() + nave.sprite.getWidth()/2;
-        float originY = nave.sprite.getY() + nave.sprite.getHeight()/2;
-        float direction = degrees < 0? -1: 1;
-        degrees += 90;
-
-        float dx = (float)Math.cos(Math.toRadians(degrees))*nave.sprite.getWidth()/2;
-        float dy = (float)Math.sin(Math.toRadians(degrees))*nave.sprite.getHeight()/2 +
-                direction*((float)Math.cos(Math.toRadians(degrees))*texturaBala.getHeight()/2);
-
-        float x = originX + dx;
-        float y = originY + dy;
+        float x = obtenerPuntaX();
+        float y = obtenerPuntaY();
         Bala bala = new Bala(texturaBala, x, y);
         bala.setDireccion(nave);
         balas.add(bala);
+    }
+
+    private float obtenerPuntaX(){
+        float grados = nave.sprite.getRotation();
+        float correccionAngulo = 90f;
+        grados += correccionAngulo;
+
+        float origenX = nave.sprite.getX() + nave.sprite.getWidth()/2;
+        float dx = (float)Math.cos(Math.toRadians(grados))*nave.sprite.getWidth()/2;
+
+        return origenX + dx;
+    }
+
+    private float obtenerPuntaY(){
+        float grados = nave.sprite.getRotation();
+        float correccionAngulo = 90f;
+        float direccion = grados < 0? -1: 1;
+        grados += correccionAngulo;
+
+        float origenY = nave.sprite.getY() + nave.sprite.getHeight()/2;
+        float dy = (float)Math.sin(Math.toRadians(grados))*nave.sprite.getHeight()/2 +
+                direccion*((float)Math.cos(Math.toRadians(grados))*texturaBala.getHeight()/2);
+
+        return origenY + dy;
     }
 }
