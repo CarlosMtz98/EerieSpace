@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 public class Nave extends Objeto {
 
     private EstadoMovimiento estadoMovimiento;
+    private boolean tieneEscudo = false;
 
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
@@ -54,5 +55,9 @@ public class Nave extends Objeto {
 
     public void setEstado(EstadoMovimiento movimiento) {
         this.estadoMovimiento = movimiento;
+    }
+
+    public void setEscudo(boolean tieneEscudo){
+        this.tieneEscudo = tieneEscudo;
     }
 }
