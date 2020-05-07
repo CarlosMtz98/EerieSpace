@@ -120,7 +120,7 @@ public class Nave extends Objeto {
     }
 
     public void recargarDisparo(float delta){
-        tiempoDeRecargaDisparo += delta*factorDeCargaDash;
+        tiempoDeRecargaDisparo += delta;
         if(tiempoDeRecargaDisparo >= recargaDisparo){
             tiempoDeRecargaDisparo = 0;
             puedeDisparar = true;
@@ -142,7 +142,7 @@ public class Nave extends Objeto {
     ///
 
     public void recargarDash(float delta){
-        tiempoDeRecargaDash += delta;
+        tiempoDeRecargaDash += delta*factorDeCargaDash;
         if(tiempoDeRecargaDash >= recargaDash){
             tiempoDeRecargaDash = 0;
             dashRecargado = true;
