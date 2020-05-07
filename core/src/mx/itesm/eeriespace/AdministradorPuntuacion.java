@@ -27,6 +27,7 @@ public class AdministradorPuntuacion {
     {
         if (puntuacion > prefs.getInteger("highscore", 0)) {
             prefs.putInteger("highscore", puntuacion);
+            prefs.flush();
         }
     }
 
