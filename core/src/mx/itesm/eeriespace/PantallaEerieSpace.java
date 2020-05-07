@@ -70,11 +70,6 @@ class PantallaEerieSpace extends Pantalla {
     protected Touchpad pad;
     float gameTime = 0f;
 
-    //Pausa
-    private Stage escenaPausa;
-    private OrthographicCamera camaraPausa;
-    private Viewport vistaPausa;
-
     //Musica
     Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("audio/cancion.mp3"));
 
@@ -144,32 +139,9 @@ class PantallaEerieSpace extends Pantalla {
                 } else {
                     estadoJuego = EstadoJuego.JUGANDO;
                 }
-
-                //crearPausa();
             }
         });
     }
-
-//    private void crearPausa() {
-//        camaraPausa = new OrthographicCamera(ANCHO, ALTO);
-//        camaraPausa.position.set(ANCHO/2, ALTO/2, 0);
-//        camaraPausa.update();
-//        vistaPausa = new StretchViewport(ANCHO, ALTO, camaraPausa);
-//
-//        Texture texturabtnPausa = new Texture("Pausa.png");
-//        TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturabtnPausa));
-//        ImageButton btnPausa = new ImageButton(trdPausa);
-//        btnPausa.setPosition(ANCHO * .97f - btnPausa.getWidth(), ALTO * .97f - btnPausa.getHeight());
-//
-//        escenaPausa = new Stage(vistaPausa);
-//        btnPausa.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                super.clicked(event, x, y);
-//                estadoJuego = EstadoJuego.JUGANDO;
-//            }
-//        });
-//    }
 
     @Override
     public void show() {
@@ -189,9 +161,10 @@ class PantallaEerieSpace extends Pantalla {
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
+
     private void cargarMusica() {
         musicaFondo.setLooping(true);
-        musicaFondo.setVolume(0.5f);
+        musicaFondo.setVolume(0.2f);
         musicaFondo.play();
     }
 
@@ -270,12 +243,12 @@ class PantallaEerieSpace extends Pantalla {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         escenaHUD.draw();
+
     }
 
     private void actualizar(float delta) {
         // recargar disparo
         nave.recargarDisparo(delta);
-        nave.recargarDash(delta);
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
@@ -331,7 +304,6 @@ class PantallaEerieSpace extends Pantalla {
                         efectoDaño.play(0.1f);
                     }
                     meteoros.remove(meteoro);
-
                 }
             }
         }
@@ -362,7 +334,6 @@ class PantallaEerieSpace extends Pantalla {
         balas.clear();
         musicaFondo.stop();
         gameLauncher.setScreen(new PantallaPerdiste(gameLauncher, marcador.getPoints()));
-
     }
 
     private void dibujarSprites() {
@@ -413,25 +384,13 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if (v.x > ANCHO/2) {
-                if(v.y < ALTO/2 && nave.puedeDisparar) {
-                    disparar();
-                    if (gameLauncher.sfx) {
-                        efectoLaser.play(0.1f);
-                    }
-                    nave.puedeDisparar = false;
-                    nave.setTiempoDeRecargaDisparo(0);
+            if (v.x > ANCHO / 2 && nave.puedeDisparar && estadoJuego == EstadoJuego.JUGANDO) {
+                disparar();
+                if (gameLauncher.sfx) {
+                    efectoLaser.play(0.1f);
                 }
-                if(v.y > ALTO/2 && nave.dashRecargado){
-                    System.out.println("DASH!!!");
-                    nave.hacerDash();
-                    //todo implementar sonido: efectoDash
-//                    if (gameLauncher.sfx) {
-//                        efectoDash.play(0.1f);
-//                    }
-                    nave.dashRecargado = false;
-                    nave.setTiempoDeRecargaDash(0);
-                }
+                nave.puedeDisparar = false;
+                nave.setTiempoDeRecargaDisparo(0);
             }
             return true;
         }
