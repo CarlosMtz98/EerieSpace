@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 public class Meteoro extends Objeto {
     private int daño;
     private float angulo;
+    private int vida;
     public int velocidad = 150;
 
     //Creación aleatoria de meteoros
     public Meteoro(Texture textura, float x, int daño) {
         super(textura, x, Pantalla.ALTO + 150);
         this.daño = daño;
-        this.angulo = x > Pantalla.ANCHO/2? (float)(Math.random()*(-0.8f)) : (float)Math.random()*0.8f;
+        this.vida = daño;
     }
 
     public int getDaño() {
@@ -20,6 +21,15 @@ public class Meteoro extends Objeto {
 
     public void update(float delta) {
         mover(delta);
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void disminuirVida(int daño) {
+        vida -= daño;
+        this.sprite.setColor(1f, (float)this.vida / this.daño, (float)this.vida / this.daño,1);
     }
 
     public void mover(float delta) {
