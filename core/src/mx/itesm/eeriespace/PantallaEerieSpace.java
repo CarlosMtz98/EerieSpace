@@ -55,6 +55,9 @@ class PantallaEerieSpace extends Pantalla {
     //Efectos
     Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
 
+    Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
+
+
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
     }
@@ -201,6 +204,9 @@ class PantallaEerieSpace extends Pantalla {
                 }
                 if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
                     nave.disminuirVida(meteoro.getDaño());
+
+                    efectoDaño.play(0.1f);
+
                     meteoros.remove(meteoro);
                     Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
                 }
@@ -216,6 +222,7 @@ class PantallaEerieSpace extends Pantalla {
         balas.clear();
         musicaFondo.stop();
         gameLauncher.setScreen(new PantallaPerdiste(gameLauncher, marcador.getPoints()));
+
     }
 
     private void dibujarSprites() {
