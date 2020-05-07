@@ -29,7 +29,7 @@ class PantallaEerieSpace extends Pantalla {
 
     // Meteoros
 
-    //Arreglos Texturas meteoros
+    // Arreglos Texturas meteoros
     private ArrayList<Texture> meteoroC = new ArrayList<>();
     private ArrayList<Texture> meteoroM = new ArrayList<>();
     private ArrayList<Texture> meteoroG = new ArrayList<>();
@@ -65,7 +65,7 @@ class PantallaEerieSpace extends Pantalla {
         estilo.background = skin.getDrawable("fondo");
         estilo.knob = skin.getDrawable("boton");
 
-        //Crear pad joystick
+        // Crear pad joystick
         pad = new Touchpad(64, estilo);
         pad.setBounds(16, 16, 256, 256);
 
@@ -76,15 +76,13 @@ class PantallaEerieSpace extends Pantalla {
         pad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            Touchpad pad = (Touchpad)actor;
-            if (pad.getKnobPercentX() != 0)
-            {
-                nave.setEstado(EstadoMovimiento.MOVIMIENTO);
-            }
-            else
-            {
-                nave.setEstado(EstadoMovimiento.QUIETO);
-            }
+                Touchpad pad = (Touchpad)actor;
+                if (pad.getKnobPercentX() != 0){
+                    nave.setEstado(EstadoMovimiento.MOVIMIENTO);
+                }
+                else{
+                    nave.setEstado(EstadoMovimiento.QUIETO);
+                }
             }
         });
     }
