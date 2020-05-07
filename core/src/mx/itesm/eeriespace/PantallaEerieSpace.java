@@ -135,7 +135,7 @@ class PantallaEerieSpace extends Pantalla {
 
     private void crearNave() {
         float x = ANCHO/2 - texturaNave.getWidth()/2;
-        float y = 0;
+        float y = 360;
         nave = new Nave(texturaNave, x, y);
     }
 
