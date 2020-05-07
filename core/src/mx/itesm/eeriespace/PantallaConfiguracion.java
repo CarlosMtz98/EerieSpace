@@ -18,6 +18,9 @@ public class PantallaConfiguracion extends Pantalla {
     //Title
     private Label settingsTitleLabel;
 
+    //Colores
+    public static final Color RED = new Color(0xff0000ff);
+
     // Buttons
     private TextButton returnButton;
     private TextButton toggleMusicButton;
