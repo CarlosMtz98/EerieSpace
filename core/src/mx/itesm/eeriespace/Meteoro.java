@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Meteoro extends Objeto {
     private int daño;
     private float angulo;
+    private int vida;
     public int velocidad = 150;
 
     //Creación aleatoria de meteoros
