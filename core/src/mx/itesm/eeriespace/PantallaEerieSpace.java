@@ -4,6 +4,7 @@ package mx.itesm.eeriespace;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -46,6 +47,7 @@ class PantallaEerieSpace extends Pantalla {
     private Viewport vistaHUD;
     protected Touchpad pad;
     float gameTime = 0f;
+
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -95,12 +97,19 @@ class PantallaEerieSpace extends Pantalla {
         crearHUD();
         crearNave();
         crearMeteoro();
+        cargarMusica();
         InputProcessor inputProcessorOne = escenaHUD;
         InputProcessor inputProcessorTwo = new ProcesadorEntrada();
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(inputProcessorOne);
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+    }
+
+    private void cargarMusica() {
+        Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("cancion.mp3"));
+        musicaFondo.play();
     }
 
     private void crearMeteoro() {
