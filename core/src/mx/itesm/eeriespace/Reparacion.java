@@ -10,6 +10,7 @@ public class Reparacion extends Item {
 
     @Override
     void darBonus(Nave nave) {
-        nave.setVida(nave.getVida() + 20);
+        int vida = nave.getVida();
+        nave.setVida(vida + 20);
     }
 }

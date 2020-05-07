@@ -9,11 +9,18 @@ public class Nave extends Objeto {
     private EstadoMovimiento estadoMovimiento;
     private boolean tieneEscudo = false;
     private int vida;
+    private int daño;
+    public boolean puedeDisparar;
+    private float recargaDisparo;
+    private float tiempoDeRecarga;
 
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
         estadoMovimiento = EstadoMovimiento.QUIETO;
         vida = 100;
+        daño = 15;
+        puedeDisparar = true;
+        recargaDisparo = 1f;
     }
 
     public void mover(Touchpad pad, float delta){
@@ -65,6 +72,7 @@ public class Nave extends Objeto {
 
     public void setVida(int vida) {
         this.vida = vida;
+        if (this.vida > 100) this.vida = 100;
     }
 
     public void disminuirVida(int daño) {
@@ -74,5 +82,37 @@ public class Nave extends Objeto {
 
     public void setEscudo(boolean tieneEscudo){
         this.tieneEscudo = tieneEscudo;
+    }
+
+    public boolean getEscudo() {
+        return tieneEscudo;
+    }
+
+    public void setDaño(int daño) {
+        this.daño = daño;
+    }
+
+    public int getDaño() {
+        return daño;
+    }
+
+    public void recargarDisparo(float delta) {
+        tiempoDeRecarga += delta;
+        if (tiempoDeRecarga >= recargaDisparo) {
+            tiempoDeRecarga = 0;
+            puedeDisparar = true;
+        }
+    }
+
+    public void setTiempoDeRecarga(float tiempo) {
+        tiempoDeRecarga = tiempo;
+    }
+
+    public void setRecargaDisparo(float recargaDisparo) {
+        this.recargaDisparo = recargaDisparo;
+    }
+
+    public float getRecargaDisparo() {
+        return recargaDisparo;
     }
 }
