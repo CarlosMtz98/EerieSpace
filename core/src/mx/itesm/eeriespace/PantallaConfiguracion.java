@@ -79,12 +79,47 @@ public class PantallaConfiguracion extends Pantalla {
         toggleSoundEffects.setPosition(ANCHO / 2 - toggleSoundEffects.getWidth() / 2, ALTO * 0.6f);
         settingsScene.addActor(toggleSoundEffects);
 
+        toggleMusicButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                System.out.println("Music Button Pressed");
+                if (gameLauncher.music) {
+                    gameLauncher.music = false;
+                } else {
+                    gameLauncher.music = true;
+                }
+            }
+        });
+
+        toggleSoundEffects.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                System.out.println("SFX Button Pressed");
+                if (gameLauncher.sfx) {
+                    gameLauncher.sfx = false;
+                } else {
+                    gameLauncher.sfx = true;
+                }
+            }
+        });
+
         returnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 System.out.println("Return Button Pressed");
                 gameLauncher.setScreen(new PantallaMenu(gameLauncher));
+            }
+        });
+
+        creditsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                System.out.println("Credits Button Pressed");
+                gameLauncher.setScreen(new PantallaCreditos(gameLauncher));
             }
         });
     }
