@@ -25,6 +25,11 @@ public class Marcador {
         this.puntos += puntos;
     }
 
+    public int getPoints() {
+        return puntos;
+    }
+
+
     public void render(SpriteBatch batch) {
         String scoreLetrero = "Score: " + puntos;
         text.render(batch, scoreLetrero, x, y);
