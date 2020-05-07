@@ -6,13 +6,14 @@ public class Meteoro extends Objeto {
     private int daño;
     private float angulo;
     private int vida;
-    public int velocidad = 150;
+    public float velocidad;
 
     //Creación aleatoria de meteoros
-    public Meteoro(Texture textura, float x, int daño) {
+    public Meteoro(Texture textura, float x, int daño, float velocidad) {
         super(textura, x, Pantalla.ALTO + 150);
         this.daño = daño;
         this.vida = daño;
+        this.velocidad = velocidad;
     }
 
     public int getDaño() {
