@@ -70,6 +70,11 @@ class PantallaEerieSpace extends Pantalla {
     protected Touchpad pad;
     float gameTime = 0f;
 
+    //Pausa
+    private Stage escenaPausa;
+    private OrthographicCamera camaraPausa;
+    private Viewport vistaPausa;
+
     //Musica
     Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("audio/cancion.mp3"));
 
@@ -130,10 +135,37 @@ class PantallaEerieSpace extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                estadoJuego = EstadoJuego.PAUSADO;
+                if (estadoJuego == EstadoJuego.JUGANDO) {
+                    estadoJuego = EstadoJuego.PAUSADO;
+                } else {
+                    estadoJuego = EstadoJuego.JUGANDO;
+                }
+
+                //crearPausa();
             }
         });
     }
+
+//    private void crearPausa() {
+//        camaraPausa = new OrthographicCamera(ANCHO, ALTO);
+//        camaraPausa.position.set(ANCHO/2, ALTO/2, 0);
+//        camaraPausa.update();
+//        vistaPausa = new StretchViewport(ANCHO, ALTO, camaraPausa);
+//
+//        Texture texturabtnPausa = new Texture("Pausa.png");
+//        TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturabtnPausa));
+//        ImageButton btnPausa = new ImageButton(trdPausa);
+//        btnPausa.setPosition(ANCHO * .97f - btnPausa.getWidth(), ALTO * .97f - btnPausa.getHeight());
+//
+//        escenaPausa = new Stage(vistaPausa);
+//        btnPausa.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                super.clicked(event, x, y);
+//                estadoJuego = EstadoJuego.JUGANDO;
+//            }
+//        });
+//    }
 
     @Override
     public void show() {
@@ -211,7 +243,7 @@ class PantallaEerieSpace extends Pantalla {
         }
 
         gameTime += delta;
-        if (gameTime > 1f) {
+        if (gameTime > 1f && estadoJuego == EstadoJuego.JUGANDO) {
             crearMeteoro();
             gameTime = 0;
         }
@@ -226,6 +258,7 @@ class PantallaEerieSpace extends Pantalla {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         escenaHUD.draw();
+
     }
 
     private void actualizar(float delta) {
@@ -368,7 +401,7 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if (v.x > ANCHO / 2 && nave.puedeDisparar) {
+            if (v.x > ANCHO / 2 && nave.puedeDisparar && estadoJuego == EstadoJuego.JUGANDO) {
                 disparar();
                 if (gameLauncher.sfx) {
                     efectoLaser.play(0.1f);
