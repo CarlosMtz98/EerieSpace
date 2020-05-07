@@ -185,7 +185,6 @@ class PantallaEerieSpace extends Pantalla {
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
-
     private void cargarMusica() {
         musicaFondo.setLooping(true);
         musicaFondo.setVolume(0.5f);
@@ -258,12 +257,12 @@ class PantallaEerieSpace extends Pantalla {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         escenaHUD.draw();
-
     }
 
     private void actualizar(float delta) {
         // recargar disparo
         nave.recargarDisparo(delta);
+        nave.recargarDash(delta);
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
@@ -318,7 +317,6 @@ class PantallaEerieSpace extends Pantalla {
                         efectoDaño.play(0.1f);
                     }
                     meteoros.remove(meteoro);
-
 
                 }
             }
@@ -401,13 +399,25 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if (v.x > ANCHO / 2 && nave.puedeDisparar && estadoJuego == EstadoJuego.JUGANDO) {
-                disparar();
-                if (gameLauncher.sfx) {
-                    efectoLaser.play(0.1f);
+            if (v.x > ANCHO/2) {
+                if(v.y < ALTO/2 && nave.puedeDisparar) {
+                    disparar();
+                    if (gameLauncher.sfx) {
+                        efectoLaser.play(0.1f);
+                    }
+                    nave.puedeDisparar = false;
+                    nave.setTiempoDeRecargaDisparo(0);
                 }
-                nave.puedeDisparar = false;
-                nave.setTiempoDeRecarga(0);
+                if(v.y > ALTO/2 && nave.dashRecargado){
+                    System.out.println("DASH!!!");
+                    nave.hacerDash();
+                    //todo implementar sonido: efectoDash
+//                    if (gameLauncher.sfx) {
+//                        efectoDash.play(0.1f);
+//                    }
+                    nave.dashRecargado = false;
+                    nave.setTiempoDeRecargaDash(0);
+                }
             }
             return true;
         }
