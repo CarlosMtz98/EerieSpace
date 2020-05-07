@@ -215,7 +215,7 @@ class PantallaEerieSpace extends Pantalla {
         meteoros.clear();
         balas.clear();
         musicaFondo.stop();
-        gameLauncher.setScreen(new PantallaPerdiste(gameLauncher));
+        gameLauncher.setScreen(new PantallaPerdiste(gameLauncher, marcador.getPoints()));
     }
 
     private void dibujarSprites() {
