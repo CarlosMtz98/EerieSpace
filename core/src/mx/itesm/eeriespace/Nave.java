@@ -70,4 +70,8 @@ public class Nave extends Objeto {
         vida -= daño;
         this.sprite.setColor(1f, (float)this.vida / 100, (float)this.vida / 100,1);
     }
+
+    public int getDaño() {
+        return 15;
+    }
 }

@@ -192,9 +192,16 @@ class PantallaEerieSpace extends Pantalla {
                 for (int n = balas.size() - 1; n > -1; n--) {
                     Bala bala = balas.get(n);
                     if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
-                        meteoros.remove(meteoro);
-                        balas.remove(bala);
+                        meteoro.disminuirVida(nave.getDaño());
                         marcador.incrementarPuntos(meteoro.getDaño());
+                        balas.remove(bala);
+                        Gdx.app.log("Vida Meteoro", Integer.toString(meteoro.getVida()));
+                        if (meteoro.getVida() <= 0)
+                        {
+                            Gdx.app.log("Vida Meteoro", Integer.toString(meteoro.getVida()));
+                            meteoros.remove(meteoro);
+                        }
+
                     }
                 }
                 if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
