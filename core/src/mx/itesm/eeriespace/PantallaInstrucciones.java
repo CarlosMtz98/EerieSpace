@@ -49,6 +49,9 @@ public class PantallaInstrucciones extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("OK Button Pressed");
                 gameLauncher.setScreen(new PantallaMenu(gameLauncher));
             }

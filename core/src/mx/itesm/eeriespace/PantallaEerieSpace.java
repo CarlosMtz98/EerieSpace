@@ -76,6 +76,7 @@ class PantallaEerieSpace extends Pantalla {
     //Efectos
     Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
+    Sound efectoItem = Gdx.audio.newSound(Gdx.files.internal("audio/item.wav"));
 
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
@@ -134,10 +135,18 @@ class PantallaEerieSpace extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
+
                 if (estadoJuego == EstadoJuego.JUGANDO) {
                     estadoJuego = EstadoJuego.PAUSADO;
+                    musicaFondo.pause();
                 } else {
                     estadoJuego = EstadoJuego.JUGANDO;
+                    if (gameLauncher.music) {
+                        cargarMusica();
+                    }
                 }
             }
         });
@@ -247,8 +256,9 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
-        // recargar disparo
+        // recargar disparo y dash
         nave.recargarDisparo(delta);
+        nave.recargarDash(delta);
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
@@ -259,6 +269,9 @@ class PantallaEerieSpace extends Pantalla {
                 Item item = items.get(i);
                 if(nave.sprite.getBoundingRectangle().overlaps(item.sprite.getBoundingRectangle())){
                     item.darBonus(nave);
+                    if (gameLauncher.sfx) {
+                        efectoItem.play(0.1f);
+                    }
                     items.remove(i);
                 }
             }
@@ -384,13 +397,17 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if (v.x > ANCHO / 2 && nave.puedeDisparar && estadoJuego == EstadoJuego.JUGANDO) {
-                disparar();
-                if (gameLauncher.sfx) {
-                    efectoLaser.play(0.1f);
+            if (v.x > ANCHO / 2 && estadoJuego == EstadoJuego.JUGANDO) {
+                if(v.y < ALTO/2 && nave.puedeDisparar) {
+                    disparar();
+                    if (gameLauncher.sfx) {
+                        efectoLaser.play(0.1f);
+                    }
+                    nave.puedeDisparar = false;
+                    nave.setTiempoDeRecargaDisparo(0);
+                } else if(nave.dashRecargado){
+                    nave.hacerDash();
                 }
-                nave.puedeDisparar = false;
-                nave.setTiempoDeRecargaDisparo(0);
             }
             return true;
         }

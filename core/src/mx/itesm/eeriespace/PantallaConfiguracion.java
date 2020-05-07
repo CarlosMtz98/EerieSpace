@@ -93,6 +93,9 @@ public class PantallaConfiguracion extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Music Button Pressed");
                 if (gameLauncher.music) {
                     gameLauncher.music = false;
@@ -111,6 +114,9 @@ public class PantallaConfiguracion extends Pantalla {
                     gameLauncher.sfx = false;
                 } else {
                     gameLauncher.sfx = true;
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
                 }
             }
         });
@@ -119,6 +125,9 @@ public class PantallaConfiguracion extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Return Button Pressed");
                 gameLauncher.setScreen(new PantallaMenu(gameLauncher));
             }
@@ -128,6 +137,9 @@ public class PantallaConfiguracion extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Credits Button Pressed");
                 gameLauncher.setScreen(new PantallaCreditos(gameLauncher));
             }

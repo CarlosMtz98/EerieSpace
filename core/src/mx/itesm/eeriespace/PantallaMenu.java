@@ -22,6 +22,7 @@ class PantallaMenu extends Pantalla {
     private TextButton helpButton;
     private TextButton settingsButton;
 
+
     public PantallaMenu(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
         loadMenuFiles();
@@ -60,6 +61,9 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Play Button Pressed");
                 gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
             }
@@ -69,6 +73,9 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Help Button Pressed");
                 gameLauncher.setScreen(new PantallaInstrucciones(gameLauncher));
             }
@@ -78,6 +85,9 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y ) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Settings Button Pressed");
                 gameLauncher.setScreen(new PantallaConfiguracion(gameLauncher));
             }

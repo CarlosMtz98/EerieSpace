@@ -88,6 +88,9 @@ public class PantallaPerdiste extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Return Button Pressed");
                 gameLauncher.setScreen(new PantallaMenu(gameLauncher));
             }
@@ -97,6 +100,9 @@ public class PantallaPerdiste extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Play again Button Pressed");
                 gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
             }
