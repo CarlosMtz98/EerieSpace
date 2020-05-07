@@ -140,7 +140,9 @@ class PantallaEerieSpace extends Pantalla {
                     musicaFondo.pause();
                 } else {
                     estadoJuego = EstadoJuego.JUGANDO;
-                    musicaFondo.play();
+                    if (gameLauncher.music) {
+                        cargarMusica();
+                    }
                 }
             }
         });
