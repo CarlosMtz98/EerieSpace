@@ -75,18 +75,22 @@ public class PantallaConfiguracion extends Pantalla {
         TextButton.TextButtonStyle textButtonStyleSettings = new TextButton.TextButtonStyle();
         textButtonStyleSettings.font = font;
         textButtonStyleSettings.checkedFontColor = Color.WHITE;
-        textButtonStyleSettings.checkedOverFontColor = Color.RED;
+        textButtonStyleSettings.fontColor = Color.RED;
 
         toggleMusicButton = new TextButton("Toggle Music", textButtonStyleSettings);
         toggleMusicButton.getLabel().setFontScale(1.5f);
         toggleMusicButton.setPosition(ANCHO / 2 - toggleMusicButton.getWidth() / 2, ALTO * 0.5f);
-        toggleMusicButton.setChecked(gameLauncher.music);
+        if (gameLauncher.music) {
+            toggleMusicButton.setChecked(true);
+        }
         settingsScene.addActor(toggleMusicButton);
 
         toggleSoundEffects = new TextButton("Toggle SFX", textButtonStyleSettings);
         toggleSoundEffects.getLabel().setFontScale(1.5f);
         toggleSoundEffects.setPosition(ANCHO / 2 - toggleSoundEffects.getWidth() / 2, ALTO * 0.6f);
-        toggleSoundEffects.setChecked(gameLauncher.sfx);
+        if (gameLauncher.sfx) {
+            toggleSoundEffects.setChecked(true);
+        }
         settingsScene.addActor(toggleSoundEffects);
 
         toggleMusicButton.addListener(new ClickListener() {
