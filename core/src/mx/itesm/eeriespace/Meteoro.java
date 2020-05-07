@@ -11,10 +11,7 @@ public class Meteoro extends Objeto {
     public Meteoro(Texture textura, float x, int daño) {
         super(textura, x, Pantalla.ALTO + 150);
         this.daño = daño;
-        //Un problema con esta estrategia es que si se crea en una esquina y la dirección del
-        //meteoro lo lleva a salirse de la pantalla, nunca lo va a poder destruir el jugador y se
-        //desperdicia el meteoro
-        this.angulo = (float) Math.random() - .5f;
+        this.angulo = x > Pantalla.ANCHO/2? (float)(Math.random()*(-0.8f)) : (float)Math.random()*0.8f;
     }
 
     public int getDaño() {

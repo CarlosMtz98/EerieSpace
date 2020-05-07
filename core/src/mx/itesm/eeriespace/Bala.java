@@ -17,8 +17,9 @@ public class Bala extends Objeto {
 
     public void setDireccion(Nave nave){
         sprite.setRotation(nave.sprite.getRotation());
-        double x = Math.cos(Math.toRadians(sprite.getRotation() + 90));
-        double y = Math.sin(Math.toRadians(sprite.getRotation() + 90));
+        double correccionAngulo = 90;
+        double x = Math.cos(Math.toRadians(sprite.getRotation() + correccionAngulo));
+        double y = Math.sin(Math.toRadians(sprite.getRotation() + correccionAngulo));
         velocidadX *= x;
         velocidadY *= y;
     }

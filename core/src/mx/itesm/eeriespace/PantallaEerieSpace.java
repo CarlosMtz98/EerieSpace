@@ -4,6 +4,8 @@ package mx.itesm.eeriespace;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -19,7 +21,6 @@ import java.util.ArrayList;
 
 // Donde se desarrolla el juego. Es el equivalente e PantallaSpaceInvaders
 class PantallaEerieSpace extends Pantalla {
-
     private final GameLauncher gameLauncher;
 
     // Balas
@@ -29,7 +30,7 @@ class PantallaEerieSpace extends Pantalla {
 
     // Meteoros
 
-    //Arreglos Texturas meteoros
+    // Arreglos Texturas meteoros
     private ArrayList<Texture> meteoroC = new ArrayList<>();
     private ArrayList<Texture> meteoroM = new ArrayList<>();
     private ArrayList<Texture> meteoroG = new ArrayList<>();
@@ -48,6 +49,12 @@ class PantallaEerieSpace extends Pantalla {
     protected Touchpad pad;
     float gameTime = 0f;
 
+    //Musica
+    Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("audio/cancion.mp3"));
+
+    //Efectos
+    Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
+
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
     }
@@ -65,7 +72,7 @@ class PantallaEerieSpace extends Pantalla {
         estilo.background = skin.getDrawable("fondo");
         estilo.knob = skin.getDrawable("boton");
 
-        //Crear pad joystick
+        // Crear pad joystick
         pad = new Touchpad(64, estilo);
         pad.setBounds(16, 16, 256, 256);
 
@@ -76,15 +83,13 @@ class PantallaEerieSpace extends Pantalla {
         pad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            Touchpad pad = (Touchpad)actor;
-            if (pad.getKnobPercentX() != 0)
-            {
-                nave.setEstado(EstadoMovimiento.MOVIMIENTO);
-            }
-            else
-            {
-                nave.setEstado(EstadoMovimiento.QUIETO);
-            }
+                Touchpad pad = (Touchpad)actor;
+                if (pad.getKnobPercentX() != 0){
+                    nave.setEstado(EstadoMovimiento.MOVIMIENTO);
+                }
+                else{
+                    nave.setEstado(EstadoMovimiento.QUIETO);
+                }
             }
         });
     }
@@ -96,12 +101,19 @@ class PantallaEerieSpace extends Pantalla {
         crearHUD();
         crearNave();
         crearMeteoro();
+        cargarMusica();
         InputProcessor inputProcessorOne = escenaHUD;
         InputProcessor inputProcessorTwo = new ProcesadorEntrada();
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(inputProcessorOne);
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
+    }
+
+    private void cargarMusica() {
+        musicaFondo.setLooping(true);
+        musicaFondo.setVolume(0.5f);
+        musicaFondo.play();
     }
 
     private void crearMeteoro() {
@@ -168,34 +180,41 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
-        nave.mover(pad, delta);
-        for (Bala bala : balas) bala.mover(delta);
-        for (int i = meteoros.size() - 1; i > -1; i--) {
-            Meteoro meteoro = meteoros.get(i);
-            meteoro.mover(delta);
-            if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
-                    meteoro.sprite.getX() > Pantalla.ANCHO ||
-                    meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
-                meteoros.remove(meteoro);
-            }
-            for (int n = balas.size() - 1; n > -1; n--) {
-                Bala bala = balas.get(n);
-                if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+        if (nave.getVida() >  0) {
+            nave.mover(pad, delta);
+            for (Bala bala : balas) bala.mover(delta);
+            for (int i = meteoros.size() - 1; i > -1; i--) {
+                Meteoro meteoro = meteoros.get(i);
+                meteoro.mover(delta);
+                if (meteoro.sprite.getX() - meteoro.sprite.getWidth() < 0 ||
+                        meteoro.sprite.getX() > Pantalla.ANCHO ||
+                        meteoro.sprite.getY() + meteoro.sprite.getHeight() < 0) {
                     meteoros.remove(meteoro);
-                    balas.remove(bala);
-                    marcador.incrementarPuntos(meteoro.getDaño());
+                }
+                for (int n = balas.size() - 1; n > -1; n--) {
+                    Bala bala = balas.get(n);
+                    if (bala.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+                        meteoros.remove(meteoro);
+                        balas.remove(bala);
+                        marcador.incrementarPuntos(meteoro.getDaño());
+                    }
+                }
+                if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
+                    nave.disminuirVida(meteoro.getDaño());
+                    meteoros.remove(meteoro);
+                    Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
                 }
             }
-            if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
-                terminarJuego();
-                break;
-            }
+        }
+        else {
+            terminarJuego();
         }
     }
 
     private void terminarJuego() {
         meteoros.clear();
         balas.clear();
+        musicaFondo.stop();
         gameLauncher.setScreen(new PantallaPerdiste(gameLauncher));
     }
 
@@ -244,7 +263,10 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
-            if(v.x > ANCHO/2)disparar();
+            if (v.x > ANCHO / 2) {
+                disparar();
+                efectoLaser.play(0.1f);
+            }
             return true;
         }
 
@@ -270,20 +292,34 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void disparar(){
-        float degrees = nave.sprite.getRotation();
-        float originX = nave.sprite.getX() + nave.sprite.getWidth()/2;
-        float originY = nave.sprite.getY() + nave.sprite.getHeight()/2;
-        float direction = degrees < 0? -1: 1;
-        degrees += 90;
-
-        float dx = (float)Math.cos(Math.toRadians(degrees))*nave.sprite.getWidth()/2;
-        float dy = (float)Math.sin(Math.toRadians(degrees))*nave.sprite.getHeight()/2 +
-                direction*((float)Math.cos(Math.toRadians(degrees))*texturaBala.getHeight()/2);
-
-        float x = originX + dx;
-        float y = originY + dy;
+        float x = obtenerPuntaX();
+        float y = obtenerPuntaY();
         Bala bala = new Bala(texturaBala, x, y);
         bala.setDireccion(nave);
         balas.add(bala);
+    }
+
+    private float obtenerPuntaX(){
+        float grados = nave.sprite.getRotation();
+        float correccionAngulo = 90f;
+        grados += correccionAngulo;
+
+        float origenX = nave.sprite.getX() + nave.sprite.getWidth()/2;
+        float dx = (float)Math.cos(Math.toRadians(grados))*nave.sprite.getWidth()/2;
+
+        return origenX + dx;
+    }
+
+    private float obtenerPuntaY(){
+        float grados = nave.sprite.getRotation();
+        float correccionAngulo = 90f;
+        float direccion = grados < 0? -1: 1;
+        grados += correccionAngulo;
+
+        float origenY = nave.sprite.getY() + nave.sprite.getHeight()/2;
+        float dy = (float)Math.sin(Math.toRadians(grados))*nave.sprite.getHeight()/2 +
+                direccion*((float)Math.cos(Math.toRadians(grados))*texturaBala.getHeight()/2);
+
+        return origenY + dy;
     }
 }
