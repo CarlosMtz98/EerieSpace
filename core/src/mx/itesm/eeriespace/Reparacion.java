@@ -11,6 +11,6 @@ public class Reparacion extends Item {
     @Override
     void darBonus(Nave nave) {
         int vida = nave.getVida();
-        nave.setVida(vida+20);
+        nave.setVida(vida + 20);
     }
 }
