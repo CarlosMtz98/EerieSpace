@@ -8,12 +8,17 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -70,9 +75,10 @@ class PantallaEerieSpace extends Pantalla {
 
     //Efectos
     Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
-
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
 
+    //Estado
+    private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -83,6 +89,13 @@ class PantallaEerieSpace extends Pantalla {
         camaraHUD.position.set(ANCHO/2, ALTO/2, 0);
         camaraHUD.update();
         vistaHUD = new StretchViewport(ANCHO, ALTO, camaraHUD);
+
+
+        Texture texturabtnPausa = new Texture("Pausa.png");
+        TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturabtnPausa));
+        ImageButton btnPausa = new ImageButton(trdPausa);
+        btnPausa.setPosition(ANCHO * .97f - btnPausa.getWidth(), ALTO * .97f - btnPausa.getHeight());
+
 
         Skin skin = new Skin();
         skin.add("fondo", new Texture("JoystickBackground.png"));
@@ -98,6 +111,7 @@ class PantallaEerieSpace extends Pantalla {
         pad.setColor(1,1,1,0.7f);
         escenaHUD = new Stage(vistaHUD);
         escenaHUD.addActor(pad);
+        escenaHUD.addActor(btnPausa);
 
         pad.addListener(new ChangeListener() {
             @Override
@@ -109,6 +123,14 @@ class PantallaEerieSpace extends Pantalla {
                 else{
                     nave.setEstado(EstadoMovimiento.QUIETO);
                 }
+            }
+        });
+
+        btnPausa.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                estadoJuego = EstadoJuego.PAUSADO;
             }
         });
     }
@@ -130,6 +152,7 @@ class PantallaEerieSpace extends Pantalla {
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
+
 
     private void cargarMusica() {
         musicaFondo.setLooping(true);
@@ -183,7 +206,9 @@ class PantallaEerieSpace extends Pantalla {
 
     @Override
     public void render(float delta) {
-        actualizar(delta);
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            actualizar(delta);
+        }
 
         gameTime += delta;
         if (gameTime > 1f) {
@@ -249,15 +274,18 @@ class PantallaEerieSpace extends Pantalla {
                     }
                 }
                 if (nave.sprite.getBoundingRectangle().overlaps(meteoro.sprite.getBoundingRectangle())) {
-                    if(!nave.getEscudo()){
+                    if (!nave.getEscudo()) {
                         nave.disminuirVida(meteoro.getDaño());
                         Gdx.app.log("Life RGB", Integer.toString(Math.round(255 * (float)nave.getVida() / 100)));
                     } else {
                         nave.setEscudo(false);
                     }
                     meteoros.remove(meteoro);
+                    if (gameLauncher.sfx) {
+                        efectoDaño.play(0.1f);
+                    }
+                    meteoros.remove(meteoro);
 
-                    efectoDaño.play(0.1f);
 
                 }
             }
@@ -403,4 +431,11 @@ class PantallaEerieSpace extends Pantalla {
 
         return origenY + dy;
     }
+
+    private enum EstadoJuego {
+        JUGANDO,
+        PAUSADO,
+        PERDIO,
+    }
+
 }

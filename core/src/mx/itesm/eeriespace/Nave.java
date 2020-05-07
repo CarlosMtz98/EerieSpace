@@ -54,6 +54,20 @@ public class Nave extends Objeto {
 
             sprite.setX(sprite.getX() + dx);
             sprite.setY(sprite.getY() + dy);
+
+            System.out.println(anguloNave);
+
+            // Límites de la pantalla
+            if(anguloNave < 0 && sprite.getX() + sprite.getWidth()/2 + dx > PantallaEerieSpace.ANCHO ){   // sale por derecha
+                sprite.setX(0);
+            }else if(anguloNave > 0 && sprite.getX() + sprite.getWidth()/2 + dx < 0){ //sale por la izquierda
+                sprite.setX(PantallaEerieSpace.ANCHO);
+            }else if(anguloNave > -90 && anguloNave < 90 && (sprite.getY() + sprite.getHeight()/2 + dy > PantallaEerieSpace.ALTO)){ // sale por arriba
+                sprite.setY(0);
+            }else if(sprite.getY() + sprite.getHeight()/2 + dy < 0){ // sale por abajo
+                sprite.setY(0);
+            }
+
         }
     }
 
@@ -79,35 +93,35 @@ public class Nave extends Objeto {
         this.tieneEscudo = tieneEscudo;
     }
 
-    public boolean getEscudo(){
+    public boolean getEscudo() {
         return tieneEscudo;
     }
 
-    public void setDaño(int daño){
+    public void setDaño(int daño) {
         this.daño = daño;
     }
 
-    public int getDaño(){
+    public int getDaño() {
         return daño;
     }
 
-    public void recargarDisparo(float delta){
+    public void recargarDisparo(float delta) {
         tiempoDeRecarga += delta;
-        if(tiempoDeRecarga >= recargaDisparo){
+        if (tiempoDeRecarga >= recargaDisparo) {
             tiempoDeRecarga = 0;
             puedeDisparar = true;
         }
     }
 
-    public void setTiempoDeRecarga(float tiempo){
+    public void setTiempoDeRecarga(float tiempo) {
         tiempoDeRecarga = tiempo;
     }
 
-    public void setRecargaDisparo(float recargaDisparo){
+    public void setRecargaDisparo(float recargaDisparo) {
         this.recargaDisparo = recargaDisparo;
     }
 
-    public float getRecargaDisparo(){
+    public float getRecargaDisparo() {
         return recargaDisparo;
     }
 }
