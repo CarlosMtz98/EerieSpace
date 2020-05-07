@@ -398,13 +398,16 @@ class PantallaEerieSpace extends Pantalla {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
             if (v.x > ANCHO / 2 && estadoJuego == EstadoJuego.JUGANDO) {
-                if(v.y < ALTO/2 && nave.puedeDisparar) {
-                    disparar();
-                    if (gameLauncher.sfx) {
-                        efectoLaser.play(0.1f);
+                if(v.y < ALTO/2){
+                    if(nave.puedeDisparar) {
+                        disparar();
+                        if (gameLauncher.sfx) {
+                            efectoLaser.play(0.1f);
+                        }
+
+                        nave.puedeDisparar = false;
+                        nave.setTiempoDeRecargaDisparo(0);
                     }
-                    nave.puedeDisparar = false;
-                    nave.setTiempoDeRecargaDisparo(0);
                 } else if(nave.dashRecargado){
                     nave.hacerDash();
                 }
