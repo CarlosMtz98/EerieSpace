@@ -94,7 +94,9 @@ public class Nave extends Objeto {
     public void setVida(int vida) {
         this.vida = vida;
         if(this.vida > 100) this.vida = 100;
-        this.sprite.setColor(1f, (float)this.vida / 100, (float)this.vida / 100,1);
+        if(!tieneEscudo){
+            this.sprite.setColor(1f, (float)this.vida / 100, (float)this.vida / 100,1);
+        }
     }
 
     public void disminuirVida(int daño) {
