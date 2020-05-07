@@ -169,6 +169,7 @@ class PantallaEerieSpace extends Pantalla {
         borrarPantalla(0, 0, 0);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
+        batch.draw(backgroundTexture, 0, 0);
         dibujarSprites();
         marcador.render(batch);
         batch.end();
