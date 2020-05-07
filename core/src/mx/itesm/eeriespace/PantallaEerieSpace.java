@@ -104,7 +104,9 @@ class PantallaEerieSpace extends Pantalla {
         crearHUD();
         crearNave();
         crearMeteoro();
-        cargarMusica();
+        if (gameLauncher.music) {
+            cargarMusica();
+        }
         InputProcessor inputProcessorOne = escenaHUD;
         InputProcessor inputProcessorTwo = new ProcesadorEntrada();
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
@@ -280,9 +282,11 @@ class PantallaEerieSpace extends Pantalla {
             camara.unproject(v);
             if (v.x > ANCHO / 2 && nave.puedeDisparar) {
                 disparar();
+                if (gameLauncher.sfx) {
+                    efectoLaser.play(0.1f);
+                }
                 nave.puedeDisparar = false;
                 nave.setTiempoDeRecarga(0);
-                efectoLaser.play(0.1f);
             }
             return true;
         }
