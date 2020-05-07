@@ -17,9 +17,12 @@ public class PantallaPerdiste extends Pantalla {
     private Marcador marcador;
 
     private Label gameOverTitleLabel;
+    private Label puntuacionAlta;
 
     private TextButton returnButton;
     private TextButton playAgainButton;
+
+    private AdministradorPuntuacion administradorPuntuacion;
 
     public PantallaPerdiste(GameLauncher gameLauncher, int puntos) {
         this.gameLauncher = gameLauncher;
@@ -33,10 +36,29 @@ public class PantallaPerdiste extends Pantalla {
     }
 
     private void createOptions() {
+        cargarPuntuaciones();
         gameOverScene = new Stage(vista);
         gameOverButtons();
         gameOverTitle();
+        highScoreTitle();
         Gdx.input.setInputProcessor(gameOverScene);
+    }
+
+    private void cargarPuntuaciones() {
+        administradorPuntuacion = new AdministradorPuntuacion();
+        Gdx.app.log("High score", Integer.toString(administradorPuntuacion.getPuntuacionAlta()));
+    }
+
+    private void highScoreTitle() {
+        label1Style.fontColor = Color.WHITE;
+        administradorPuntuacion.añadirPuntuacion(marcador.getPoints());
+        puntuacionAlta = new Label( "High score: " + Integer.toString(administradorPuntuacion.getPuntuacionAlta()), label1Style);
+        puntuacionAlta.setFontScale(1.5f);
+        puntuacionAlta.setSize(ANCHO, ALTO / 12);
+        puntuacionAlta.setPosition(ANCHO / 2 - puntuacionAlta.getWidth() / 2, ALTO * .6f);
+        puntuacionAlta.setAlignment(Align.center);
+
+        gameOverScene.addActor(puntuacionAlta);
     }
 
     private void gameOverTitle() {
