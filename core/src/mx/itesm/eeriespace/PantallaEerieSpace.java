@@ -211,14 +211,17 @@ class PantallaEerieSpace extends Pantalla {
         meteoroC.add(new Texture("asteroides/pequeno-1.png"));
         meteoroC.add(new Texture("asteroides/pequeno-2.png"));
         meteoroC.add(new Texture("asteroides/pequeno-3.png"));
+        meteoroC.add(new Texture("asteroides/pequeno-4.png"));
         meteoroM.add(new Texture("asteroides/medio-0.png"));
         meteoroM.add(new Texture("asteroides/medio-1.png"));
         meteoroM.add(new Texture("asteroides/medio-2.png"));
         meteoroM.add(new Texture("asteroides/medio-3.png"));
+        meteoroM.add(new Texture("asteroides/medio-4.png"));
         meteoroG.add(new Texture("asteroides/Grande-0.png"));
         meteoroG.add(new Texture("asteroides/Grande-1.png"));
         meteoroG.add(new Texture("asteroides/Grande-2.png"));
         meteoroG.add(new Texture("asteroides/Grande-3.png"));
+        meteoroG.add(new Texture("asteroides/Grande-4.png"));
         texturaEscudo = new Texture("items/Shield.png");
         texturaDaño = new Texture("items/Damage.png");
         texturaVida = new Texture("items/Health.png");
@@ -401,10 +404,7 @@ class PantallaEerieSpace extends Pantalla {
                 if(v.y < ALTO/2){
                     if(nave.puedeDisparar) {
                         disparar();
-                        if (gameLauncher.sfx) {
-                            efectoLaser.play(0.1f);
-                        }
-
+                        if (gameLauncher.sfx) { efectoLaser.play(0.1f); }
                         nave.puedeDisparar = false;
                         nave.setTiempoDeRecargaDisparo(0);
                     }
