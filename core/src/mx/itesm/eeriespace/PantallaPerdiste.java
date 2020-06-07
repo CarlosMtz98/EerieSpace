@@ -14,14 +14,20 @@ public class PantallaPerdiste extends Pantalla {
     private final GameLauncher gameLauncher;
 
     private Stage gameOverScene;
+    private Marcador marcador;
 
     private Label gameOverTitleLabel;
+    private Label puntuacionAlta;
 
     private TextButton returnButton;
     private TextButton playAgainButton;
 
-    public PantallaPerdiste(GameLauncher gameLauncher) {
+    private AdministradorPuntuacion administradorPuntuacion;
+
+    public PantallaPerdiste(GameLauncher gameLauncher, int puntos) {
         this.gameLauncher = gameLauncher;
+        this.marcador = new Marcador(ANCHO / 2, ALTO / 2, -1000f, -1000f);
+        this.marcador.incrementarPuntos(puntos);
     }
 
     @Override
@@ -30,10 +36,29 @@ public class PantallaPerdiste extends Pantalla {
     }
 
     private void createOptions() {
+        cargarPuntuaciones();
         gameOverScene = new Stage(vista);
         gameOverButtons();
         gameOverTitle();
+        highScoreTitle();
         Gdx.input.setInputProcessor(gameOverScene);
+    }
+
+    private void cargarPuntuaciones() {
+        administradorPuntuacion = new AdministradorPuntuacion();
+        Gdx.app.log("High score", Integer.toString(administradorPuntuacion.getPuntuacionAlta()));
+    }
+
+    private void highScoreTitle() {
+        label1Style.fontColor = Color.WHITE;
+        administradorPuntuacion.añadirPuntuacion(marcador.getPoints());
+        puntuacionAlta = new Label( "High score: " + Integer.toString(administradorPuntuacion.getPuntuacionAlta()), label1Style);
+        puntuacionAlta.setFontScale(1.5f);
+        puntuacionAlta.setSize(ANCHO, ALTO / 12);
+        puntuacionAlta.setPosition(ANCHO / 2 - puntuacionAlta.getWidth() / 2, ALTO * .6f);
+        puntuacionAlta.setAlignment(Align.center);
+
+        gameOverScene.addActor(puntuacionAlta);
     }
 
     private void gameOverTitle() {
@@ -63,6 +88,9 @@ public class PantallaPerdiste extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Return Button Pressed");
                 gameLauncher.setScreen(new PantallaMenu(gameLauncher));
             }
@@ -72,6 +100,9 @@ public class PantallaPerdiste extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Play again Button Pressed");
                 gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
             }
@@ -87,6 +118,7 @@ public class PantallaPerdiste extends Pantalla {
 
         batch.begin();
         batch.draw(backgroundTexture, 0, 0);
+        marcador.render(batch);
         batch.end();
 
         gameOverScene.draw();

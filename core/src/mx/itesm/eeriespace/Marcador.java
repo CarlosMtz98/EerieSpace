@@ -4,16 +4,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Marcador {
     private int puntos;
-    private float x;
-    private float y;
+    private int nivel;
+    private float xPuntos;
+    private float yPuntos;
+    private float xNivel;
+    private float yNivel;
 
     private Text text;
 
-    public Marcador(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public Marcador(float xPuntos, float yPuntos, float xNivel, float yNivel) {
+        this.xPuntos = xPuntos;
+        this.yPuntos = yPuntos;
+        this.xNivel = xNivel;
+        this.yNivel = yNivel;
         puntos = 0;
-      
+        nivel = 1;
         text = new Text();
     }
 
@@ -25,8 +30,17 @@ public class Marcador {
         this.puntos += puntos;
     }
 
+    public void incrementarNivel(){ nivel ++; }
+
+    public int getPoints() {
+        return puntos;
+    }
+
+
     public void render(SpriteBatch batch) {
         String scoreLetrero = "Score: " + puntos;
-        text.render(batch, scoreLetrero, x, y);
+        String nivelLetrero = "Level: " + nivel;
+        text.render(batch, scoreLetrero, xPuntos, yPuntos);
+        text.render(batch,nivelLetrero, xNivel, yNivel);
     }
 }

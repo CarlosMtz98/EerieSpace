@@ -1,6 +1,7 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,6 +23,7 @@ class PantallaMenu extends Pantalla {
     private TextButton helpButton;
     private TextButton settingsButton;
 
+
     public PantallaMenu(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
         loadMenuFiles();
@@ -30,6 +32,9 @@ class PantallaMenu extends Pantalla {
     @Override
     public void show() {
         createMenu();
+
+        // Tecla BACK regresa al sistema operativo
+        Gdx.input.setCatchKey(Input.Keys.BACK, false);
     }
 
     private void createMenu() {
@@ -60,6 +65,9 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Play Button Pressed");
                 gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
             }
@@ -69,6 +77,9 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Help Button Pressed");
                 gameLauncher.setScreen(new PantallaInstrucciones(gameLauncher));
             }
@@ -78,6 +89,9 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y ) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Settings Button Pressed");
                 gameLauncher.setScreen(new PantallaConfiguracion(gameLauncher));
             }
