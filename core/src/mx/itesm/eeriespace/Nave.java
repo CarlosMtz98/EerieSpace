@@ -50,22 +50,8 @@ public class Nave extends Objeto {
             float anguloJoyStick = (float)Math.toDegrees(Math.atan((double) padY / (double) padX));
             anguloJoyStick += (padX > 0)? -90: 90; //cambiar a los grados en formato de libgdx
             float anguloNave = sprite.getRotation();
-            float diffAngulo = anguloNave - anguloJoyStick;
-            if(Math.abs(diffAngulo) > 5){
-                diffAngulo = 5;
-            }
 
-            // para que siempre rote la distancia más corta
-            if((anguloNave > anguloJoyStick && !(anguloJoyStick < -90 && anguloNave > 90))
-                    || (anguloNave < -90 && anguloJoyStick > 90)){
-                diffAngulo *= -1;
-            }
-
-            // que no se pase del angulo y no se quede dando vueltas eternamente
-            if(anguloNave > 180) anguloNave -= 360f;
-            if(anguloNave < -180) anguloNave+= 360f;
-
-            sprite.setRotation(anguloNave + diffAngulo);
+            sprite.setRotation(anguloJoyStick);
 
             sprite.setX(sprite.getX() + dx);
             sprite.setY(sprite.getY() + dy);
