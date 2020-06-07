@@ -360,7 +360,7 @@ class PantallaEerieSpace extends Pantalla {
 
     private void crearItem(float x, float y){
         Item item;
-        if (Math.random()<= 0.5f){
+        if (Math.random()<= 0.3f){
             double r = Math.random();
             if(r < 0.1){
                 item = new Reparacion(texturaVida, x, y);
