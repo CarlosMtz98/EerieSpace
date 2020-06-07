@@ -1,6 +1,7 @@
 package mx.itesm.eeriespace;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -72,6 +73,11 @@ class PantallaEerieSpace extends Pantalla {
     protected Touchpad pad;
     float gameTime = 0f;
 
+    // GameIcons
+    private Texture textureDashIndicator;
+    private GameIcon dashIndicator;
+    private ArrayList<GameIcon> gameIcons = new ArrayList<>();
+
     //Musica
     Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("audio/cancion.mp3"));
 
@@ -104,14 +110,15 @@ class PantallaEerieSpace extends Pantalla {
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturabtnPausa));
         final ImageButton btnPausa = new ImageButton(trdPausa);
         btnPausa.setPosition(ANCHO * .97f - btnPausa.getWidth(), ALTO * .97f - btnPausa.getHeight());
-
-
         Skin skin = new Skin();
         skin.add("fondo", new Texture("JoystickBackground.png"));
         skin.add("boton", new Texture("JoystickFront.png"));
         Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
         estilo.background = skin.getDrawable("fondo");
         estilo.knob = skin.getDrawable("boton");
+
+        // Crear Icons
+        crearIcons();
 
         // Crear pad joystick
         pad = new Touchpad(64, estilo);
@@ -203,6 +210,12 @@ class PantallaEerieSpace extends Pantalla {
         nave = new Nave(texturaNave, x, y);
     }
 
+    private void crearIcons() {
+        float x = ANCHO * .2f - textureDashIndicator.getWidth();
+        float y = ALTO * .95f - textureDashIndicator.getHeight();
+        dashIndicator = new GameIcon(textureDashIndicator, x, y);
+    }
+
     private void cargarTexturas() {
         texturaBala = new Texture("Bullet.png");
         texturaNave = new Texture("Player.png");
@@ -224,6 +237,7 @@ class PantallaEerieSpace extends Pantalla {
         texturaEscudo = new Texture("items/Shield.png");
         texturaDaño = new Texture("items/Damage.png");
         texturaVida = new Texture("items/Health.png");
+        textureDashIndicator = new Texture("DashIndicator.png");
     }
 
     @Override
@@ -238,11 +252,13 @@ class PantallaEerieSpace extends Pantalla {
             gameTime = 0;
         }
 
-        tiempoCambiarNivel += delta;
-        if(tiempoCambiarNivel >= 20f){
-            dificultad += 0.05;
-            tiempoCambiarNivel = 0f;
-            marcador.incrementarNivel();
+        if(estadoJuego == EstadoJuego.JUGANDO) {
+            tiempoCambiarNivel += delta;
+            if (tiempoCambiarNivel >= 20f) {
+                dificultad += 0.05;
+                tiempoCambiarNivel = 0f;
+                marcador.incrementarNivel();
+            }
         }
 
         borrarPantalla(0, 0, 0);
@@ -300,6 +316,7 @@ class PantallaEerieSpace extends Pantalla {
         if (nave.getVida() >  0) {
             if (!nave.triggerDash) {
                 nave.mover(pad, delta);
+                gameIcons.remove(dashIndicator);
             }
             else
             {
@@ -364,11 +381,14 @@ class PantallaEerieSpace extends Pantalla {
         else {
             terminarJuego();
         }
+        if (nave.dashRecargado){
+            gameIcons.add(dashIndicator);
+        }
     }
 
     private void crearItem(float x, float y){
         Item item;
-        if (Math.random()<= 1){
+        if (Math.random()<= 0.3f){
             double r = Math.random();
             if(r < 0.1){
                 item = new Reparacion(texturaVida, x, y);
@@ -400,6 +420,9 @@ class PantallaEerieSpace extends Pantalla {
         }
         for(Item item : items){
             item.render(batch);
+        }
+        for(GameIcon icon : gameIcons){
+            icon.render(batch);
         }
     }
 
