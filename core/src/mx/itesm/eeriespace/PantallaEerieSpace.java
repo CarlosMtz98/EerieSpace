@@ -265,8 +265,13 @@ class PantallaEerieSpace extends Pantalla {
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
-            nave.mover(pad, delta);
-
+            if (!nave.triggerDash) {
+                nave.mover(pad, delta);
+            }
+            else
+            {
+                nave.hacerDash(delta);
+            }
             // colisiones items
             for(int i = items.size()-1 ; i >= 0; i--){
                 Item item = items.get(i);
@@ -322,6 +327,7 @@ class PantallaEerieSpace extends Pantalla {
                     meteoros.remove(meteoro);
                 }
             }
+
         }
         else {
             terminarJuego();
@@ -409,7 +415,7 @@ class PantallaEerieSpace extends Pantalla {
                         nave.setTiempoDeRecargaDisparo(0);
                     }
                 } else if(nave.dashRecargado){
-                    nave.hacerDash();
+                    nave.triggerDash = true;
                 }
             }
             return true;

@@ -4,11 +4,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 public class Nave extends Objeto {
-
     private EstadoMovimiento estadoMovimiento;
     private boolean tieneEscudo = false;
+    public boolean triggerDash = false;
     private int vida;
     private int daño;
+    private float time = 0;
 
     // Pad
     float padX = 0;
@@ -21,7 +22,7 @@ public class Nave extends Objeto {
 
     // Dash
     private final float factorDeCargaDash = 0.1f;   // 0 = sin dash, 1 = delta (muy rápido)
-    public static final float desplazamientoDash = 125;
+    public static final float desplazamientoDash = 300;
     public boolean dashRecargado;
     private float recargaDash;
     private float tiempoDeRecargaDash;
@@ -147,13 +148,18 @@ public class Nave extends Objeto {
         return recargaDash;
     }
 
-    public void hacerDash() {
-        sprite.setX(sprite.getX() + padX*desplazamientoDash);
-        sprite.setY(sprite.getY() + padY*desplazamientoDash);
-        if(padX == 0 && padY == 0){
-            sprite.setY(sprite.getY() + desplazamientoDash);
+    public void hacerDash(float delta) {
+        time += delta;
+        sprite.setX(sprite.getX() + padX + (desplazamientoDash*delta));
+        sprite.setY(sprite.getY() + padY + (desplazamientoDash*delta));
+        if (padX == 0 && padY == 0) {
+            sprite.setY(sprite.getY() + (desplazamientoDash*delta));
         }
-        dashRecargado = false;
-        setTiempoDeRecargaDash(0);
+        if (time > .25f) {
+            time = 0;
+            dashRecargado = false;
+            triggerDash = false;
+            setTiempoDeRecargaDash(0);
+        }
     }
 }
