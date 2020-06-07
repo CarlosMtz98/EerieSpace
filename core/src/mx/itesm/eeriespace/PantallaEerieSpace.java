@@ -77,6 +77,7 @@ class PantallaEerieSpace extends Pantalla {
     Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
     Sound efectoItem = Gdx.audio.newSound(Gdx.files.internal("audio/item.wav"));
+    Sound efectoDash = Gdx.audio.newSound(Gdx.files.internal("audio/Dash.mp3"));
 
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
@@ -412,6 +413,9 @@ class PantallaEerieSpace extends Pantalla {
                     }
                 } else if(nave.dashRecargado){
                     nave.hacerDash();
+                    if (gameLauncher.sfx) {
+                        efectoDash.play(0.1f);
+                    }
                 }
             }
             return true;
