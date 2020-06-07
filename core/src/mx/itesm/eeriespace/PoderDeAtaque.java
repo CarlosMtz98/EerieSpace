@@ -10,6 +10,6 @@ public class PoderDeAtaque extends Item {
 
     @Override
     void darBonus(Nave nave) {
-        nave.setDaño(nave.getDaño() + 15);
+        nave.setDaño(nave.getDaño() + 10);
     }
 }
