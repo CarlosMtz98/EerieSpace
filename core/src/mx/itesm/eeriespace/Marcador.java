@@ -39,7 +39,7 @@ public class Marcador {
 
     public void render(SpriteBatch batch) {
         String scoreLetrero = "Score: " + puntos;
-        String nivelLetrero = "Nivel: " + nivel;
+        String nivelLetrero = "Level: " + nivel;
         text.render(batch, scoreLetrero, xPuntos, yPuntos);
         text.render(batch,nivelLetrero, xNivel, yNivel);
     }

@@ -1,6 +1,7 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,6 +30,9 @@ public class PantallaInstrucciones extends Pantalla {
     public void show() {
         createHelp();
         backgroundTexture = new Texture("HelpScreen.png");
+
+        // Avisar que queremos atrapar la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void createHelp() {
@@ -66,6 +70,11 @@ public class PantallaInstrucciones extends Pantalla {
         batch.draw(backgroundTexture, 0, 0);
         batch.end();
         helpScene.draw();
+
+        // Tecla de BACK
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            gameLauncher.setScreen(new PantallaMenu(gameLauncher));
+        }
     }
 
     @Override
