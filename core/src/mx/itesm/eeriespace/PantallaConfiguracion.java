@@ -22,7 +22,7 @@ public class PantallaConfiguracion extends Pantalla {
     public static final Color RED = new Color(0xff0000ff);
 
     // Buttons
-    private TextButton returnButton;
+    private TextButton okButton;
     private TextButton toggleMusicButton;
     private TextButton toggleSoundEffects;
     private TextButton resetLeaderboardButton;
@@ -57,10 +57,11 @@ public class PantallaConfiguracion extends Pantalla {
     }
 
     private void settingsButtons() {
-        returnButton = new TextButton("Return", textButtonStyle);
-        returnButton.getLabel().setFontScale(1.5f);
-        returnButton.setPosition(ANCHO / 2 - returnButton.getWidth() / 2, ALTO * 0.2f);
-        settingsScene.addActor(returnButton);
+        okButton = new TextButton("OK", textButtonStyle);
+        okButton.getLabel().setFontScale(2);
+
+        okButton.setPosition(ANCHO / 2 - okButton.getWidth() / 2, ALTO * 0.1f);
+        settingsScene.addActor(okButton);
 
         creditsButton = new TextButton("Credits", textButtonStyle);
         creditsButton.getLabel().setFontScale(1.5f);
@@ -131,7 +132,7 @@ public class PantallaConfiguracion extends Pantalla {
             }
         });
 
-        returnButton.addListener(new ClickListener() {
+        okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
