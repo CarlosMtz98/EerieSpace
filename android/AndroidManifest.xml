@@ -4,10 +4,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:isGame="true"
         android:appCategory="game"
-        android:label="@string/app_name"
+        android:label="Eerie Space"
         android:theme="@style/GdxTheme" >
         <activity
             android:name="mx.itesm.eeriespace.AndroidLauncher"
