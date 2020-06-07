@@ -245,11 +245,13 @@ class PantallaEerieSpace extends Pantalla {
             gameTime = 0;
         }
 
-        tiempoCambiarNivel += delta;
-        if(tiempoCambiarNivel >= 20f){
-            dificultad += 0.05;
-            tiempoCambiarNivel = 0f;
-            marcador.incrementarNivel();
+        if(estadoJuego == EstadoJuego.JUGANDO) {
+            tiempoCambiarNivel += delta;
+            if (tiempoCambiarNivel >= 20f) {
+                dificultad += 0.05;
+                tiempoCambiarNivel = 0f;
+                marcador.incrementarNivel();
+            }
         }
 
         borrarPantalla(0, 0, 0);
