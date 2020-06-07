@@ -1,7 +1,6 @@
 package mx.itesm.eeriespace;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -400,7 +399,7 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     public void cargarEfectoDash() {
-        if(nave.efectoDashHabilitado == true){
+        if (nave.efectoDashHabilitado == true && gameLauncher.sfx) {
             efectoDashRecargado.play(0.1f);
             nave.efectoDashHabilitado = false;
         }
