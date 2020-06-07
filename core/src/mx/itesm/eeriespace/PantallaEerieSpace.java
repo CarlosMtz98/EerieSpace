@@ -35,7 +35,8 @@ class PantallaEerieSpace extends Pantalla {
     private ArrayList<Meteoro> meteoros = new ArrayList<Meteoro>();
     private Texture texturaBala;
 
-    // Meteoros
+    // Pausa
+    private Texture texturaPausa;
 
     // Arreglos Texturas meteoros
     private ArrayList<Texture> meteoroC = new ArrayList<>();
@@ -107,7 +108,7 @@ class PantallaEerieSpace extends Pantalla {
 
         Texture texturabtnPausa = new Texture("Pausa.png");
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturabtnPausa));
-        ImageButton btnPausa = new ImageButton(trdPausa);
+        final ImageButton btnPausa = new ImageButton(trdPausa);
         btnPausa.setPosition(ANCHO * .97f - btnPausa.getWidth(), ALTO * .97f - btnPausa.getHeight());
         Skin skin = new Skin();
         skin.add("fondo", new Texture("JoystickBackground.png"));
@@ -145,17 +146,10 @@ class PantallaEerieSpace extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if (gameLauncher.sfx) {
-                    efectoClick.play(0.1f);
-                }
-
                 if (estadoJuego == EstadoJuego.JUGANDO) {
-                    estadoJuego = EstadoJuego.PAUSADO;
-                    musicaFondo.pause();
-                } else {
-                    estadoJuego = EstadoJuego.JUGANDO;
-                    if (gameLauncher.music) {
-                        cargarMusica();
+                    pausar();
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
                     }
                 }
             }
@@ -182,7 +176,6 @@ class PantallaEerieSpace extends Pantalla {
         // Avisar que queremos atrapar la tecla de back
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
-
 
     private void cargarMusica() {
         musicaFondo.setLooping(true);
@@ -274,16 +267,20 @@ class PantallaEerieSpace extends Pantalla {
         batch.draw(backgroundTexture, 0, 0);
         dibujarSprites();
         marcador.render(batch);
+        if (estadoJuego == EstadoJuego.PAUSADO) {
+            batch.draw(texturaPausa, ANCHO / 2 - texturaPausa.getWidth() / 2, ALTO / 2 - texturaPausa.getHeight() / 2);
+        }
         batch.end();
-
         batch.setProjectionMatrix(camaraHUD.combined);
-        escenaHUD.draw();
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            escenaHUD.draw();
+        }
     }
 
     private void regresarPantalla() {
         if(estadoJuego == EstadoJuego.JUGANDO){
 
-            //pausar();
+            pausar();
 
         }else if(estadoJuego == EstadoJuego.PAUSADO){
             if (gameLauncher.sfx) {
@@ -294,9 +291,20 @@ class PantallaEerieSpace extends Pantalla {
             }
 
             estadoJuego = EstadoJuego.JUGANDO;
-
         }
+    }
 
+    private void pausar() {
+        texturaPausa = new Texture("Pause.png");
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            estadoJuego = EstadoJuego.PAUSADO;
+            musicaFondo.pause();
+        } else {
+            estadoJuego = EstadoJuego.JUGANDO;
+            if (gameLauncher.music) {
+                cargarMusica();
+            }
+        }
     }
 
     private void actualizar(float delta) {
@@ -458,6 +466,7 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
+
             if (v.x > ANCHO / 2 && estadoJuego == EstadoJuego.JUGANDO) {
                 if(v.y < ALTO/2){
                     if(nave.puedeDisparar) {
@@ -478,7 +487,34 @@ class PantallaEerieSpace extends Pantalla {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
+            Vector3 v = new Vector3(screenX, screenY, 0);
+            camara.unproject(v);
+            if (estadoJuego == EstadoJuego.PAUSADO) {
+                //Boton Reset
+                if (v.x > ANCHO / 2 - 135 && v.x < ANCHO / 2 + 125 && v.y > ALTO / 2 - 25 && v.y < ALTO / 2 + 45) {
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
+                    gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
+                }
+
+                //Boton Exit
+                if (v.x > ANCHO / 2 - 115 && v.x < ANCHO / 2 + 105 && v.y > ALTO / 2 - 230 && v.y < ALTO / 2 - 155) {
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
+                    gameLauncher.setScreen(new PantallaMenu(gameLauncher));
+                }
+
+                //Boton Resume
+                if (v.x > ANCHO / 2 - 165 && v.x < ANCHO / 2 + 155 && v.y > ALTO / 2 + 170 && v.y < ALTO / 2 + 240) {
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
+                    pausar();
+                }
+            }
+            return true;
         }
 
         @Override
