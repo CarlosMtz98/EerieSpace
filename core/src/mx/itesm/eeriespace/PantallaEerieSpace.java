@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -29,6 +30,11 @@ import java.util.ArrayList;
 // Donde se desarrolla el juego. Es el equivalente e PantallaSpaceInvaders
 class PantallaEerieSpace extends Pantalla {
     private final GameLauncher gameLauncher;
+
+    // Overlay (división dash-shoot)
+    Texture overlay = new Texture("Overlay.png");
+    Sprite overlaySprite = new Sprite(overlay);
+    private float overlayAlpha = 1f;
 
     // Balas
     private ArrayList<Bala> balas = new ArrayList<>();
@@ -86,6 +92,7 @@ class PantallaEerieSpace extends Pantalla {
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
     Sound efectoItem = Gdx.audio.newSound(Gdx.files.internal("audio/item.wav"));
     Sound efectoDash = Gdx.audio.newSound(Gdx.files.internal("audio/Dash.mp3"));
+    Sound efectoDashRecargado = Gdx.audio.newSound(Gdx.files.internal("audio/dash_recharge.wav"));
 
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
@@ -260,11 +267,17 @@ class PantallaEerieSpace extends Pantalla {
                 marcador.incrementarNivel();
             }
         }
-
         borrarPantalla(0, 0, 0);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         batch.draw(backgroundTexture, 0, 0);
+
+        // Desvanecimiento del overlay
+        if(overlayAlpha > 0){
+            overlaySprite.draw(batch, overlayAlpha);
+            overlayAlpha -= 0.005f;
+        }
+
         dibujarSprites();
         marcador.render(batch);
         if (estadoJuego == EstadoJuego.PAUSADO) {
@@ -279,9 +292,8 @@ class PantallaEerieSpace extends Pantalla {
 
     private void regresarPantalla() {
         if(estadoJuego == EstadoJuego.JUGANDO){
-
             pausar();
-
+            overlay.dispose();
         }else if(estadoJuego == EstadoJuego.PAUSADO){
             if (gameLauncher.sfx) {
                 efectoClick.play(0.1f);
@@ -382,7 +394,15 @@ class PantallaEerieSpace extends Pantalla {
             terminarJuego();
         }
         if (nave.dashRecargado){
+            cargarEfectoDash();
             gameIcons.add(dashIndicator);
+        }
+    }
+
+    public void cargarEfectoDash() {
+        if(nave.efectoDashHabilitado == true){
+            efectoDashRecargado.play(0.1f);
+            nave.efectoDashHabilitado = false;
         }
     }
 
