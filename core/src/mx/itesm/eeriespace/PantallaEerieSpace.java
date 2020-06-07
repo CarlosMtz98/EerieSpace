@@ -85,6 +85,7 @@ class PantallaEerieSpace extends Pantalla {
     //Nivel
     float dificultad = 0f;
     float tiempoCambiarNivel = 0f;
+    int nivel = 1;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -196,7 +197,7 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void crearMarcador() {
-        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f);
+        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f, ANCHO*0.8f, ALTO*0.95f);
     }
 
     private void crearNave() {
@@ -244,6 +245,7 @@ class PantallaEerieSpace extends Pantalla {
         if(tiempoCambiarNivel >= 20f){
             dificultad += 0.05;
             tiempoCambiarNivel = 0f;
+            marcador.incrementarNivel();
         }
 
         borrarPantalla(0, 0, 0);
