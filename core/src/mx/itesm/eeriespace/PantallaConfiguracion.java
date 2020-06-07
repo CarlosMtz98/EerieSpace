@@ -1,6 +1,7 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -42,6 +43,9 @@ public class PantallaConfiguracion extends Pantalla {
         settingsButtons();
         settingsTitle();
         Gdx.input.setInputProcessor(settingsScene);
+
+        // Avisar que queremos atrapar la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void settingsTitle() {
@@ -166,6 +170,11 @@ public class PantallaConfiguracion extends Pantalla {
         batch.end();
 
         settingsScene.draw();
+
+        // Tecla de BACK
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            gameLauncher.setScreen(new PantallaMenu(gameLauncher));
+        }
     }
 
     @Override

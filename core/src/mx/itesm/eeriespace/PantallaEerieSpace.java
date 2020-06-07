@@ -2,6 +2,7 @@ package mx.itesm.eeriespace;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
@@ -168,6 +169,9 @@ class PantallaEerieSpace extends Pantalla {
         inputMultiplexer.addProcessor(inputProcessorOne);
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        // Avisar que queremos atrapar la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
 
@@ -255,6 +259,24 @@ class PantallaEerieSpace extends Pantalla {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         escenaHUD.draw();
+    }
+
+    private void regresarPantalla() {
+        if(estadoJuego == EstadoJuego.JUGANDO){
+
+            //pausar();
+
+        }else if(estadoJuego == EstadoJuego.PAUSADO){
+            if (gameLauncher.sfx) {
+                efectoClick.play(0.1f);
+            }
+            if(gameLauncher.music){
+                cargarMusica();
+            }
+
+            estadoJuego = EstadoJuego.JUGANDO;
+
+        }
 
     }
 
@@ -383,7 +405,12 @@ class PantallaEerieSpace extends Pantalla {
     private class ProcesadorEntrada implements InputProcessor {
         @Override
         public boolean keyDown(int keycode) {
-            return false;
+            // Tecla de back
+            if(keycode == Input.Keys.BACK){
+                regresarPantalla();
+            }
+
+            return true;
         }
 
         @Override
