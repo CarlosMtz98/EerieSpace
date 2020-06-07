@@ -30,9 +30,8 @@ public abstract class Pantalla implements Screen
     // Textures file locations
     Texture backgroundTexture = new Texture("fondo.png");
 
-    //Efecto sonido click
+    // Efecto sonido click
     Sound efectoClick = Gdx.audio.newSound(Gdx.files.internal("audio/click.mp3"));
-
 
     // Constructor, inicializa los objetos camara, vista, batch y font
     public Pantalla() {
