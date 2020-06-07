@@ -26,7 +26,7 @@ public class PantallaPerdiste extends Pantalla {
 
     public PantallaPerdiste(GameLauncher gameLauncher, int puntos) {
         this.gameLauncher = gameLauncher;
-        this.marcador = new Marcador(ANCHO / 2, ALTO / 2);
+        this.marcador = new Marcador(ANCHO / 2, ALTO / 2, -1000f, -1000f);
         this.marcador.incrementarPuntos(puntos);
     }
 

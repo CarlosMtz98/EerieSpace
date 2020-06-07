@@ -77,6 +77,7 @@ class PantallaEerieSpace extends Pantalla {
     Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
     Sound efectoItem = Gdx.audio.newSound(Gdx.files.internal("audio/item.wav"));
+    Sound efectoDash = Gdx.audio.newSound(Gdx.files.internal("audio/Dash.mp3"));
 
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
@@ -84,6 +85,7 @@ class PantallaEerieSpace extends Pantalla {
     //Nivel
     float dificultad = 0f;
     float tiempoCambiarNivel = 0f;
+    int nivel = 1;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -195,7 +197,7 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void crearMarcador() {
-        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f);
+        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f, ANCHO*0.8f, ALTO*0.95f);
     }
 
     private void crearNave() {
@@ -243,6 +245,7 @@ class PantallaEerieSpace extends Pantalla {
         if(tiempoCambiarNivel >= 20f){
             dificultad += 0.05;
             tiempoCambiarNivel = 0f;
+            marcador.incrementarNivel();
         }
 
         borrarPantalla(0, 0, 0);
@@ -410,6 +413,9 @@ class PantallaEerieSpace extends Pantalla {
                     }
                 } else if(nave.dashRecargado){
                     nave.hacerDash();
+                    if (gameLauncher.sfx) {
+                        efectoDash.play(0.1f);
+                    }
                 }
             }
             return true;
