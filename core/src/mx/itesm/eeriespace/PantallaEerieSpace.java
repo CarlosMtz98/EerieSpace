@@ -2,6 +2,7 @@ package mx.itesm.eeriespace;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
@@ -77,6 +78,7 @@ class PantallaEerieSpace extends Pantalla {
     Sound efectoLaser = Gdx.audio.newSound(Gdx.files.internal("audio/laserSfx.wav"));
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
     Sound efectoItem = Gdx.audio.newSound(Gdx.files.internal("audio/item.wav"));
+    Sound efectoDash = Gdx.audio.newSound(Gdx.files.internal("audio/Dash.mp3"));
 
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
@@ -84,6 +86,7 @@ class PantallaEerieSpace extends Pantalla {
     //Nivel
     float dificultad = 0f;
     float tiempoCambiarNivel = 0f;
+    int nivel = 1;
 
     public PantallaEerieSpace(GameLauncher gameLauncher) {
         this.gameLauncher = gameLauncher;
@@ -168,6 +171,9 @@ class PantallaEerieSpace extends Pantalla {
         inputMultiplexer.addProcessor(inputProcessorOne);
         inputMultiplexer.addProcessor(inputProcessorTwo);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        // Avisar que queremos atrapar la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
 
@@ -195,7 +201,7 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void crearMarcador() {
-        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f);
+        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f, ANCHO*0.8f, ALTO*0.95f);
     }
 
     private void crearNave() {
@@ -243,6 +249,7 @@ class PantallaEerieSpace extends Pantalla {
         if(tiempoCambiarNivel >= 20f){
             dificultad += 0.05;
             tiempoCambiarNivel = 0f;
+            marcador.incrementarNivel();
         }
 
         borrarPantalla(0, 0, 0);
@@ -255,6 +262,24 @@ class PantallaEerieSpace extends Pantalla {
 
         batch.setProjectionMatrix(camaraHUD.combined);
         escenaHUD.draw();
+    }
+
+    private void regresarPantalla() {
+        if(estadoJuego == EstadoJuego.JUGANDO){
+
+            //pausar();
+
+        }else if(estadoJuego == EstadoJuego.PAUSADO){
+            if (gameLauncher.sfx) {
+                efectoClick.play(0.1f);
+            }
+            if(gameLauncher.music){
+                cargarMusica();
+            }
+
+            estadoJuego = EstadoJuego.JUGANDO;
+
+        }
 
     }
 
@@ -327,7 +352,6 @@ class PantallaEerieSpace extends Pantalla {
                     meteoros.remove(meteoro);
                 }
             }
-
         }
         else {
             terminarJuego();
@@ -389,7 +413,12 @@ class PantallaEerieSpace extends Pantalla {
     private class ProcesadorEntrada implements InputProcessor {
         @Override
         public boolean keyDown(int keycode) {
-            return false;
+            // Tecla de back
+            if(keycode == Input.Keys.BACK){
+                regresarPantalla();
+            }
+
+            return true;
         }
 
         @Override
@@ -416,6 +445,9 @@ class PantallaEerieSpace extends Pantalla {
                     }
                 } else if(nave.dashRecargado){
                     nave.triggerDash = true;
+                    if (gameLauncher.sfx) {
+                        efectoDash.play(0.1f);
+                    }
                 }
             }
             return true;

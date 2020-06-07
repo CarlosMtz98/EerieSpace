@@ -1,6 +1,7 @@
 package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,6 +28,9 @@ public class PantallaCreditos extends Pantalla {
     public void show() {
         crearCreditos();
         backgroundTexture = new Texture("CreditsScreen.png");
+
+        // Avisar que queremos atrapar la tecla de back
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     private void crearCreditos() {
@@ -64,6 +68,10 @@ public class PantallaCreditos extends Pantalla {
         batch.draw(backgroundTexture, 0, 0);
         batch.end();
         escenaCreditos.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            gameLauncher.setScreen(new PantallaConfiguracion(gameLauncher));
+        }
     }
 
     @Override
