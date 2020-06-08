@@ -224,7 +224,7 @@ class PantallaEerieSpace extends Pantalla {
 
     private void cargarTexturas() {
         texturaBala = new Texture("Bullet.png");
-        texturaNave = new Texture("Player.png");
+        texturaNave = new Texture("PlayerSheet.png");
         meteoroC.add(new Texture("asteroides/pequeno-0.png"));
         meteoroC.add(new Texture("asteroides/pequeno-1.png"));
         meteoroC.add(new Texture("asteroides/pequeno-2.png"));
