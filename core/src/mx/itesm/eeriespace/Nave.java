@@ -34,6 +34,7 @@ public class Nave extends Objeto {
     public boolean dashRecargado;
     private float recargaDash;
     private float tiempoDeRecargaDash;
+    public boolean efectoDashHabilitado = false;
 
     //TextureRegion
     private TextureRegion[][] texturaNave;
@@ -154,6 +155,7 @@ public class Nave extends Objeto {
         if(tiempoDeRecargaDash >= recargaDash){
             tiempoDeRecargaDash = 0;
             dashRecargado = true;
+            efectoDashHabilitado = true;
         }
     }
 

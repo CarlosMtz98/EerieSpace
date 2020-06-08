@@ -55,7 +55,7 @@ public class PantallaCreditos extends Pantalla {
                     efectoClick.play(0.1f);
                 }
                 System.out.println("OK Button Pressed");
-                gameLauncher.setScreen(new PantallaMenu(gameLauncher));
+                gameLauncher.setScreen(new PantallaConfiguracion(gameLauncher));
             }
         });
     }

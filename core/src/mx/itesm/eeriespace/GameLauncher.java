@@ -8,6 +8,6 @@ public class GameLauncher extends Game {
 
     @Override
     public void create() {
-        setScreen(new PantallaMenu(this));
+        setScreen(new PantallaSplash(this));
     }
 }

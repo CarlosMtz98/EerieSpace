@@ -1,0 +1,90 @@
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+  <title>Eerie Space</title>
+  <link rel='stylesheet' href='https://dpalme.github.io/Peoria/css/peoria-0-3-1.css'>
+  <link rel='stylesheet' href='https://dpalme.github.io/Peoria/css/normalize.css'>
+  <link rel="stylesheet" href="website/Fonts/Basier-Square-Mono-Regular-Webfont/stylesheet.css">
+
+  <style>
+    :root {
+        --font-face: 'basier_square_monoregular', 'Courier New', Courier, monospace;
+        --type-size: 5em;
+    }
+
+    .mobile-hide {
+        display: none;
+    }
+
+    /* Larger than phablet (also point when grid becomes active) */
+    @media (min-width: 550px) {
+        :root {
+            --type-size: 6em;
+        }
+    }
+
+    /* Larger than tablet */
+    @media (min-width: 750px) {
+        :root {
+            --type-size: 7em;
+        }
+
+        .mobile-hide {
+            display: inherit;
+        }
+    }
+
+    /* Larger than desktop */
+    @media (min-width: 1000px) {
+        :root {
+            --type-size: 8em;
+        }
+    }
+
+    /* Larger than Desktop HD */
+    @media (min-width: 1200px) {
+        :root {
+            --type-size: 10em;
+        }
+    }
+
+</style>
+</head>
+
+<body class="night background-cover" style="background-image: url('android/assets/fondo.png');">
+    <div class="fullscreen">
+        <div class="absolute-center">
+            <h1 style="font-weight: 400; font-size: var(--type-size);" class="full column text-center">Eerie</h1>
+            <h1 style="font-weight: 400; font-size: var(--type-size);" class="full column text-center">Sp△ce</h1>
+            <p class="text-center full column mid-white">Escape from the unkown</p>
+        </div>
+    </div>
+    <div class="container top-margin half-screen-padding-top">
+        <div class="full column text-center">
+            <h2 class="col-margin-bottom">Destroy Asteroids</h2>
+            <h2 class="col-margin-bottom">Simple Controls</h2>
+            <h2 class="col-margin-bottom">Fun Power Ups</h2>
+            <h2 class="col-margin-bottom">Endless Fun</h2>
+        </div>
+        <img class="absolute back-2" src="android/assets/Player.png" style="left: 10%; bottom: 20%; transform: rotate(45deg);"></img>
+        <img class="absolute back-2" src="android/assets/asteroides/Grande-0.png" style="left: 20%; bottom: 30%"></img>
+        <img class="absolute back-2 mobile-hide" src="android/assets/asteroides/Grande-1.png" style="left: 80%; bottom: 50%"></img>
+        <img class="absolute back-2" src="android/assets/asteroides/Grande-2.png" style="left: 60%; bottom: 50%"></img>
+        <img class="absolute back-2" src="android/assets/asteroides/medio-1.png" style="left: 50%; bottom: 80%"></img>
+        <img class="absolute back-2" src="android/assets/asteroides/medio-4.png" style="left: 80%; bottom: 10%"></img>
+        <img class="absolute back-2 mobile-hide" src="android/assets/asteroides/medio-3.png" style="left: 0%; bottom: 60%"></img>
+        <img class="absolute back-2 mobile-hide" src="android/assets/asteroides/medio-2.png" style="left: 60%; bottom: 40%"></img>
+        <img class="absolute back-2 mobile-hide" src="android/assets/asteroides/pequeno-2.png" style="left: 30%; bottom: 20%"></img>
+        <div class="full column col-margin-vertical">
+            <div class="half column col-margin-bottom">
+                <a href="#" class="button block">IOS</a>
+            </div>
+            <div class="half column">
+                <a href="#" class="button block">Android</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
