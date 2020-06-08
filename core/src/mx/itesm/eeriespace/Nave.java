@@ -2,6 +2,9 @@ package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 public class Nave extends Objeto {
@@ -11,6 +14,10 @@ public class Nave extends Objeto {
     private int vida;
     private int daño;
     private float time = 0;
+
+    //Coordenadas
+    float x;
+    float y;
 
     // Pad
     float padX = 0;
@@ -28,8 +35,14 @@ public class Nave extends Objeto {
     private float recargaDash;
     private float tiempoDeRecargaDash;
 
+    //TextureRegion
+    private TextureRegion[][] texturaNave;
+
+
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
+        TextureRegion region = new TextureRegion(textura);
+        texturaNave = region.split(82,82);
         estadoMovimiento = EstadoMovimiento.QUIETO;
         vida = 100;
         daño = 15;
@@ -37,6 +50,11 @@ public class Nave extends Objeto {
         recargaDisparo = 1f;
         dashRecargado = true;
         recargaDash = 1f;
+
+        sprite = new Sprite(texturaNave[0][0]);
+        sprite.setPosition(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     public void mover(Touchpad pad, float delta){
@@ -54,6 +72,7 @@ public class Nave extends Objeto {
 
             sprite.setRotation(anguloJoyStick);
 
+
             sprite.setX(sprite.getX() + dx);
             sprite.setY(sprite.getY() + dy);
 
@@ -67,6 +86,8 @@ public class Nave extends Objeto {
             }else if(sprite.getY() + sprite.getHeight()/2 + dy < 0){ // rebota abajo
                 sprite.setY(0);
             }
+            this.x = sprite.getX();
+            this.y = sprite.getY();
         }
     }
 
@@ -161,5 +182,17 @@ public class Nave extends Objeto {
             triggerDash = false;
             setTiempoDeRecargaDash(0);
         }
+    }
+    @Override
+    public void render(SpriteBatch batch) {
+        if (puedeDisparar) {
+            TextureRegion region = texturaNave[0][1];
+            sprite.setRegion(region);
+        }
+        else {
+            TextureRegion region = texturaNave[0][0];
+            sprite.setRegion(region);
+        }
+        sprite.draw(batch);
     }
 }
