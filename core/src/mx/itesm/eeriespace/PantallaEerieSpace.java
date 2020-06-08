@@ -213,7 +213,7 @@ class PantallaEerieSpace extends Pantalla {
     private void crearNave() {
         float x = ANCHO/2 - texturaNave.getWidth()/2;
         float y = 360;
-        nave = new Nave(texturaNave, x, y);
+        nave = new Nave(texturaNave, x + 41, y - 10);
     }
 
     private void crearIcons() {
@@ -321,7 +321,10 @@ class PantallaEerieSpace extends Pantalla {
     private void actualizar(float delta) {
         // recargar disparo y dash
         nave.recargarDisparo(delta);
-        nave.recargarDash(delta);
+        if(!nave.dashRecargado){
+            nave.recargarDash(delta);
+        }
+
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
@@ -399,8 +402,8 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     public void cargarEfectoDash() {
-        if (nave.efectoDashHabilitado == true && gameLauncher.sfx) {
-            efectoDashRecargado.play(0.1f);
+        if (nave.efectoDashHabilitado && gameLauncher.sfx) {
+            efectoDashRecargado.play(0.5f);
             nave.efectoDashHabilitado = false;
         }
     }
