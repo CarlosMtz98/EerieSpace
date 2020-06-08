@@ -136,6 +136,9 @@ public class PantallaConfiguracion extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                if (gameLauncher.sfx) {
+                    efectoClick.play(0.1f);
+                }
                 System.out.println("Reset Button Pressed");
                 AdministradorPuntuacion administrador = new AdministradorPuntuacion();
                 administrador.reiniciarPuntuacion();
