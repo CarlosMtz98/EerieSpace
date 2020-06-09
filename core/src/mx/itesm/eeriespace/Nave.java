@@ -77,16 +77,6 @@ public class Nave extends Objeto {
             sprite.setX(sprite.getX() + dx);
             sprite.setY(sprite.getY() + dy);
 
-            // Límites de la pantalla
-            if(anguloNave < 0 && sprite.getX() + sprite.getWidth()/2 + dx > PantallaEerieSpace.ANCHO ){   // sale por derecha
-                sprite.setX(0);
-            }else if(anguloNave > 0 && sprite.getX() + sprite.getWidth()/2 + dx < 0){ //sale por la izquierda
-                sprite.setX(PantallaEerieSpace.ANCHO);
-            }else if(anguloNave > -90 && anguloNave < 90 && (sprite.getY() + sprite.getHeight()/2 + dy > PantallaEerieSpace.ALTO)){ // sale por arriba
-                sprite.setY(0);
-            }else if(sprite.getY() + sprite.getHeight()/2 + dy < 0){ // rebota abajo
-                sprite.setY(0);
-            }
             this.x = sprite.getX();
             this.y = sprite.getY();
         }
