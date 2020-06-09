@@ -29,7 +29,7 @@ public class Nave extends Objeto {
     private float tiempoDeRecargaDisparo;
 
     // Dash
-    private final float factorDeCargaDash = 0.1f;   // 0 = sin dash, 1 = delta (muy rápido) --No es local para ajustarlo rápido
+    private final float factorDeCargaDash = 0.1f;   // 0 = sin dash, 1 = delta (muy rápido) --No es local para ajustarlo rápido si es necesario
     public static final float velocidad = 300;
     public boolean dashRecargado;
     private float recargaDash;
