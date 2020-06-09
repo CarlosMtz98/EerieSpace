@@ -51,6 +51,7 @@ class PantallaEerieSpace extends Pantalla {
     // Nave
     private Texture texturaNave;
     private Nave nave;
+    private float anguloNave;
 
     // Items
     private ArrayList<Item> items = new ArrayList<>();
@@ -214,6 +215,7 @@ class PantallaEerieSpace extends Pantalla {
         float x = ANCHO/2 - texturaNave.getWidth()/2;
         float y = 360;
         nave = new Nave(texturaNave, x + 41, y - 10);
+        anguloNave = nave.sprite.getRotation();
     }
 
     private void crearIcons() {
@@ -292,7 +294,6 @@ class PantallaEerieSpace extends Pantalla {
     private void regresarPantalla() {
         if(estadoJuego == EstadoJuego.JUGANDO){
             pausar();
-            overlay.dispose();
         }else if(estadoJuego == EstadoJuego.PAUSADO){
             if (gameLauncher.sfx) {
                 efectoClick.play(0.1f);
@@ -319,12 +320,14 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void actualizar(float delta) {
+        // Establecer límites de pantalla
+        establecerLimitesPantalla();
+
         // recargar disparo y dash
         nave.recargarDisparo(delta);
         if(!nave.dashRecargado){
             nave.recargarDash(delta);
         }
-
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
@@ -398,6 +401,18 @@ class PantallaEerieSpace extends Pantalla {
         if (nave.dashRecargado){
             cargarEfectoDash();
             gameIcons.add(dashIndicator);
+        }
+    }
+
+    private void establecerLimitesPantalla() {
+        if(nave.sprite.getX() + nave.sprite.getWidth()*0.7f > PantallaEerieSpace.ANCHO ){   // sale por derecha
+            nave.sprite.setX(-nave.sprite.getWidth()*0.4f);
+        }else if(nave.sprite.getX() + nave.sprite.getWidth()*0.4f < 0){ //sale por la izquierda
+            nave.sprite.setX(PantallaEerieSpace.ANCHO - nave.sprite.getWidth()*0.7f);
+        }else if(nave.sprite.getY() + nave.sprite.getHeight()*0.7f > PantallaEerieSpace.ALTO){ // sale por arriba
+            nave.sprite.setY(-nave.sprite.getHeight()*0.4f);
+        }else if(nave.sprite.getY() < 0){ // pared abajo
+            nave.sprite.setY(0);
         }
     }
 
