@@ -29,7 +29,7 @@ public class Nave extends Objeto {
     private float tiempoDeRecargaDisparo;
 
     // Dash
-    private final float factorDeCargaDash = 0.1f;   // 0 = sin dash, 1 = delta (muy rápido)
+    private final float factorDeCargaDash = 0.1f;   // 0 = sin dash, 1 = delta (muy rápido) --No es local para ajustarlo rápido si es necesario
     public static final float velocidad = 300;
     public boolean dashRecargado;
     private float recargaDash;
@@ -163,10 +163,10 @@ public class Nave extends Objeto {
 
     public void hacerDash(float delta) {
         time += delta;
-        sprite.setX(sprite.getX() + (padX * (velocidad * 1.5f)*delta));
-        sprite.setY(sprite.getY() + (padY * (velocidad * 1.5f)*delta));
+        sprite.setX(sprite.getX() + (padX * (velocidad * 2f)*delta));
+        sprite.setY(sprite.getY() + (padY * (velocidad * 2f)*delta));
         if (padX == 0 && padY == 0) {
-            sprite.setY(sprite.getY() + (padY * (velocidad * 1.5f)*delta));
+            sprite.setY(sprite.getY() + (velocidad * 2f)*delta);
         }
         if (time > .33f) {
             time = 0;

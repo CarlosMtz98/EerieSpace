@@ -71,6 +71,8 @@ class PantallaEerieSpace extends Pantalla {
 
     // Marcador
     private Marcador marcador;
+    private float textoScoreX = ANCHO * 0.1f, textoScoreY = ALTO * 0.95f;
+    private float textoNivelX = ANCHO*0.8f, textoNivelY = ALTO*0.95f;
 
     // HUD joystick virtual
     private Stage escenaHUD;
@@ -208,7 +210,7 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void crearMarcador() {
-        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f, ANCHO*0.8f, ALTO*0.95f);
+        marcador = new Marcador(textoScoreX, textoScoreY, textoNivelX, textoNivelY);
     }
 
     private void crearNave() {
@@ -219,8 +221,8 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void crearIcons() {
-        float x = ANCHO * .2f - textureDashIndicator.getWidth();
-        float y = ALTO * .95f - textureDashIndicator.getHeight();
+        float x = textoScoreX - 75;
+        float y = textoScoreY - 60;
         dashIndicator = new GameIcon(textureDashIndicator, x, y);
     }
 
@@ -282,7 +284,7 @@ class PantallaEerieSpace extends Pantalla {
         dibujarSprites();
         marcador.render(batch);
         if (estadoJuego == EstadoJuego.PAUSADO) {
-            batch.draw(texturaPausa, ANCHO / 2 - texturaPausa.getWidth() / 2, ALTO / 2 - texturaPausa.getHeight() / 2);
+            batch.draw(texturaPausa, ANCHO / 2 - texturaPausa.getWidth() / 2f, ALTO / 2 - texturaPausa.getHeight() / 2f);
         }
         batch.end();
         batch.setProjectionMatrix(camaraHUD.combined);
