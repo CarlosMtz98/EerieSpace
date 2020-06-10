@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -29,12 +30,18 @@ import java.util.ArrayList;
 class PantallaEerieSpace extends Pantalla {
     private final GameLauncher gameLauncher;
 
+    // Overlay (división dash-shoot)
+    Texture overlay = new Texture("Overlay.png");
+    Sprite overlaySprite = new Sprite(overlay);
+    private float overlayAlpha = 1f;
+
     // Balas
     private ArrayList<Bala> balas = new ArrayList<>();
     private ArrayList<Meteoro> meteoros = new ArrayList<Meteoro>();
     private Texture texturaBala;
 
-    // Meteoros
+    // Pausa
+    private Texture texturaPausa;
 
     // Arreglos Texturas meteoros
     private ArrayList<Texture> meteoroC = new ArrayList<>();
@@ -44,6 +51,7 @@ class PantallaEerieSpace extends Pantalla {
     // Nave
     private Texture texturaNave;
     private Nave nave;
+    private float anguloNave;
 
     // Items
     private ArrayList<Item> items = new ArrayList<>();
@@ -63,6 +71,8 @@ class PantallaEerieSpace extends Pantalla {
 
     // Marcador
     private Marcador marcador;
+    private float textoScoreX = ANCHO * 0.1f, textoScoreY = ALTO * 0.95f;
+    private float textoNivelX = ANCHO*0.8f, textoNivelY = ALTO*0.95f;
 
     // HUD joystick virtual
     private Stage escenaHUD;
@@ -70,6 +80,11 @@ class PantallaEerieSpace extends Pantalla {
     private Viewport vistaHUD;
     protected Touchpad pad;
     float gameTime = 0f;
+
+    // GameIcons
+    private Texture textureDashIndicator;
+    private GameIcon dashIndicator;
+    private ArrayList<GameIcon> gameIcons = new ArrayList<>();
 
     //Musica
     Music musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("audio/cancion.mp3"));
@@ -79,6 +94,7 @@ class PantallaEerieSpace extends Pantalla {
     Sound efectoDaño = Gdx.audio.newSound(Gdx.files.internal("audio/hpDownSfx.mp3"));
     Sound efectoItem = Gdx.audio.newSound(Gdx.files.internal("audio/item.wav"));
     Sound efectoDash = Gdx.audio.newSound(Gdx.files.internal("audio/Dash.mp3"));
+    Sound efectoDashRecargado = Gdx.audio.newSound(Gdx.files.internal("audio/dash_recharge.wav"));
 
     //Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
@@ -101,16 +117,17 @@ class PantallaEerieSpace extends Pantalla {
 
         Texture texturabtnPausa = new Texture("Pausa.png");
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturabtnPausa));
-        ImageButton btnPausa = new ImageButton(trdPausa);
+        final ImageButton btnPausa = new ImageButton(trdPausa);
         btnPausa.setPosition(ANCHO * .97f - btnPausa.getWidth(), ALTO * .97f - btnPausa.getHeight());
-
-
         Skin skin = new Skin();
         skin.add("fondo", new Texture("JoystickBackground.png"));
         skin.add("boton", new Texture("JoystickFront.png"));
         Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
         estilo.background = skin.getDrawable("fondo");
         estilo.knob = skin.getDrawable("boton");
+
+        // Crear Icons
+        crearIcons();
 
         // Crear pad joystick
         pad = new Touchpad(64, estilo);
@@ -138,17 +155,10 @@ class PantallaEerieSpace extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if (gameLauncher.sfx) {
-                    efectoClick.play(0.1f);
-                }
-
                 if (estadoJuego == EstadoJuego.JUGANDO) {
-                    estadoJuego = EstadoJuego.PAUSADO;
-                    musicaFondo.pause();
-                } else {
-                    estadoJuego = EstadoJuego.JUGANDO;
-                    if (gameLauncher.music) {
-                        cargarMusica();
+                    pausar();
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
                     }
                 }
             }
@@ -176,7 +186,6 @@ class PantallaEerieSpace extends Pantalla {
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
-
     private void cargarMusica() {
         musicaFondo.setLooping(true);
         musicaFondo.setVolume(0.2f);
@@ -201,18 +210,25 @@ class PantallaEerieSpace extends Pantalla {
     }
 
     private void crearMarcador() {
-        marcador = new Marcador(ANCHO * 0.1f, ALTO * 0.95f, ANCHO*0.8f, ALTO*0.95f);
+        marcador = new Marcador(textoScoreX, textoScoreY, textoNivelX, textoNivelY);
     }
 
     private void crearNave() {
         float x = ANCHO/2 - texturaNave.getWidth()/2;
         float y = 360;
-        nave = new Nave(texturaNave, x, y);
+        nave = new Nave(texturaNave, x + 41, y - 10);
+        anguloNave = nave.sprite.getRotation();
+    }
+
+    private void crearIcons() {
+        float x = textoScoreX - 75;
+        float y = textoScoreY - 60;
+        dashIndicator = new GameIcon(textureDashIndicator, x, y);
     }
 
     private void cargarTexturas() {
         texturaBala = new Texture("Bullet.png");
-        texturaNave = new Texture("Player.png");
+        texturaNave = new Texture("PlayerSheet.png");
         meteoroC.add(new Texture("asteroides/pequeno-0.png"));
         meteoroC.add(new Texture("asteroides/pequeno-1.png"));
         meteoroC.add(new Texture("asteroides/pequeno-2.png"));
@@ -231,6 +247,7 @@ class PantallaEerieSpace extends Pantalla {
         texturaEscudo = new Texture("items/Shield.png");
         texturaDaño = new Texture("items/Damage.png");
         texturaVida = new Texture("items/Health.png");
+        textureDashIndicator = new Texture("DashIndicator.png");
     }
 
     @Override
@@ -245,30 +262,40 @@ class PantallaEerieSpace extends Pantalla {
             gameTime = 0;
         }
 
-        tiempoCambiarNivel += delta;
-        if(tiempoCambiarNivel >= 20f){
-            dificultad += 0.05;
-            tiempoCambiarNivel = 0f;
-            marcador.incrementarNivel();
+        if(estadoJuego == EstadoJuego.JUGANDO) {
+            tiempoCambiarNivel += delta;
+            if (tiempoCambiarNivel >= 20f) {
+                dificultad += 0.05;
+                tiempoCambiarNivel = 0f;
+                marcador.incrementarNivel();
+            }
         }
-
         borrarPantalla(0, 0, 0);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         batch.draw(backgroundTexture, 0, 0);
+
+        // Desvanecimiento del overlay
+        if(overlayAlpha > 0){
+            overlaySprite.draw(batch, overlayAlpha);
+            overlayAlpha -= 0.005f;
+        }
+
         dibujarSprites();
         marcador.render(batch);
+        if (estadoJuego == EstadoJuego.PAUSADO) {
+            batch.draw(texturaPausa, ANCHO / 2 - texturaPausa.getWidth() / 2f, ALTO / 2 - texturaPausa.getHeight() / 2f);
+        }
         batch.end();
-
         batch.setProjectionMatrix(camaraHUD.combined);
-        escenaHUD.draw();
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            escenaHUD.draw();
+        }
     }
 
     private void regresarPantalla() {
         if(estadoJuego == EstadoJuego.JUGANDO){
-
-            //pausar();
-
+            pausar();
         }else if(estadoJuego == EstadoJuego.PAUSADO){
             if (gameLauncher.sfx) {
                 efectoClick.play(0.1f);
@@ -278,20 +305,37 @@ class PantallaEerieSpace extends Pantalla {
             }
 
             estadoJuego = EstadoJuego.JUGANDO;
-
         }
+    }
 
+    private void pausar() {
+        texturaPausa = new Texture("Pause.png");
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            estadoJuego = EstadoJuego.PAUSADO;
+            musicaFondo.pause();
+        } else {
+            estadoJuego = EstadoJuego.JUGANDO;
+            if (gameLauncher.music) {
+                cargarMusica();
+            }
+        }
     }
 
     private void actualizar(float delta) {
+        // Establecer límites de pantalla
+        establecerLimitesPantalla();
+
         // recargar disparo y dash
         nave.recargarDisparo(delta);
-        nave.recargarDash(delta);
+        if(!nave.dashRecargado){
+            nave.recargarDash(delta);
+        }
 
         // colisiones y movimiento
         if (nave.getVida() >  0) {
             if (!nave.triggerDash) {
                 nave.mover(pad, delta);
+                gameIcons.remove(dashIndicator);
             }
             else
             {
@@ -356,6 +400,29 @@ class PantallaEerieSpace extends Pantalla {
         else {
             terminarJuego();
         }
+        if (nave.dashRecargado){
+            cargarEfectoDash();
+            gameIcons.add(dashIndicator);
+        }
+    }
+
+    private void establecerLimitesPantalla() {
+        if(nave.sprite.getX() + nave.sprite.getWidth()*0.7f > PantallaEerieSpace.ANCHO ){   // sale por derecha
+            nave.sprite.setX(-nave.sprite.getWidth()*0.4f);
+        }else if(nave.sprite.getX() + nave.sprite.getWidth()*0.4f < 0){ //sale por la izquierda
+            nave.sprite.setX(PantallaEerieSpace.ANCHO - nave.sprite.getWidth()*0.7f);
+        }else if(nave.sprite.getY() + nave.sprite.getHeight()*0.7f > PantallaEerieSpace.ALTO){ // sale por arriba
+            nave.sprite.setY(-nave.sprite.getHeight()*0.4f);
+        }else if(nave.sprite.getY() < 0){ // pared abajo
+            nave.sprite.setY(0);
+        }
+    }
+
+    public void cargarEfectoDash() {
+        if (nave.efectoDashHabilitado && gameLauncher.sfx) {
+            efectoDashRecargado.play(0.5f);
+            nave.efectoDashHabilitado = false;
+        }
     }
 
     private void crearItem(float x, float y){
@@ -392,6 +459,9 @@ class PantallaEerieSpace extends Pantalla {
         }
         for(Item item : items){
             item.render(batch);
+        }
+        for(GameIcon icon : gameIcons){
+            icon.render(batch);
         }
     }
 
@@ -435,6 +505,7 @@ class PantallaEerieSpace extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
+
             if (v.x > ANCHO / 2 && estadoJuego == EstadoJuego.JUGANDO) {
                 if(v.y < ALTO/2){
                     if(nave.puedeDisparar) {
@@ -455,7 +526,34 @@ class PantallaEerieSpace extends Pantalla {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
+            Vector3 v = new Vector3(screenX, screenY, 0);
+            camara.unproject(v);
+            if (estadoJuego == EstadoJuego.PAUSADO) {
+                //Boton Reset
+                if (v.x > ANCHO / 2 - 135 && v.x < ANCHO / 2 + 125 && v.y > ALTO / 2 - 25 && v.y < ALTO / 2 + 45) {
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
+                    gameLauncher.setScreen(new PantallaEerieSpace(gameLauncher));
+                }
+
+                //Boton Exit
+                if (v.x > ANCHO / 2 - 115 && v.x < ANCHO / 2 + 105 && v.y > ALTO / 2 - 230 && v.y < ALTO / 2 - 155) {
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
+                    gameLauncher.setScreen(new PantallaMenu(gameLauncher));
+                }
+
+                //Boton Resume
+                if (v.x > ANCHO / 2 - 165 && v.x < ANCHO / 2 + 155 && v.y > ALTO / 2 + 170 && v.y < ALTO / 2 + 240) {
+                    if (gameLauncher.sfx) {
+                        efectoClick.play(0.1f);
+                    }
+                    pausar();
+                }
+            }
+            return true;
         }
 
         @Override

@@ -2,6 +2,9 @@ package mx.itesm.eeriespace;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
 public class Nave extends Objeto {
@@ -11,6 +14,10 @@ public class Nave extends Objeto {
     private int vida;
     private int daño;
     private float time = 0;
+
+    //Coordenadas
+    float x;
+    float y;
 
     // Pad
     float padX = 0;
@@ -22,14 +29,21 @@ public class Nave extends Objeto {
     private float tiempoDeRecargaDisparo;
 
     // Dash
-    private final float factorDeCargaDash = 0.1f;   // 0 = sin dash, 1 = delta (muy rápido)
+    private final float factorDeCargaDash = 0.1f;   // 0 = sin dash, 1 = delta (muy rápido) --No es local para ajustarlo rápido si es necesario
     public static final float velocidad = 300;
     public boolean dashRecargado;
     private float recargaDash;
     private float tiempoDeRecargaDash;
+    public boolean efectoDashHabilitado = false;
+
+    //TextureRegion
+    private TextureRegion[][] texturaNave;
+
 
     public Nave(Texture textura, float x, float y) {
         super(textura, x, y);
+        TextureRegion region = new TextureRegion(textura);
+        texturaNave = region.split(82,82);
         estadoMovimiento = EstadoMovimiento.QUIETO;
         vida = 100;
         daño = 15;
@@ -37,6 +51,11 @@ public class Nave extends Objeto {
         recargaDisparo = 1f;
         dashRecargado = true;
         recargaDash = 1f;
+
+        sprite = new Sprite(texturaNave[0][0]);
+        sprite.setPosition(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     public void mover(Touchpad pad, float delta){
@@ -54,19 +73,12 @@ public class Nave extends Objeto {
 
             sprite.setRotation(anguloJoyStick);
 
+
             sprite.setX(sprite.getX() + dx);
             sprite.setY(sprite.getY() + dy);
 
-            // Límites de la pantalla
-            if(anguloNave < 0 && sprite.getX() + sprite.getWidth()/2 + dx > PantallaEerieSpace.ANCHO ){   // sale por derecha
-                sprite.setX(0);
-            }else if(anguloNave > 0 && sprite.getX() + sprite.getWidth()/2 + dx < 0){ //sale por la izquierda
-                sprite.setX(PantallaEerieSpace.ANCHO);
-            }else if(anguloNave > -90 && anguloNave < 90 && (sprite.getY() + sprite.getHeight()/2 + dy > PantallaEerieSpace.ALTO)){ // sale por arriba
-                sprite.setY(0);
-            }else if(sprite.getY() + sprite.getHeight()/2 + dy < 0){ // rebota abajo
-                sprite.setY(0);
-            }
+            this.x = sprite.getX();
+            this.y = sprite.getY();
         }
     }
 
@@ -133,6 +145,7 @@ public class Nave extends Objeto {
         if(tiempoDeRecargaDash >= recargaDash){
             tiempoDeRecargaDash = 0;
             dashRecargado = true;
+            efectoDashHabilitado = true;
         }
     }
 
@@ -150,10 +163,10 @@ public class Nave extends Objeto {
 
     public void hacerDash(float delta) {
         time += delta;
-        sprite.setX(sprite.getX() + (padX * (velocidad * 1.5f)*delta));
-        sprite.setY(sprite.getY() + (padY * (velocidad * 1.5f)*delta));
+        sprite.setX(sprite.getX() + (padX * (velocidad * 2f)*delta));
+        sprite.setY(sprite.getY() + (padY * (velocidad * 2f)*delta));
         if (padX == 0 && padY == 0) {
-            sprite.setY(sprite.getY() + (padY * (velocidad * 1.5f)*delta));
+            sprite.setY(sprite.getY() + (velocidad * 2f)*delta);
         }
         if (time > .33f) {
             time = 0;
@@ -161,5 +174,17 @@ public class Nave extends Objeto {
             triggerDash = false;
             setTiempoDeRecargaDash(0);
         }
+    }
+    @Override
+    public void render(SpriteBatch batch) {
+        if (puedeDisparar) {
+            TextureRegion region = texturaNave[0][1];
+            sprite.setRegion(region);
+        }
+        else {
+            TextureRegion region = texturaNave[0][0];
+            sprite.setRegion(region);
+        }
+        sprite.draw(batch);
     }
 }
